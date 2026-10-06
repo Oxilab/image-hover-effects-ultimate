@@ -1,0 +1,688 @@
+/*
+ * Image Hover Effects Ultimate: Shortcode list page.
+ * Loaded after settings.css (tokens, hero, buttons, dialogs). Bootstrap and
+ * admin.css also load here, so every rule is scoped to .oxi-iheu-shortcodes.
+ */
+
+.oxi-iheu-settings.oxi-iheu-shortcodes {
+    max-width: 1480px;
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-set-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.oxi-iheu-sc-count {
+    padding: 2px 10px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: 0;
+    color: var(--iheu-brand-strong);
+    background: var(--iheu-brand-soft);
+    border-radius: 999px;
+}
+
+.oxi-iheu-sc-hero-actions {
+    flex: none;
+    display: flex;
+    gap: 10px;
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-set-btn .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.oxi-iheu-settings .oxi-iheu-set-btn.is-sm {
+    min-height: 34px;
+    padding: 6px 12px;
+    font-size: 13px;
+}
+
+/* Toolbar: search + page size */
+
+.oxi-iheu-sc-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--iheu-line);
+}
+
+.oxi-iheu-shortcodes .dataTables_filter,
+.oxi-iheu-shortcodes .dataTables_length {
+    float: none;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+.oxi-iheu-shortcodes .dataTables_filter label,
+.oxi-iheu-shortcodes .dataTables_length label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--iheu-ink-3);
+}
+
+.oxi-iheu-shortcodes div.dataTables_wrapper div.dataTables_filter input {
+    display: block;
+    width: 320px;
+    max-width: 100%;
+    height: 40px;
+    margin: 0;
+    padding: 0 12px 0 38px;
+    font-size: 14px;
+    color: var(--iheu-ink);
+    background: var(--iheu-surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2398a2b3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") no-repeat 12px center / 18px;
+    border: 1px solid var(--iheu-line-2);
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+}
+
+.oxi-iheu-shortcodes div.dataTables_wrapper div.dataTables_length select {
+    display: inline-block;
+    width: auto;
+    height: 36px;
+    min-height: 36px;
+    margin: 0;
+    padding: 0 30px 0 10px;
+    font-size: 13px;
+    color: var(--iheu-ink);
+    border: 1px solid var(--iheu-line-2);
+    border-radius: 8px;
+}
+
+.oxi-iheu-shortcodes .dataTables_filter input:focus,
+.oxi-iheu-shortcodes .dataTables_length select:focus {
+    border-color: var(--iheu-brand);
+    outline: none;
+    box-shadow: 0 0 0 4px var(--iheu-brand-ring);
+}
+
+/* Table */
+
+.oxi-iheu-sc-card {
+    overflow: hidden;
+}
+
+.oxi-iheu-shortcodes table.oxi-iheu-sc-table {
+    width: 100% !important;
+    margin: 0 !important;
+    border: 0;
+    border-collapse: collapse;
+    background: none;
+}
+
+.oxi-iheu-shortcodes table.oxi-iheu-sc-table thead th {
+    position: relative;
+    padding: 12px 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--iheu-ink-3);
+    background: #f9fafb;
+    border: 0;
+    border-bottom: 1px solid var(--iheu-line);
+}
+
+/* DataTables sort arrows */
+.oxi-iheu-shortcodes table.oxi-iheu-sc-table thead th::before,
+.oxi-iheu-shortcodes table.oxi-iheu-sc-table thead th::after {
+    display: none;
+}
+
+.oxi-iheu-shortcodes table.oxi-iheu-sc-table thead th.sorting,
+.oxi-iheu-shortcodes table.oxi-iheu-sc-table thead th.sorting_asc,
+.oxi-iheu-shortcodes table.oxi-iheu-sc-table thead th.sorting_desc {
+    cursor: pointer;
+    background-image: none;
+}
+
+.oxi-iheu-shortcodes table.oxi-iheu-sc-table thead th.sorting_asc::after,
+.oxi-iheu-shortcodes table.oxi-iheu-sc-table thead th.sorting_desc::after {
+    content: "";
+    display: inline-block;
+    position: static;
+    width: 0;
+    height: 0;
+    margin-left: 6px;
+    vertical-align: middle;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    opacity: 1;
+}
+
+.oxi-iheu-shortcodes table.oxi-iheu-sc-table thead th.sorting_asc::after {
+    border-bottom: 5px solid var(--iheu-ink-3);
+}
+
+.oxi-iheu-shortcodes table.oxi-iheu-sc-table thead th.sorting_desc::after {
+    border-top: 5px solid var(--iheu-ink-3);
+}
+
+.oxi-iheu-shortcodes table.oxi-iheu-sc-table tbody tr {
+    background: none;
+    transition: background-color 0.15s ease, opacity 0.25s ease;
+}
+
+.oxi-iheu-shortcodes table.oxi-iheu-sc-table tbody tr + tr td {
+    border-top: 1px solid var(--iheu-line);
+}
+
+.oxi-iheu-shortcodes table.oxi-iheu-sc-table tbody tr:hover {
+    background: #fcfcfd;
+}
+
+.oxi-iheu-shortcodes table.oxi-iheu-sc-table tbody tr.is-removing {
+    opacity: 0;
+}
+
+.oxi-iheu-shortcodes table.oxi-iheu-sc-table td {
+    padding: 16px 20px;
+    vertical-align: middle;
+    border: 0;
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-title {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--iheu-ink);
+    text-decoration: none;
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-title:hover {
+    color: var(--iheu-brand-strong);
+}
+
+.oxi-iheu-sc-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--iheu-ink-3);
+}
+
+.oxi-iheu-sc-id {
+    font-variant-numeric: tabular-nums;
+}
+
+.oxi-iheu-sc-template {
+    padding: 1px 8px;
+    font-weight: 600;
+    color: var(--iheu-brand-strong);
+    background: var(--iheu-brand-soft);
+    border-radius: 999px;
+}
+
+/* Shortcode chip + copy */
+
+.oxi-iheu-sc-code {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    background: #f9fafb;
+    border: 1px solid var(--iheu-line);
+    border-radius: 8px;
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-code code {
+    padding: 7px 12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12.5px;
+    color: var(--iheu-ink);
+    background: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    flex: none;
+    align-self: stretch;
+    margin: 0;
+    padding: 0 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--iheu-ink-2);
+    background: var(--iheu-surface);
+    border: 0;
+    border-left: 1px solid var(--iheu-line);
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-copy .dashicons {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-copy:hover {
+    color: var(--iheu-brand-strong);
+    background: var(--iheu-brand-soft);
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-copy.is-copied,
+.oxi-iheu-shortcodes .oxi-iheu-sc-copy-php.is-copied {
+    color: var(--iheu-success);
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-copy.is-copied {
+    background: var(--iheu-success-soft);
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-copy-php {
+    display: block;
+    margin: 6px 0 0;
+    padding: 0;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--iheu-ink-3);
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-copy-php:hover {
+    color: var(--iheu-brand-strong);
+    text-decoration: underline;
+}
+
+/* Row actions: soft tinted buttons with icon + label */
+
+.oxi-iheu-sc-actions-col {
+    width: 1%;
+}
+
+.oxi-iheu-shortcodes table.oxi-iheu-sc-table td.oxi-iheu-sc-actions {
+    white-space: nowrap;
+}
+
+.oxi-iheu-sc-actions-wrap {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-action {
+    --sc-fg: var(--iheu-ink-2);
+    --sc-bg: #f2f4f7;
+    --sc-bg-hover: #e4e7ec;
+    --sc-ring: rgba(102, 112, 133, 0.25);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 34px;
+    margin: 0;
+    padding: 0 12px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--sc-fg);
+    background: var(--sc-bg);
+    border: 0;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-action .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-action:hover {
+    color: var(--sc-fg);
+    background: var(--sc-bg-hover);
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-action:focus {
+    outline: none;
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-action:focus-visible {
+    box-shadow: 0 0 0 3px var(--sc-ring);
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-action.is-edit {
+    --sc-fg: #c41d55;
+    --sc-bg: #fdecf2;
+    --sc-bg-hover: #fbd5e2;
+    --sc-ring: rgba(238, 50, 110, 0.3);
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-action.is-clone {
+    --sc-fg: #3538cd;
+    --sc-bg: #eef4ff;
+    --sc-bg-hover: #e0eaff;
+    --sc-ring: rgba(68, 76, 231, 0.25);
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-action.is-export {
+    --sc-fg: #067647;
+    --sc-bg: #ecfdf3;
+    --sc-bg-hover: #d1fadf;
+    --sc-ring: rgba(23, 178, 106, 0.25);
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-action.is-delete {
+    --sc-fg: #b42318;
+    --sc-bg: #fef3f2;
+    --sc-bg-hover: #fee4e2;
+    --sc-ring: rgba(217, 45, 32, 0.25);
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-copy:focus-visible,
+.oxi-iheu-shortcodes .oxi-iheu-sc-copy-php:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--iheu-brand-ring);
+}
+
+/* Footer: info + pagination */
+
+.oxi-iheu-sc-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 20px;
+    border-top: 1px solid var(--iheu-line);
+}
+
+.oxi-iheu-shortcodes .dataTables_info {
+    padding: 0;
+    font-size: 13px;
+    color: var(--iheu-ink-3);
+}
+
+.oxi-iheu-shortcodes .dataTables_paginate {
+    float: none;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+}
+
+.oxi-iheu-shortcodes .dataTables_paginate .pagination {
+    display: flex;
+    gap: 4px;
+    margin: 0;
+}
+
+.oxi-iheu-shortcodes .dataTables_paginate .paginate_button,
+.oxi-iheu-shortcodes .dataTables_paginate .pagination li > a,
+.oxi-iheu-shortcodes .dataTables_paginate .pagination .page-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 34px;
+    margin: 0;
+    padding: 0 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--iheu-ink-2) !important;
+    background: var(--iheu-surface) !important;
+    border: 1px solid var(--iheu-line) !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.oxi-iheu-shortcodes .dataTables_paginate .pagination li.paginate_button {
+    padding: 0;
+    border: 0 !important;
+    background: none !important;
+    min-width: 0;
+    height: auto;
+}
+
+.oxi-iheu-shortcodes .dataTables_paginate .paginate_button:hover,
+.oxi-iheu-shortcodes .dataTables_paginate .pagination li > a:hover {
+    color: var(--iheu-brand-strong) !important;
+    border-color: #fbc6d6 !important;
+    background: var(--iheu-brand-soft) !important;
+}
+
+.oxi-iheu-shortcodes .dataTables_paginate .paginate_button.current,
+.oxi-iheu-shortcodes .dataTables_paginate .pagination li.active > a,
+.oxi-iheu-shortcodes .dataTables_paginate .pagination .active .page-link {
+    color: #ffffff !important;
+    background: var(--iheu-brand) !important;
+    border-color: var(--iheu-brand) !important;
+}
+
+.oxi-iheu-shortcodes .dataTables_paginate .paginate_button.disabled,
+.oxi-iheu-shortcodes .dataTables_paginate .pagination li.disabled > a {
+    opacity: 0.45;
+    cursor: default;
+    pointer-events: none;
+}
+
+.oxi-iheu-shortcodes .dataTables_empty {
+    padding: 40px 20px !important;
+    text-align: center;
+    color: var(--iheu-ink-3);
+}
+
+/* Empty state */
+
+.oxi-iheu-sc-empty {
+    padding: 56px 24px;
+    text-align: center;
+}
+
+.oxi-iheu-settings .oxi-iheu-sc-empty-icon {
+    width: 64px;
+    height: 64px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: 30px;
+    color: var(--iheu-brand);
+    background: var(--iheu-brand-soft);
+    border-radius: 18px;
+}
+
+.oxi-iheu-settings .oxi-iheu-sc-empty-icon::before {
+    width: 30px;
+    height: 30px;
+    font-size: 30px;
+    line-height: 30px;
+}
+
+.oxi-iheu-sc-empty .oxi-iheu-set-card-title {
+    font-size: 18px;
+}
+
+.oxi-iheu-sc-empty .oxi-iheu-set-actions {
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Dialog extras */
+
+.oxi-iheu-settings .oxi-iheu-set-dialog-icon.is-brand {
+    color: var(--iheu-brand);
+    background: var(--iheu-brand-soft);
+    border-color: #fff7fa;
+}
+
+.oxi-iheu-sc-drop {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+    padding: 24px 16px;
+    text-align: center;
+    background: #f9fafb;
+    border: 1.5px dashed var(--iheu-line-2);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.oxi-iheu-sc-drop:hover,
+.oxi-iheu-sc-drop:focus-within {
+    background: var(--iheu-brand-soft);
+    border-color: var(--iheu-brand);
+}
+
+.oxi-iheu-sc-drop.has-file {
+    background: var(--iheu-success-soft);
+    border-color: #75e0a7;
+    border-style: solid;
+}
+
+.oxi-iheu-settings .oxi-iheu-sc-drop .dashicons {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+    color: var(--iheu-ink-3);
+}
+
+.oxi-iheu-sc-drop-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--iheu-ink);
+    word-break: break-all;
+}
+
+.oxi-iheu-settings .oxi-iheu-sc-drop input[type="file"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* The clone name is a normal text field, not a typed confirmation. */
+.oxi-iheu-settings .oxi-iheu-set-dialog #oxi-iheu-clone-name {
+    font-family: inherit;
+    letter-spacing: normal;
+}
+
+.oxi-iheu-settings .oxi-iheu-set-dialog #oxi-iheu-clone-name:focus {
+    border-color: var(--iheu-brand);
+    box-shadow: 0 0 0 4px var(--iheu-brand-ring);
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-dialog-code {
+    margin-top: 12px;
+}
+
+.oxi-iheu-shortcodes .oxi-iheu-sc-dialog-code code {
+    display: inline-block;
+    padding: 6px 10px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12.5px;
+    color: var(--iheu-ink);
+    background: #f9fafb;
+    border: 1px solid var(--iheu-line);
+    border-radius: 6px;
+}
+
+/* Responsive */
+
+@media (max-width: 960px) {
+    .oxi-iheu-shortcodes table.oxi-iheu-sc-table thead {
+        display: none;
+    }
+
+    .oxi-iheu-shortcodes table.oxi-iheu-sc-table,
+    .oxi-iheu-shortcodes table.oxi-iheu-sc-table tbody,
+    .oxi-iheu-shortcodes table.oxi-iheu-sc-table tr,
+    .oxi-iheu-shortcodes table.oxi-iheu-sc-table td {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .oxi-iheu-shortcodes table.oxi-iheu-sc-table td.oxi-iheu-sc-actions {
+        white-space: normal;
+    }
+
+    .oxi-iheu-shortcodes table.oxi-iheu-sc-table tbody tr + tr td {
+        border-top: 0;
+    }
+
+    .oxi-iheu-shortcodes table.oxi-iheu-sc-table tbody tr + tr {
+        border-top: 1px solid var(--iheu-line);
+    }
+
+    .oxi-iheu-shortcodes table.oxi-iheu-sc-table td {
+        padding: 6px 16px;
+    }
+
+    .oxi-iheu-shortcodes table.oxi-iheu-sc-table td:first-child {
+        padding-top: 16px;
+    }
+
+    .oxi-iheu-shortcodes table.oxi-iheu-sc-table td:last-child {
+        padding-bottom: 16px;
+    }
+
+    .oxi-iheu-sc-actions-wrap {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 782px) {
+    .oxi-iheu-sc-hero-actions {
+        order: 3;
+        width: 100%;
+    }
+
+    .oxi-iheu-sc-hero-actions .oxi-iheu-set-btn {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .oxi-iheu-sc-toolbar,
+    .oxi-iheu-sc-footer {
+        flex-direction: column;
+        align-items: stretch;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .oxi-iheu-shortcodes .dataTables_filter,
+    .oxi-iheu-shortcodes .dataTables_filter label,
+    .oxi-iheu-shortcodes div.dataTables_wrapper div.dataTables_filter input {
+        display: block;
+        width: 100%;
+    }
+
+    .oxi-iheu-shortcodes .dataTables_paginate .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .oxi-iheu-shortcodes .dataTables_info {
+        text-align: center;
+    }
+}

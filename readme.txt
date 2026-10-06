@@ -188,9 +188,11 @@ The free version gives you access to all 10 modules and hundreds of layouts. Pro
 * 🆕 New: Danger zone on the Settings page, delete all shortcodes, image items and settings at once after typing DELETE to confirm, or choose to remove all plugin data when the plugin is deleted (deactivating never removes data)
 * 🆕 New: License card on the Settings page, activate or change your Pro license key and see its plan, expiry date and status without going to the Plugins screen
 * ✨ Improvement: Redesigned Settings page with grouped cards, on/off switches, a live save status for every option and quick links to docs and support
+* ✨ Improvement: Redesigned Shortcode page with one click copy for the shortcode and PHP code, newest shortcodes first, quick search, item counts, and clear dialogs for import, clone and delete
+* ✨ Improvement: Redesigned Account page with the plugin header menu, a clear license overview, a plan badge, tidy billing details and an easy to read payments list
 * ✨ Improvement: Data cleanup is safe for sites that also run Flipbox, the shared import table and shared settings are never removed, only Image Hover's own entries
 * 🐛 Fix: Adding HTML with attributes (for example a link) to an image item description caused a critical error in the preview and on the page, item data is now sanitized value by value so it stays valid, and items already saved with this problem are recovered automatically
-* 🐛 Fix: Font Awesome setting showed neither Yes nor No on new installs, it now shows as on, which matches how it already worked
+* 🐛 Fix: Font Awesome setting showed neither Yes or No on new installs, it now shows as on, which matches how it already worked
 * 🐛 Fix: Admin notices from other plugins no longer appear in the middle of the Settings form
 
 = 9.11.8 =

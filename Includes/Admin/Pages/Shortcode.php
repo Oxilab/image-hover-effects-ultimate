@@ -57,83 +57,140 @@ class Shortcode {
     }
 
     public function Render() {
-		?>
-        <div class="oxi-addons-row">
+        $rows = $this->database_data();
+        ?>
+        <hr class="wp-header-end">
+        <div class="oxi-iheu-settings oxi-iheu-shortcodes"
+            data-copied="<?php esc_attr_e( 'Copied', 'image-hover-effects-ultimate' ); ?>"
+            data-copy-failed="<?php esc_attr_e( 'Press Ctrl+C to copy', 'image-hover-effects-ultimate' ); ?>"
+            data-search="<?php esc_attr_e( 'Search shortcodes', 'image-hover-effects-ultimate' ); ?>"
+            data-per-page="<?php esc_attr_e( '_MENU_ per page', 'image-hover-effects-ultimate' ); ?>"
+            data-info="<?php esc_attr_e( 'Showing _START_ to _END_ of _TOTAL_', 'image-hover-effects-ultimate' ); ?>"
+            data-info-empty="<?php esc_attr_e( 'No shortcodes to show', 'image-hover-effects-ultimate' ); ?>"
+            data-info-filtered="<?php esc_attr_e( '(filtered from _MAX_)', 'image-hover-effects-ultimate' ); ?>"
+            data-zero="<?php esc_attr_e( 'No shortcodes match your search.', 'image-hover-effects-ultimate' ); ?>"
+            data-prev="<?php esc_attr_e( 'Previous', 'image-hover-effects-ultimate' ); ?>"
+            data-next="<?php esc_attr_e( 'Next', 'image-hover-effects-ultimate' ); ?>"
+            data-all="<?php esc_attr_e( 'All', 'image-hover-effects-ultimate' ); ?>">
             <?php
-            $this->Admin_header();
-            $this->created_shortcode();
+            $this->Admin_header( count( $rows ) );
+            if ( empty( $rows ) ) {
+                $this->empty_state();
+            } else {
+                $this->created_shortcode( $rows );
+            }
             $this->create_new();
             ?>
         </div>
-		<?php
+        <?php
     }
 
-    public function Admin_header() {
-		?>
-        <div class="oxi-addons-wrapper">
-            <div class="oxi-addons-import-layouts">
-                <h1>Image Hover › Shortcode</h1>
-                <p>Collect Image Hover Shortcode, Edit, Delect, Clone or Export it.</p>
-                <div class="oxi-addons-shortcode-header-controls">
-                    <span class="oxi-addons-shortcode-title">Shortcode</span>
-                    <a href="<?php echo esc_url( admin_url( 'admin.php?page=oxi-image-hover-ultimate' ) ); ?>" class="btn btn-success">Create New</a>
-                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#oxi-addons-style-import-modal">Import</a>
-                </div>
+    public function Admin_header( $total = 0 ) {
+        ?>
+        <header class="oxi-iheu-set-hero">
+            <img class="oxi-iheu-set-hero-logo" src="<?php echo esc_url( OXI_IMAGE_HOVER_URL . 'image/logo.png' ); ?>" alt="" width="52" height="52">
+            <div class="oxi-iheu-set-hero-text">
+                <h1 class="oxi-iheu-set-title">
+                    <?php esc_html_e( 'Shortcodes', 'image-hover-effects-ultimate' ); ?>
+                    <span class="oxi-iheu-sc-count"><?php echo esc_html( number_format_i18n( $total ) ); ?></span>
+                </h1>
+                <p class="oxi-iheu-set-subtitle"><?php esc_html_e( 'Copy a shortcode into any page or post, or edit, clone, export and delete it.', 'image-hover-effects-ultimate' ); ?></p>
             </div>
-        </div>
-		<?php
+            <div class="oxi-iheu-sc-hero-actions">
+                <button type="button" class="oxi-iheu-set-btn is-secondary" data-oxi-iheu-open="oxi-iheu-import-dialog">
+                    <span class="dashicons dashicons-upload" aria-hidden="true"></span><?php esc_html_e( 'Import', 'image-hover-effects-ultimate' ); ?>
+                </button>
+                <a class="oxi-iheu-set-btn is-primary" href="<?php echo esc_url( admin_url( 'admin.php?page=oxi-image-hover-ultimate' ) ); ?>">
+                    <span class="dashicons dashicons-plus-alt2" aria-hidden="true"></span><?php esc_html_e( 'Create new', 'image-hover-effects-ultimate' ); ?>
+                </a>
+            </div>
+        </header>
+        <?php
         apply_filters( 'oxi-image-hover-support-and-comments', true );
     }
 
+    /**
+     * Shown when there are no shortcodes yet.
+     *
+     * @since 9.11.9
+     */
+    public function empty_state() {
+        ?>
+        <section class="oxi-iheu-set-card oxi-iheu-sc-empty">
+            <span class="oxi-iheu-sc-empty-icon dashicons dashicons-format-gallery" aria-hidden="true"></span>
+            <h2 class="oxi-iheu-set-card-title"><?php esc_html_e( 'No shortcodes yet', 'image-hover-effects-ultimate' ); ?></h2>
+            <p class="oxi-iheu-set-card-sub"><?php esc_html_e( 'Pick an effect, design it, and its shortcode will appear here ready to copy.', 'image-hover-effects-ultimate' ); ?></p>
+            <div class="oxi-iheu-set-actions">
+                <a class="oxi-iheu-set-btn is-primary" href="<?php echo esc_url( admin_url( 'admin.php?page=oxi-image-hover-ultimate' ) ); ?>">
+                    <span class="dashicons dashicons-plus-alt2" aria-hidden="true"></span><?php esc_html_e( 'Create your first effect', 'image-hover-effects-ultimate' ); ?>
+                </a>
+                <button type="button" class="oxi-iheu-set-btn is-secondary" data-oxi-iheu-open="oxi-iheu-import-dialog">
+                    <span class="dashicons dashicons-upload" aria-hidden="true"></span><?php esc_html_e( 'Import a JSON file', 'image-hover-effects-ultimate' ); ?>
+                </button>
+            </div>
+        </section>
+        <?php
+    }
+
     public function create_new() {
-		?>
-        <div class="modal fade" id="oxi-addons-style-import-modal">
-            <form method="post" id="oxi-addons-import-modal-form" enctype="multipart/form-data">
-                <div class="modal-dialog modal-sm modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Import JSON Files</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <input class="form-control" type="file" name="importimagehoverultimatefile" accept=".json,application/json,.zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            <input type="submit" class="btn btn-success" name="importdatasubmit" id="importdatasubmit" value="Save">
-                        </div>
-                    </div>
-                </div>
+        ?>
+        <div class="oxi-iheu-set-dialog" id="oxi-iheu-import-dialog" hidden>
+            <div class="oxi-iheu-set-dialog-backdrop" data-oxi-iheu-close></div>
+            <form class="oxi-iheu-set-dialog-box" method="post" enctype="multipart/form-data" role="dialog" aria-modal="true" aria-labelledby="oxi-iheu-import-title">
+                <span class="oxi-iheu-set-dialog-icon is-brand dashicons dashicons-upload" aria-hidden="true"></span>
+                <h2 class="oxi-iheu-set-dialog-title" id="oxi-iheu-import-title"><?php esc_html_e( 'Import a shortcode', 'image-hover-effects-ultimate' ); ?></h2>
+                <p class="oxi-iheu-set-dialog-text"><?php esc_html_e( 'Choose a JSON file exported from Image Hover Effects. It is added as a new shortcode, nothing is replaced.', 'image-hover-effects-ultimate' ); ?></p>
+                <label class="oxi-iheu-sc-drop">
+                    <span class="dashicons dashicons-media-code" aria-hidden="true"></span>
+                    <span class="oxi-iheu-sc-drop-text" data-empty="<?php esc_attr_e( 'Choose a .json file', 'image-hover-effects-ultimate' ); ?>"><?php esc_html_e( 'Choose a .json file', 'image-hover-effects-ultimate' ); ?></span>
+                    <input type="file" name="importimagehoverultimatefile" accept=".json,application/json" required>
+                </label>
                 <?php wp_nonce_field( 'image-hover-effects-ultimate-import' ); ?>
+                <div class="oxi-iheu-set-dialog-actions">
+                    <button type="button" class="oxi-iheu-set-btn is-secondary" data-oxi-iheu-close><?php esc_html_e( 'Cancel', 'image-hover-effects-ultimate' ); ?></button>
+                    <button type="submit" class="oxi-iheu-set-btn is-primary" name="importdatasubmit" value="Save"><?php esc_html_e( 'Import', 'image-hover-effects-ultimate' ); ?></button>
+                </div>
             </form>
         </div>
 
-        <div class="modal fade" id="oxi-addons-style-clone-modal">
-            <form method="post" id="oxi-addons-style-clone-modal-form">
-                <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Layouts Clone</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <div class=" form-group row">
-                                <label for="addons-style-name" class="col-sm-6 col-form-label" oxi-addons-tooltip="Give your Shortcode Name Here">Name</label>
-                                <div class="col-sm-6 addons-dtm-laptop-lock">
-                                    <input class="form-control" type="text" value="" id="addons-style-name" name="addons-style-name" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <input type="hidden" id="oxistyleid" name="oxistyleid" value="">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            <input type="submit" class="btn btn-success" name="addonsdatasubmit" id="addonsdatasubmit" value="Save">
-                        </div>
-                    </div>
+        <div class="oxi-iheu-set-dialog" id="oxi-iheu-clone-dialog" hidden>
+            <div class="oxi-iheu-set-dialog-backdrop" data-oxi-iheu-close></div>
+            <form class="oxi-iheu-set-dialog-box" id="oxi-iheu-clone-form" role="dialog" aria-modal="true" aria-labelledby="oxi-iheu-clone-title">
+                <span class="oxi-iheu-set-dialog-icon is-brand dashicons dashicons-admin-page" aria-hidden="true"></span>
+                <h2 class="oxi-iheu-set-dialog-title" id="oxi-iheu-clone-title"><?php esc_html_e( 'Clone shortcode', 'image-hover-effects-ultimate' ); ?></h2>
+                <p class="oxi-iheu-set-dialog-text"><?php esc_html_e( 'Creates a copy with the same design and image items, then opens it in the editor.', 'image-hover-effects-ultimate' ); ?></p>
+                <label class="oxi-iheu-set-dialog-label" for="oxi-iheu-clone-name"><?php esc_html_e( 'Name for the copy', 'image-hover-effects-ultimate' ); ?></label>
+                <input type="text" class="oxi-iheu-set-input" id="oxi-iheu-clone-name" required autocomplete="off" data-suffix="<?php esc_attr_e( 'copy', 'image-hover-effects-ultimate' ); ?>">
+                <input type="hidden" id="oxi-iheu-clone-id" value="">
+                <p class="oxi-iheu-set-dialog-status" role="status" aria-live="polite"
+                    data-saving="<?php esc_attr_e( 'Cloning', 'image-hover-effects-ultimate' ); ?>"
+                    data-error="<?php esc_attr_e( 'Could not clone, try again.', 'image-hover-effects-ultimate' ); ?>"></p>
+                <div class="oxi-iheu-set-dialog-actions">
+                    <button type="button" class="oxi-iheu-set-btn is-secondary" data-oxi-iheu-close><?php esc_html_e( 'Cancel', 'image-hover-effects-ultimate' ); ?></button>
+                    <button type="submit" class="oxi-iheu-set-btn is-primary"><?php esc_html_e( 'Clone', 'image-hover-effects-ultimate' ); ?></button>
                 </div>
             </form>
         </div>
-		<?php
+
+        <div class="oxi-iheu-set-dialog" id="oxi-iheu-delete-sc-dialog" hidden>
+            <div class="oxi-iheu-set-dialog-backdrop" data-oxi-iheu-close></div>
+            <div class="oxi-iheu-set-dialog-box" role="alertdialog" aria-modal="true" aria-labelledby="oxi-iheu-delete-sc-title" aria-describedby="oxi-iheu-delete-sc-desc">
+                <span class="oxi-iheu-set-dialog-icon dashicons dashicons-trash" aria-hidden="true"></span>
+                <h2 class="oxi-iheu-set-dialog-title" id="oxi-iheu-delete-sc-title" data-template="<?php /* translators: %s: shortcode name */ esc_attr_e( 'Delete %s?', 'image-hover-effects-ultimate' ); ?>"></h2>
+                <p class="oxi-iheu-set-dialog-text" id="oxi-iheu-delete-sc-desc">
+                    <?php esc_html_e( 'Any page that still uses this shortcode will show nothing in its place. Its design and image items are deleted for good.', 'image-hover-effects-ultimate' ); ?>
+                </p>
+                <p class="oxi-iheu-sc-dialog-code"><code></code></p>
+                <p class="oxi-iheu-set-dialog-status" role="status" aria-live="polite"
+                    data-saving="<?php esc_attr_e( 'Deleting', 'image-hover-effects-ultimate' ); ?>"
+                    data-error="<?php esc_attr_e( 'Could not delete, try again.', 'image-hover-effects-ultimate' ); ?>"></p>
+                <div class="oxi-iheu-set-dialog-actions">
+                    <button type="button" class="oxi-iheu-set-btn is-secondary" data-oxi-iheu-close><?php esc_html_e( 'Cancel', 'image-hover-effects-ultimate' ); ?></button>
+                    <button type="button" class="oxi-iheu-set-btn is-danger-solid" id="oxi-iheu-delete-sc-submit"><?php esc_html_e( 'Delete shortcode', 'image-hover-effects-ultimate' ); ?></button>
+                </div>
+            </div>
+        </div>
+        <?php
     }
 
     private function get_export_link( $template_id ) {
@@ -165,7 +222,7 @@ class Shortcode {
      * @return void
      */
     public function admin_rest_api() {
-        wp_enqueue_script( 'oxi-image-hover-shortcode', OXI_IMAGE_HOVER_URL . 'assets/backend/js/shortcode.js', false, OXI_IMAGE_HOVER_TEXTDOMAIN );
+        wp_enqueue_script( 'oxi-image-hover-shortcode', OXI_IMAGE_HOVER_URL . 'assets/backend/js/shortcode.js', [ 'jquery', 'jquery.dataTables.min' ], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/js/shortcode.js' ), true );
     }
 
     /**
@@ -245,57 +302,94 @@ class Shortcode {
 		}
 	}
 
-    public function created_shortcode() {
-		?>
-        <div class="oxi-addons-row">
-            <div class="oxi-addons-row table-responsive abop" style="margin-bottom: 20px; opacity: 0; height: 0px">
-                <table class="table table-hover widefat oxi_addons_table_data" style="background-color: #fff; border: 1px solid #ccc">
-                    <thead>
-                        <tr>
-                            <th style="width: 5%">ID</th>
-                            <th style="width: 15%">Name</th>
-                            <th style="width: 10%">Templates</th>
-                            <th style="width: 30%">Shortcode</th>
-                            <th style="width: 40%">Edit Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        foreach ( $this->database_data() as $value ) {
-                            $effects = $this->effects_converter( $value['style_name'] );
+    /**
+     * Number of image items per shortcode.
+     *
+     * @since 9.11.9
+     *
+     * @return array<int,int>
+     */
+    public function item_counts() {
+        global $wpdb;
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $rows   = $wpdb->get_results( 'SELECT styleid, COUNT(*) AS total FROM ' . esc_sql( $this->child_table ) . ' GROUP BY styleid', ARRAY_A );
+        $counts = [];
+        foreach ( (array) $rows as $row ) {
+            $counts[ (int) $row['styleid'] ] = (int) $row['total'];
+        }
+        return $counts;
+    }
 
-                            $id = $value['id'];
-							?>
-                            <tr>
-                                <td><?php echo (int) $id; ?></td>
-                                <td><?php $this->name_( $value['name'] ); ?></td>
-                                <td><?php $this->name_( $value['style_name'] ); ?></td>
-                                <td><span>Shortcode &nbsp;&nbsp;<input type="text" onclick="this.setSelectionRange(0, this.value.length)" value="[iheu_ultimate_oxi id=&quot;<?php echo (int) $id; ?>&quot;]"></span>
-                                    <br>
-                                    <span>Php Code &nbsp;&nbsp; <input type="text" onclick="this.setSelectionRange(0, this.value.length)" value="&lt;?php echo do_shortcode(&#039;[iheu_ultimate_oxi  id=&quot;<?php echo (int) $id; ?>&quot;]&#039;); ?&gt;"></span>
-                                </td>
-                                <td>
-                                    <a href="<?php echo esc_url( admin_url( "admin.php?page=oxi-image-hover-ultimate&effects=$effects&styleid=$id" ) ); ?>" title="Edit" class="btn btn-primary" style="float:left; margin-right: 5px;">Edit
-                                    </a>
-                                    <a href="#" title="Clone" class="btn btn-secondary oxi-addons-style-clone" datavalue="<?php echo (int) $id; ?>" style="float:left; margin-right: 5px;">Clone
-                                    </a>
-                                    <a href="<?php echo esc_url( $this->get_export_link( $id ) ); ?>" title="Export" class="btn btn-info" style="float:left; margin-right: 5px;">Export
-                                    </a>
-
-                                    <button class="btn btn-danger oxi-addons-style-delete" style="float:left" title="Delete" value="<?php echo (int) $id; ?>" type="button" value="delete">Delete
-                                    </button>
-                                </td>
-                            </tr>
-							<?php
-                        }
+    public function created_shortcode( $rows = [] ) {
+        $counts = $this->item_counts();
+        ?>
+        <section class="oxi-iheu-set-card oxi-iheu-sc-card">
+            <table class="oxi_addons_table_data oxi-iheu-sc-table">
+                <thead>
+                    <tr>
+                        <th scope="col"><?php esc_html_e( 'Name', 'image-hover-effects-ultimate' ); ?></th>
+                        <th scope="col"><?php esc_html_e( 'Shortcode', 'image-hover-effects-ultimate' ); ?></th>
+                        <th scope="col" class="oxi-iheu-sc-actions-col"><span class="screen-reader-text"><?php esc_html_e( 'Actions', 'image-hover-effects-ultimate' ); ?></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    foreach ( $rows as $value ) {
+                        $id        = (int) $value['id'];
+                        $effects   = $this->effects_converter( $value['style_name'] );
+                        $name      = ucwords( str_replace( [ '_', '-', '+' ], ' ', $value['name'] ) );
+                        $template  = ucwords( str_replace( [ '_', '-', '+' ], ' ', $value['style_name'] ) );
+                        $shortcode = '[iheu_ultimate_oxi id="' . $id . '"]';
+                        $php       = "<?php echo do_shortcode('" . $shortcode . "'); ?>";
+                        $items     = isset( $counts[ $id ] ) ? $counts[ $id ] : 0;
+                        $edit_url  = admin_url( "admin.php?page=oxi-image-hover-ultimate&effects=$effects&styleid=$id" );
                         ?>
-                    </tbody>
-                </table>
-            </div>
-            <br>
-            <br>
-        </div>
-		<?php
+                        <tr data-id="<?php echo esc_attr( $id ); ?>" data-name="<?php echo esc_attr( $name ); ?>">
+                            <td class="oxi-iheu-sc-name" data-order="<?php echo esc_attr( $id ); ?>">
+                                <a class="oxi-iheu-sc-title" href="<?php echo esc_url( $edit_url ); ?>"><?php echo esc_html( $name ); ?></a>
+                                <span class="oxi-iheu-sc-meta">
+                                    <span class="oxi-iheu-sc-id">#<?php echo esc_html( $id ); ?></span>
+                                    <span class="oxi-iheu-sc-template"><?php echo esc_html( $template ); ?></span>
+                                    <?php if ( $items > 0 ) : ?>
+                                        <span><?php echo esc_html( sprintf( /* translators: %s: number of image items */ _n( '%s item', '%s items', $items, 'image-hover-effects-ultimate' ), number_format_i18n( $items ) ) ); ?></span>
+                                    <?php endif; ?>
+                                </span>
+                            </td>
+                            <td class="oxi-iheu-sc-code-cell">
+                                <div class="oxi-iheu-sc-code">
+                                    <code><?php echo esc_html( $shortcode ); ?></code>
+                                    <button type="button" class="oxi-iheu-sc-copy" data-copy="<?php echo esc_attr( $shortcode ); ?>" aria-label="<?php esc_attr_e( 'Copy shortcode', 'image-hover-effects-ultimate' ); ?>">
+                                        <span class="dashicons dashicons-admin-page" aria-hidden="true"></span><span class="oxi-iheu-sc-copy-text"><?php esc_html_e( 'Copy', 'image-hover-effects-ultimate' ); ?></span>
+                                    </button>
+                                </div>
+                                <button type="button" class="oxi-iheu-sc-copy-php" data-copy="<?php echo esc_attr( $php ); ?>">
+                                    <span class="oxi-iheu-sc-copy-text"><?php esc_html_e( 'Copy PHP code', 'image-hover-effects-ultimate' ); ?></span>
+                                </button>
+                            </td>
+                            <td class="oxi-iheu-sc-actions">
+                                <div class="oxi-iheu-sc-actions-wrap">
+                                    <a class="oxi-iheu-sc-action is-edit" href="<?php echo esc_url( $edit_url ); ?>" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: shortcode name */ __( 'Edit %s', 'image-hover-effects-ultimate' ), $name ) ); ?>">
+                                        <span class="dashicons dashicons-edit" aria-hidden="true"></span><?php esc_html_e( 'Edit', 'image-hover-effects-ultimate' ); ?>
+                                    </a>
+                                    <button type="button" class="oxi-iheu-sc-action is-clone oxi-iheu-sc-clone" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: shortcode name */ __( 'Clone %s', 'image-hover-effects-ultimate' ), $name ) ); ?>">
+                                        <span class="dashicons dashicons-admin-page" aria-hidden="true"></span><?php esc_html_e( 'Clone', 'image-hover-effects-ultimate' ); ?>
+                                    </button>
+                                    <a class="oxi-iheu-sc-action is-export" href="<?php echo esc_url( $this->get_export_link( $id ) ); ?>" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: shortcode name */ __( 'Export %s', 'image-hover-effects-ultimate' ), $name ) ); ?>">
+                                        <span class="dashicons dashicons-download" aria-hidden="true"></span><?php esc_html_e( 'Export', 'image-hover-effects-ultimate' ); ?>
+                                    </a>
+                                    <button type="button" class="oxi-iheu-sc-action is-delete oxi-iheu-sc-delete" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: shortcode name */ __( 'Delete %s', 'image-hover-effects-ultimate' ), $name ) ); ?>">
+                                        <span class="dashicons dashicons-trash" aria-hidden="true"></span><?php esc_html_e( 'Delete', 'image-hover-effects-ultimate' ); ?>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </section>
+        <?php
     }
 
 }

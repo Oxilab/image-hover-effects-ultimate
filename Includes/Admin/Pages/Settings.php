@@ -514,7 +514,7 @@ class Settings {
                             <div class="oxi-iheu-set-meta">
                                 <span><?php echo esc_html( sprintf( /* translators: %s: plugin version */ __( 'Version %s', 'image-hover-effects-ultimate' ), OXI_IMAGE_HOVER_PLUGIN_VERSION ) ); ?></span>
                                 <?php if ( $is_pro ) : ?>
-                                    <span class="oxi-iheu-set-plan is-pro"><?php esc_html_e( 'Pro', 'image-hover-effects-ultimate' ); ?></span>
+                                    <span class="oxi-iheu-set-plan is-pro"><?php esc_html_e( 'Premium version', 'image-hover-effects-ultimate' ); ?></span>
                                 <?php else : ?>
                                     <span class="oxi-iheu-set-plan"><?php esc_html_e( 'Free', 'image-hover-effects-ultimate' ); ?></span>
                                 <?php endif; ?>

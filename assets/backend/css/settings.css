@@ -280,19 +280,24 @@
     background: #ffffff;
     border-radius: 50%;
     box-shadow: 0 1px 3px rgba(16, 24, 40, 0.2);
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
+/* On: pale green track with a green knob, like the "Premium version" badge. */
 .oxi-iheu-set-switch input:checked + .oxi-iheu-set-switch-track {
-    background: var(--iheu-brand);
+    background: #dcfae6;
+    box-shadow: inset 0 0 0 1px #abefc6;
 }
 
 .oxi-iheu-set-switch input:checked + .oxi-iheu-set-switch-track .oxi-iheu-set-switch-thumb {
+    background: #17b26a;
+    box-shadow: 0 1px 2px rgba(6, 118, 71, 0.25);
     transform: translateX(20px);
 }
 
-.oxi-iheu-set-switch input:focus-visible + .oxi-iheu-set-switch-track {
-    box-shadow: 0 0 0 4px var(--iheu-brand-ring);
+.oxi-iheu-set-switch input:focus-visible + .oxi-iheu-set-switch-track,
+.oxi-iheu-set-switch input:checked:focus-visible + .oxi-iheu-set-switch-track {
+    box-shadow: inset 0 0 0 1px #abefc6, 0 0 0 4px rgba(23, 178, 106, 0.2);
 }
 
 .oxi-iheu-set-switch:hover input:not(:checked) + .oxi-iheu-set-switch-track {
@@ -494,9 +499,10 @@
 
 .oxi-iheu-settings .oxi-iheu-set-license-key {
     font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    font-size: 13px !important;
-    letter-spacing: 0.02em;
-    word-break: break-all;
+    font-size: 12px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .oxi-iheu-settings .oxi-iheu-set-license-text {
@@ -604,11 +610,18 @@
 }
 
 .oxi-iheu-set-danger .oxi-iheu-set-switch input:checked + .oxi-iheu-set-switch-track {
-    background: #d92d20;
+    background: #fee4e2;
+    box-shadow: inset 0 0 0 1px #fecdca;
 }
 
-.oxi-iheu-set-danger .oxi-iheu-set-switch input:focus-visible + .oxi-iheu-set-switch-track {
-    box-shadow: 0 0 0 4px rgba(217, 45, 32, 0.25);
+.oxi-iheu-set-danger .oxi-iheu-set-switch input:checked + .oxi-iheu-set-switch-track .oxi-iheu-set-switch-thumb {
+    background: #d92d20;
+    box-shadow: 0 1px 2px rgba(180, 35, 24, 0.25);
+}
+
+.oxi-iheu-set-danger .oxi-iheu-set-switch input:focus-visible + .oxi-iheu-set-switch-track,
+.oxi-iheu-set-danger .oxi-iheu-set-switch input:checked:focus-visible + .oxi-iheu-set-switch-track {
+    box-shadow: inset 0 0 0 1px #fecdca, 0 0 0 4px rgba(217, 45, 32, 0.2);
 }
 
 .oxi-iheu-settings .oxi-iheu-set-btn.is-danger {
@@ -910,8 +923,19 @@ body.oxi-iheu-set-dialog-open {
 }
 
 .oxi-iheu-set-plan.is-pro {
-    color: #ffffff;
-    background: linear-gradient(135deg, var(--iheu-brand), #ff6b98);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--iheu-success);
+    background: var(--iheu-success-soft);
+}
+
+.oxi-iheu-set-plan.is-pro::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
 }
 
 /* Responsive */

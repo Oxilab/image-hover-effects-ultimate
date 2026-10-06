@@ -123,14 +123,28 @@ class Assets {
                 wp_enqueue_style( 'oxilab-image-hover-single-editor-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/single_editor_page.css', false, filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/single_editor_page.css' ) );
             }
 
-            if ( 'oxi-image-hover-ultimate-settings' === $current_page ) {
+            if ( 'oxi-image-hover-ultimate-settings' === $current_page || 'oxi-image-hover-shortcode' === $current_page ) {
                 wp_enqueue_style( 'oxilab-image-hover-settings-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/settings.css', [ 'oxilab-image-hover-admin-css' ], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/settings.css' ) );
+            }
+
+            if ( 'oxi-image-hover-shortcode' === $current_page ) {
+                wp_enqueue_style( 'oxilab-image-hover-shortcode-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/shortcode.css', [ 'oxilab-image-hover-settings-css' ], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/shortcode.css' ) );
             }
 		}
 
+		// Freemius Account page: only our own scoped styles, no Bootstrap or
+		// admin.css, so Freemius' forms and dialogs keep working as designed.
+		if ( 'oxi-image-hover-ultimate-account' === $current_page ) {
+			wp_enqueue_style( 'oxilab-image-hover-settings-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/settings.css', [], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/settings.css' ) );
+			wp_enqueue_style( 'oxilab-image-hover-account-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/account.css', [ 'oxilab-image-hover-settings-css' ], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/account.css' ) );
+			wp_enqueue_style( 'oxilab-image-hover-admin-menu-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/admin-menu.css', [], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/admin-menu.css' ) );
+		}
+
 		if ( 'image-hover-ultimate-getting-started' === $current_page ) {
-			//CSS
-			wp_enqueue_style( 'image-hover-ultimate-admin-welcome', OXI_IMAGE_HOVER_URL . 'assets/backend/css/getting-started.css', false, filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/getting-started.css' ) );
+			// Same scoped styles as the Account page: tokens, plugin header, then the page itself.
+			wp_enqueue_style( 'oxilab-image-hover-settings-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/settings.css', [], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/settings.css' ) );
+			wp_enqueue_style( 'oxilab-image-hover-admin-menu-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/admin-menu.css', [], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/admin-menu.css' ) );
+			wp_enqueue_style( 'image-hover-ultimate-admin-welcome', OXI_IMAGE_HOVER_URL . 'assets/backend/css/getting-started.css', [ 'oxilab-image-hover-settings-css' ], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/getting-started.css' ) );
 		}
 	}
 

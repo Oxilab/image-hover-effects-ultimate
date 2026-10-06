@@ -1,0 +1,491 @@
+/*
+ * Image Hover Effects Ultimate: Freemius Account page.
+ * Loaded after settings.css (tokens, hero, buttons) and only on this page.
+ * Every rule goes through .oxi-iheu-account #fs_account so it outranks
+ * Freemius' own #fs_account rules and never reaches its dialogs.
+ */
+
+.oxi-iheu-account .wrap.fs-section {
+    margin: 0;
+}
+
+.oxi-iheu-account .oxi-iheu-set-hero .oxi-iheu-set-btn {
+    flex: none;
+}
+
+/* "Is this your client's site?" banner */
+
+.oxi-iheu-account .fs-notice.fs-slug-oxi-image-hover-ultimate {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 20px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--iheu-ink-2);
+    background: var(--iheu-surface);
+    border: 1px solid var(--iheu-line);
+    border-left: 4px solid #2e90fa;
+    border-radius: 10px;
+    box-shadow: var(--iheu-shadow);
+}
+
+.oxi-iheu-account .fs-notice.fs-slug-oxi-image-hover-ultimate .fs-plugin-title {
+    display: none;
+}
+
+.oxi-iheu-account .fs-notice.fs-slug-oxi-image-hover-ultimate .fs-notice-body {
+    margin: 0;
+    padding: 0;
+}
+
+.oxi-iheu-account .fs-notice.fs-slug-oxi-image-hover-ultimate a {
+    font-weight: 600;
+    color: var(--iheu-brand-strong);
+}
+
+/* Layout: details on the left, billing and payments on the right */
+
+.oxi-iheu-account #poststuff {
+    padding-top: 0;
+    min-width: 0;
+}
+
+.oxi-iheu-account #fs_account .has-sidebar,
+.oxi-iheu-account #fs_account .has-sidebar-content {
+    float: none;
+    margin: 0;
+    width: auto;
+}
+
+.oxi-iheu-account #fs_account .has-sidebar-content {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.oxi-iheu-account #fs_account .has-sidebar-content > .postbox:first-child {
+    grid-row: span 2;
+}
+
+/* Cards */
+
+.oxi-iheu-account #fs_account .postbox {
+    position: relative;
+    max-width: none;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    background: var(--iheu-surface);
+    border: 1px solid var(--iheu-line);
+    border-radius: var(--iheu-radius);
+    box-shadow: var(--iheu-shadow);
+}
+
+.oxi-iheu-account #fs_account .postbox .inside {
+    margin: 0;
+    padding: 0;
+}
+
+.oxi-iheu-account #fs_account h3 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    padding: 18px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--iheu-ink);
+    border-bottom: 1px solid var(--iheu-line);
+}
+
+.oxi-iheu-account #fs_account h3 .dashicons {
+    flex: none;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: var(--iheu-brand);
+    background: var(--iheu-brand-soft);
+    border-radius: 10px;
+}
+
+.oxi-iheu-account #fs_account h3 .dashicons::before {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+    line-height: 18px;
+}
+
+/* Header actions: Billing & Invoices, Deactivate License, Sync */
+
+.oxi-iheu-account #fs_account .fs-header-actions {
+    top: 22px;
+    right: 20px;
+    font-size: 12px;
+}
+
+.oxi-iheu-account #fs_account .fs-header-actions ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.oxi-iheu-account #fs_account .fs-header-actions li {
+    float: none;
+    margin: 0;
+}
+
+.oxi-iheu-account #fs_account .fs-header-actions li:nth-child(even) {
+    display: none;
+}
+
+.oxi-iheu-account #fs_account .fs-header-actions li a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    font-weight: 600;
+    color: var(--iheu-ink-2);
+    background: #f9fafb;
+    border: 1px solid var(--iheu-line);
+    border-radius: 999px;
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.oxi-iheu-account #fs_account .fs-header-actions li a:hover {
+    color: var(--iheu-brand-strong);
+    background: var(--iheu-brand-soft);
+    border-color: #fbc6d6;
+}
+
+.oxi-iheu-account #fs_account .fs-header-actions li a.fs-deactivate-license:hover {
+    color: var(--iheu-danger);
+    background: var(--iheu-danger-soft);
+    border-color: #fecdca;
+}
+
+.oxi-iheu-account #fs_account .fs-header-actions i.dashicons {
+    width: 14px;
+    height: 14px;
+    font-size: 14px;
+}
+
+/* Account details */
+
+.oxi-iheu-account #fs_account .fs-key-value-table {
+    border-collapse: collapse;
+}
+
+.oxi-iheu-account #fs_account .fs-key-value-table tr,
+.oxi-iheu-account #fs_account .fs-key-value-table tr.alternate {
+    background: none;
+}
+
+.oxi-iheu-account #fs_account .fs-key-value-table tr + tr {
+    border-top: 1px solid var(--iheu-line);
+}
+
+.oxi-iheu-account #fs_account .fs-key-value-table td {
+    padding: 13px 24px;
+    vertical-align: middle;
+}
+
+.oxi-iheu-account #fs_account .fs-key-value-table td:first-child {
+    width: 120px;
+    padding-right: 8px;
+    text-align: left;
+}
+
+.oxi-iheu-account #fs_account .fs-key-value-table td:first-child nobr {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--iheu-ink-3);
+}
+
+.oxi-iheu-account #fs_account .fs-key-value-table code,
+.oxi-iheu-account #fs_account .fs-key-value-table input[type="text"] {
+    padding: 0;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--iheu-ink);
+    background: none;
+    word-break: break-word;
+}
+
+/* Long technical values read better in monospace. */
+.oxi-iheu-account #fs_account .fs-field-site_public_key code,
+.oxi-iheu-account #fs_account .fs-field-site_secret_key code,
+.oxi-iheu-account #fs_account .fs-field-site_secret_key input[type="text"],
+.oxi-iheu-account #fs_account .fs-field-license_key code,
+.oxi-iheu-account #fs_account .fs-field-license_key input[type="text"] {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--iheu-ink-2);
+    white-space: nowrap;
+    word-break: normal;
+}
+
+.oxi-iheu-account #fs_account .fs-field-plan code {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--iheu-success);
+    background: var(--iheu-success-soft);
+    border-radius: 999px;
+}
+
+/* "Premium version" after the version number, only when Pro is active. */
+.oxi-iheu-account.is-premium #fs_account .fs-field-version td:nth-child(2) code::after {
+    content: var(--iheu-premium-label);
+    display: inline-flex;
+    align-items: center;
+    margin-left: 10px;
+    padding: 2px 10px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--iheu-success);
+    background: var(--iheu-success-soft);
+    border-radius: 999px;
+    vertical-align: 1px;
+}
+
+.oxi-iheu-account #fs_account .fs-field-plan .button-group {
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.oxi-iheu-account #fs_account .fs-key-value-table td.fs-right {
+    padding-left: 8px;
+    white-space: nowrap;
+}
+
+/* Buttons inside Freemius sections */
+
+.oxi-iheu-account #fs_account .button {
+    min-height: 30px;
+    margin: 0 0 0 6px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 20px;
+    color: var(--iheu-ink);
+    background: var(--iheu-surface);
+    border: 1px solid var(--iheu-line-2);
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.oxi-iheu-account #fs_account .fs-field-plan .button {
+    margin-left: 0;
+}
+
+.oxi-iheu-account #fs_account .button:hover {
+    color: var(--iheu-brand-strong);
+    border-color: var(--iheu-brand);
+}
+
+.oxi-iheu-account #fs_account .button:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px var(--iheu-brand-ring);
+}
+
+/* Billing */
+
+.oxi-iheu-account #fs_account #fs_billing_address {
+    margin: 0;
+    padding: 18px 20px 20px;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.oxi-iheu-account #fs_account #fs_billing_address tr td {
+    padding: 4px;
+}
+
+.oxi-iheu-account #fs_account #fs_billing_address span {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--iheu-ink-3);
+}
+
+.oxi-iheu-account #fs_account #fs_billing_address input,
+.oxi-iheu-account #fs_account #fs_billing_address select {
+    box-sizing: border-box;
+    height: 40px;
+    min-height: 40px;
+    margin-top: 4px;
+    padding: 0 12px;
+    line-height: 38px;
+    font-size: 14px;
+    color: var(--iheu-ink);
+    background-color: var(--iheu-surface);
+    border: 1px solid var(--iheu-line-2);
+    border-radius: 8px;
+    box-shadow: none;
+}
+
+.oxi-iheu-account #fs_account #fs_billing_address input:focus,
+.oxi-iheu-account #fs_account #fs_billing_address select:focus {
+    border-color: var(--iheu-brand);
+    outline: none;
+    box-shadow: 0 0 0 4px var(--iheu-brand-ring);
+}
+
+/* Read mode: label above, value in a quiet tile, empty tiles stay blank. */
+.oxi-iheu-account #fs_account #fs_billing_address.fs-read-mode input,
+.oxi-iheu-account #fs_account #fs_billing_address.fs-read-mode select {
+    font-weight: 500;
+    color: var(--iheu-ink);
+    background: #f9fafb;
+    border: 1px solid var(--iheu-line);
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+.oxi-iheu-account #fs_account #fs_billing_address.fs-read-mode input::placeholder {
+    color: transparent;
+}
+
+.oxi-iheu-account #fs_account #fs_billing_address.fs-read-mode select {
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: none;
+}
+
+.oxi-iheu-account #fs_account #fs_billing_address button {
+    display: inline-flex;
+    width: auto;
+    margin: 12px 0 0;
+    padding: 6px 18px;
+    font-size: 13px;
+}
+
+/* Payments */
+
+.oxi-iheu-account #fs_account #fs_payments .widefat {
+    max-width: none;
+    margin: 0;
+    border: 0;
+    border-collapse: collapse;
+    box-shadow: none;
+}
+
+.oxi-iheu-account #fs_account #fs_payments .widefat thead th {
+    padding: 10px 24px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--iheu-ink-3);
+    background: #f9fafb;
+    border-bottom: 1px solid var(--iheu-line);
+}
+
+.oxi-iheu-account #fs_account #fs_payments .widefat tbody tr,
+.oxi-iheu-account #fs_account #fs_payments .widefat tbody tr.alternate {
+    background: none;
+}
+
+.oxi-iheu-account #fs_account #fs_payments .widefat tbody tr + tr {
+    border-top: 1px solid var(--iheu-line);
+}
+
+.oxi-iheu-account #fs_account #fs_payments .widefat tbody tr:hover {
+    background: #fcfcfd;
+}
+
+.oxi-iheu-account #fs_account #fs_payments .widefat td {
+    padding: 12px 24px;
+    font-size: 13px;
+    color: var(--iheu-ink-2);
+    vertical-align: middle;
+}
+
+.oxi-iheu-account #fs_account #fs_payments .widefat td:nth-child(3) {
+    font-weight: 600;
+    color: var(--iheu-ink);
+    font-variant-numeric: tabular-nums;
+}
+
+.oxi-iheu-account #fs_account #fs_payments .widefat td .button {
+    margin: 0;
+}
+
+/* Responsive */
+
+@media (max-width: 1100px) {
+    .oxi-iheu-account #fs_account .has-sidebar-content {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .oxi-iheu-account #fs_account .has-sidebar-content > .postbox:first-child {
+        grid-row: auto;
+    }
+}
+
+@media (max-width: 782px) {
+    .oxi-iheu-account .oxi-iheu-set-hero .oxi-iheu-set-btn {
+        order: 3;
+    }
+
+    .oxi-iheu-account #fs_account .fs-header-actions {
+        position: static;
+        margin: 0;
+        padding: 12px 16px 0;
+    }
+
+    .oxi-iheu-account #fs_account h3,
+    .oxi-iheu-account #fs_account .fs-key-value-table td,
+    .oxi-iheu-account #fs_account #fs_payments .widefat td,
+    .oxi-iheu-account #fs_account #fs_payments .widefat thead th {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .oxi-iheu-account #fs_account .fs-key-value-table td:first-child {
+        width: auto;
+        padding-bottom: 0;
+    }
+
+    .oxi-iheu-account #fs_account .fs-key-value-table td.fs-right {
+        padding-top: 0;
+        text-align: left;
+        white-space: normal;
+    }
+
+    .oxi-iheu-account #fs_account .fs-key-value-table td.fs-right:empty {
+        display: none;
+    }
+
+    /* Freemius' phone rules use two IDs; match them to keep the row indent and the plan badge. */
+    .oxi-iheu-account #fs_account #fs_account_details tr td:nth-child(2) {
+        padding: 2px 16px 12px;
+    }
+
+    .oxi-iheu-account #fs_account #fs_account_details tr.fs-field-plan td:nth-child(2) code {
+        padding: 3px 12px;
+    }
+
+    .oxi-iheu-account #fs_account #fs_account_details tr.fs-field-plan td:nth-child(2) .button-group {
+        margin: 0 0 0 10px;
+    }
+
+    .oxi-iheu-account #fs_account #fs_payments {
+        overflow-x: auto;
+    }
+}
