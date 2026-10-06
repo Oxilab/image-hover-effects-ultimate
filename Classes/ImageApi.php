@@ -196,7 +196,56 @@ class ImageApi
 		if (null === $decoded && JSON_ERROR_NONE !== json_last_error()) {
 			$decoded = json_decode(stripslashes($rawdata), $assoc); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		}
+		if (null === $decoded && JSON_ERROR_NONE !== json_last_error()) {
+			// Rows saved while wp_kses_post() ran over the whole JSON string.
+			$decoded = json_decode(\OXI_IMAGE_HOVER_PLUGINS\Page\Public_Render::repair_attribute_quotes($rawdata), $assoc); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		}
 		return $decoded;
+	}
+
+	/**
+	 * Sanitize the rawdata request field.
+	 *
+	 * Editor saves send a JSON string. Running wp_kses_post() over the whole
+	 * JSON rewrites HTML attribute quotes (href=\"x\" becomes href="x") and
+	 * stores invalid JSON, which then crashes the render. When rawdata is a
+	 * JSON object, each key and string value goes through wp_kses_post() and
+	 * the result is encoded again. Anything else is sanitized as before.
+	 *
+	 * @param string $rawdata Unslashed request value.
+	 * @return string
+	 */
+	public function sanitize_rawdata($rawdata)
+	{
+		$decoded = json_decode($rawdata, true); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		if (! is_array($decoded) || empty($decoded)) {
+			return wp_kses_post($rawdata);
+		}
+		$encoded = wp_json_encode($this->kses_json_array($decoded), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+		return false === $encoded ? wp_kses_post($rawdata) : $encoded;
+	}
+
+	/**
+	 * Run wp_kses_post() over every key and string value of a decoded array.
+	 *
+	 * @param array $data Decoded rawdata.
+	 * @return array
+	 */
+	public function kses_json_array(array $data)
+	{
+		$clean = [];
+		foreach ($data as $key => $value) {
+			if (is_string($key)) {
+				$key = wp_kses_post($key);
+			}
+			if (is_array($value)) {
+				$value = $this->kses_json_array($value);
+			} elseif (is_string($value)) {
+				$value = wp_kses_post($value);
+			}
+			$clean[$key] = $value;
+		}
+		return $clean;
 	}
 
 	public function update_image_hover_plugin()
@@ -379,7 +428,7 @@ class ImageApi
 		}
 
 		$functionname = isset($_REQUEST['functionname']) ? sanitize_text_field(wp_unslash($_REQUEST['functionname'])) : '';
-		$this->rawdata = isset($_REQUEST['rawdata']) ? wp_kses_post(wp_unslash($_REQUEST['rawdata'])) : '';
+		$this->rawdata = isset($_REQUEST['rawdata']) ? $this->sanitize_rawdata(wp_unslash($_REQUEST['rawdata'])) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitized per value in sanitize_rawdata().
 		$this->styleid = isset($_REQUEST['styleid']) ? (int) $_REQUEST['styleid'] : 0;
 		$this->childid = isset($_REQUEST['childid']) ? (int) $_REQUEST['childid'] : 0;
 
@@ -806,6 +855,44 @@ class ImageApi
 	{
 		$rawdata = $this->validate_post();
 		update_option('oxi_addons_custom_parent_class', $rawdata['value']);
+		return '<span class="oxi-confirmation-success"></span>';
+	}
+
+	/**
+	 * Danger zone: delete all data when the plugin is deleted.
+	 *
+	 * Destructive, so administrators only, whatever role "Who can edit" allows.
+	 *
+	 * @since 9.11.9
+	 */
+	public function post_oxi_image_hover_delete_data_on_uninstall()
+	{
+		if (! current_user_can('manage_options')) {
+			return '<span class="oxi-confirmation-failed"></span>';
+		}
+		$rawdata = $this->validate_post();
+		$value = (is_array($rawdata) && isset($rawdata['value']) && 'yes' === $rawdata['value']) ? 'yes' : 'no';
+		update_option(Data_Cleaner::UNINSTALL_OPTION, $value);
+		return '<span class="oxi-confirmation-success"></span>';
+	}
+
+	/**
+	 * Danger zone: delete every shortcode, item and setting right now.
+	 *
+	 * The typed confirmation is checked here too, not only in the browser.
+	 *
+	 * @since 9.11.9
+	 */
+	public function post_oxi_image_delete_all_data()
+	{
+		if (! current_user_can('manage_options')) {
+			return '<span class="oxi-confirmation-failed"></span>';
+		}
+		$rawdata = $this->validate_post();
+		if (! is_array($rawdata) || ! isset($rawdata['confirm']) || 'DELETE' !== $rawdata['confirm']) {
+			return '<span class="oxi-confirmation-failed"></span>';
+		}
+		Data_Cleaner::delete_now();
 		return '<span class="oxi-confirmation-success"></span>';
 	}
 

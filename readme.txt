@@ -4,7 +4,7 @@ Tags: image hover effects, css3 effects, image hover animation, image gallery, p
 Requires at least: 6.2
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 9.11.8
+Stable tag: 9.11.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -183,6 +183,15 @@ The free version gives you access to all 10 modules and hundreds of layouts. Pro
 ---
 
 == Changelog ==
+
+= 9.11.9 =
+* 🆕 New: Danger zone on the Settings page, delete all shortcodes, image items and settings at once after typing DELETE to confirm, or choose to remove all plugin data when the plugin is deleted (deactivating never removes data)
+* 🆕 New: License card on the Settings page, activate or change your Pro license key and see its plan, expiry date and status without going to the Plugins screen
+* ✨ Improvement: Redesigned Settings page with grouped cards, on/off switches, a live save status for every option and quick links to docs and support
+* ✨ Improvement: Data cleanup is safe for sites that also run Flipbox, the shared import table and shared settings are never removed, only Image Hover's own entries
+* 🐛 Fix: Adding HTML with attributes (for example a link) to an image item description caused a critical error in the preview and on the page, item data is now sanitized value by value so it stays valid, and items already saved with this problem are recovered automatically
+* 🐛 Fix: Font Awesome setting showed neither Yes nor No on new installs, it now shows as on, which matches how it already worked
+* 🐛 Fix: Admin notices from other plugins no longer appear in the middle of the Settings form
 
 = 9.11.8 =
 * ✨ Improvement: The review notice and the upgrade notice never appear at the same time, so the screen is not stacked with plugin notices

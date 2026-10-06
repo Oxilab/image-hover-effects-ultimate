@@ -1,36 +1,53 @@
 jQuery.noConflict();
 (function ($) {
     $(document).ready(function () {
-        var styleid = '';
-        var childid = '';
+        var $root = $('.oxi-iheu-settings');
+        if (!$root.length) {
+            return;
+        }
+        var timers = {};
 
-        async function Oxi_Image_Admin_Settings(functionname, rawdata, styleid, childid, callback) {
-            if (functionname === "") {
-                alert('Confirm Function Name');
-                return false;
+        function setStatus(name, state) {
+            var $status = $root.find('[data-status-for="' + name + '"]');
+            clearTimeout(timers[name]);
+            $status.attr('data-state', state).text(state ? $root.attr('data-' + state) : '');
+            if (state === 'saved') {
+                timers[name] = setTimeout(function () {
+                    $status.attr('data-state', '').text('');
+                }, 2500);
             }
-            let result;
-            try {
-                result = await $.ajax({
-                    url: image_hover_settings.ajaxurl,
-                    method: 'POST',
-                    data: {
-                        action: 'image_hover_settings',
-                        _wpnonce: image_hover_settings.nonce,
-                        functionname: functionname,
-                        styleid: styleid,
-                        childid: childid,
-                        rawdata: rawdata
-                    }
-                });
-                try {
-                    return callback(JSON.parse(result));
-                } catch (e) {
-                    return callback(result)
+        }
+
+        // Each option has its own post_{name}() handler in ImageApi, which
+        // answers with an oxi-confirmation-success span when it saved.
+        function save(name, data, onError) {
+            setStatus(name, 'saving');
+            $.ajax({
+                url: image_hover_settings.ajaxurl,
+                method: 'POST',
+                data: {
+                    action: 'image_hover_settings',
+                    _wpnonce: image_hover_settings.nonce,
+                    functionname: name,
+                    styleid: '',
+                    childid: '',
+                    rawdata: JSON.stringify(data)
                 }
-            } catch (error) {
-                console.error(error);
-            }
+            }).done(function (result) {
+                if (String(result).indexOf('oxi-confirmation-success') !== -1) {
+                    setStatus(name, 'saved');
+                } else {
+                    setStatus(name, 'error');
+                    if (onError) {
+                        onError();
+                    }
+                }
+            }).fail(function () {
+                setStatus(name, 'error');
+                if (onError) {
+                    onError();
+                }
+            });
         }
 
         function delay(callback, ms) {
@@ -44,93 +61,112 @@ jQuery.noConflict();
             };
         }
 
-        $("#oxi_image_user_permission").on("change", function (e) {
-            var $This = $(this), name = $This.attr('name'), $value = $This.val();
-            var rawdata = JSON.stringify({value: $value});
-            var functionname = "oxi_image_user_permission";
-            $('.' + name).html('<span class="spinner sa-spinner-open"></span>');
-            Oxi_Image_Admin_Settings(functionname, rawdata, styleid, childid, function (callback) {
-                $('.' + name).html(callback);
-                setTimeout(function () {
-                    $('.' + name).html('');
-                }, 8000);
-            });
-        });
-        $("input[name=image_hover_ultimate_mobile_device_key] ").on("change", function (e) {
-            var $This = $(this), name = $This.attr('name'), $value = $This.val();
-            var rawdata = JSON.stringify({value: $value});
-            var functionname = "image_hover_ultimate_mobile_device_key";
-            $('.' + name).html('<span class="spinner sa-spinner-open"></span>');
-            Oxi_Image_Admin_Settings(functionname, rawdata, styleid, childid, function (callback) {
-                $('.' + name).html(callback);
-                setTimeout(function () {
-                    $('.' + name).html('');
-                }, 8000);
-            });
-        });
-        $("input[name=oxi_addons_font_awesome] ").on("change", function (e) {
-            var $This = $(this), name = $This.attr('name'), $value = $This.val();
-            var rawdata = JSON.stringify({value: $value});
-            var functionname = "oxi_addons_font_awesome";
-            $('.' + name).html('<span class="spinner sa-spinner-open"></span>');
-            Oxi_Image_Admin_Settings(functionname, rawdata, styleid, childid, function (callback) {
-                $('.' + name).html(callback);
-                setTimeout(function () {
-                    $('.' + name).html('');
-                }, 8000);
-            });
-        });
-        $("input[name=oxi_addons_way_points] ").on("change", function (e) {
-            var $This = $(this), name = $This.attr('name'), $value = $This.val();
-            var rawdata = JSON.stringify({value: $value});
-            var functionname = "oxi_addons_way_points";
-            $('.' + name).html('<span class="spinner sa-spinner-open"></span>');
-            Oxi_Image_Admin_Settings(functionname, rawdata, styleid, childid, function (callback) {
-                $('.' + name).html(callback);
-                setTimeout(function () {
-                    $('.' + name).html('');
-                }, 8000);
-            });
-        });
-        $("input[name=oxi_addons_google_font] ").on("change", function (e) {
-            var $This = $(this), name = $This.attr('name'), $value = $This.val();
-            var rawdata = JSON.stringify({value: $value});
-            var functionname = "oxi_addons_google_font";
-            $('.' + name).html('<span class="spinner sa-spinner-open"></span>');
-            Oxi_Image_Admin_Settings(functionname, rawdata, styleid, childid, function (callback) {
-                $('.' + name).html(callback);
-                setTimeout(function () {
-                    $('.' + name).html('');
-                }, 8000);
-            });
-        });
-        $("input[name=oxi_image_support_massage] ").on("change", function (e) {
-            var $This = $(this), name = $This.attr('name'), $value = $This.val();
-            var rawdata = JSON.stringify({value: $value});
-            var functionname = "oxi_image_support_massage";
-            $('.' + name).html('<span class="spinner sa-spinner-open"></span>');
-            Oxi_Image_Admin_Settings(functionname, rawdata, styleid, childid, function (callback) {
-                $('.' + name).html(callback);
-                setTimeout(function () {
-                    $('.' + name).html('');
-                }, 8000);
+        $root.on('change', '.oxi-iheu-set-switch input', function () {
+            var input = this;
+            var value = input.checked ? input.getAttribute('data-on') : input.getAttribute('data-off');
+            save(input.name, {value: value}, function () {
+                input.checked = !input.checked;
             });
         });
 
+        $root.on('change', '#oxi_image_user_permission', function () {
+            save(this.name, {value: $(this).val()});
+        });
 
-        $("input[name=oxi_addons_custom_parent_class] ").on("keyup", delay(function (e) {
-            var $This = $(this), name = $This.attr('name'), $value = $This.val();
-            var rawdata = JSON.stringify({name: name, value: $value});
-            var functionname = "oxi_addons_custom_parent_class";
-            $('.' + name).html('<span class="spinner sa-spinner-open"></span>');
-            Oxi_Image_Admin_Settings(functionname, rawdata, styleid, childid, function (callback) {
-                $('.' + name).html(callback);
+        $root.on('input', '#oxi_addons_custom_parent_class', delay(function () {
+            save(this.name, {name: this.name, value: $(this).val()});
+        }, 1000));
+
+        // Danger zone: "Delete all data" asks for DELETE to be typed first.
+        var $dialog = $('#oxi-iheu-delete-dialog');
+        var $confirm = $('#oxi-iheu-delete-confirm');
+        var $submit = $('#oxi-iheu-delete-submit');
+        var $dialogStatus = $dialog.find('.oxi-iheu-set-dialog-status');
+        var lastFocus = null;
+        var deleting = false;
+
+        function openDialog(trigger) {
+            lastFocus = trigger;
+            $confirm.val('');
+            $submit.prop('disabled', true);
+            $dialogStatus.attr('data-state', '').text('');
+            $dialog.prop('hidden', false);
+            $('body').addClass('oxi-iheu-set-dialog-open');
+            setTimeout(function () {
+                $confirm.trigger('focus');
+            }, 50);
+        }
+
+        function closeDialog() {
+            if (deleting) {
+                return;
+            }
+            $dialog.prop('hidden', true);
+            $('body').removeClass('oxi-iheu-set-dialog-open');
+            if (lastFocus) {
+                lastFocus.focus();
+            }
+        }
+
+        $root.on('click', '[data-oxi-iheu-open]', function () {
+            openDialog(this);
+        });
+
+        $dialog.on('click', '[data-oxi-iheu-close]', closeDialog);
+
+        $(document).on('keydown', function (e) {
+            if (e.key === 'Escape' && !$dialog.prop('hidden')) {
+                closeDialog();
+            }
+        });
+
+        $confirm.on('input', function () {
+            $submit.prop('disabled', $confirm.val().trim() !== 'DELETE');
+        });
+
+        $confirm.on('keydown', function (e) {
+            if (e.key === 'Enter' && !$submit.prop('disabled')) {
+                $submit.trigger('click');
+            }
+        });
+
+        $submit.on('click', function () {
+            if ($confirm.val().trim() !== 'DELETE' || deleting) {
+                return;
+            }
+            deleting = true;
+            $submit.prop('disabled', true);
+            $confirm.prop('disabled', true);
+            $dialogStatus.attr('data-state', 'saving').text($dialogStatus.attr('data-deleting'));
+
+            function failed() {
+                deleting = false;
+                $confirm.prop('disabled', false);
+                $submit.prop('disabled', false);
+                $dialogStatus.attr('data-state', 'error').text($dialogStatus.attr('data-error'));
+            }
+
+            $.ajax({
+                url: image_hover_settings.ajaxurl,
+                method: 'POST',
+                data: {
+                    action: 'image_hover_settings',
+                    _wpnonce: image_hover_settings.nonce,
+                    functionname: 'oxi_image_delete_all_data',
+                    styleid: '',
+                    childid: '',
+                    rawdata: JSON.stringify({confirm: 'DELETE'})
+                }
+            }).done(function (result) {
+                if (String(result).indexOf('oxi-confirmation-success') === -1) {
+                    failed();
+                    return;
+                }
+                $dialogStatus.attr('data-state', 'saved').text($dialogStatus.attr('data-done'));
                 setTimeout(function () {
-                    $('.' + name).html('');
-                }, 8000);
-            });
-        }, 1500));
+                    window.location.reload();
+                }, 1200);
+            }).fail(failed);
+        });
     });
-})(jQuery)
-
-
+})(jQuery);

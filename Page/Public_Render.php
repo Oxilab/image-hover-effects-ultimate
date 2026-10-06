@@ -362,6 +362,85 @@ class Public_Render {
         return $rawdata != '' ? json_decode( stripcslashes( $rawdata ), true ) : [];
     }
 
+    /**
+     * Tolerant decode for stored rawdata JSON.
+     *
+     * Tries the historical stripslashes() decode first, so every row that
+     * rendered before still decodes exactly the same way. Rows that need
+     * something else:
+     * - plain JSON whose values contain quotes (HTML attributes), which
+     *   stripslashes() breaks;
+     * - rows saved while wp_kses_post() ran over the whole JSON string and
+     *   left attribute quotes unescaped (href="x" inside a JSON string).
+     *
+     * @param mixed $rawdata Raw JSON string from the database.
+     * @return array|null Decoded array, or null if it cannot be recovered.
+     */
+    public static function decode_rawdata_array( $rawdata ) {
+        if ( ! is_string( $rawdata ) || '' === $rawdata ) {
+            return null;
+        }
+        $candidates = [
+            stripslashes( $rawdata ),
+            $rawdata,
+            html_entity_decode( stripslashes( $rawdata ), ENT_QUOTES ),
+            self::repair_attribute_quotes( $rawdata ),
+        ];
+        foreach ( $candidates as $candidate ) {
+            $decoded = json_decode( $candidate, true );
+            if ( is_array( $decoded ) ) {
+                return $decoded;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Re-escape bare quotes inside JSON string values.
+     *
+     * A JSON structural quote always sits next to { [ , : (before) or
+     * : , } ] (after). Any other unescaped quote belongs to a value, e.g.
+     * an HTML attribute that wp_kses_post() rewrote from href=\"x\" to
+     * href="x". Callers must check that the result decodes.
+     *
+     * @param string $rawdata Broken JSON string.
+     * @return string
+     */
+    public static function repair_attribute_quotes( $rawdata ) {
+        return (string) preg_replace( '/(?<![\\\\{\[,:])"(?![:,}\]])/', '\\"', $rawdata );
+    }
+
+    /**
+     * Make each child row decodable by the render modules.
+     *
+     * Modules decode child rows with json_decode( stripslashes( rawdata ) ).
+     * Rows that already decode that way are left untouched. Rows that only
+     * decode another way are re-encoded so that stripslashes() returns clean
+     * JSON. Rows that cannot be decoded at all are skipped, like the Filter
+     * module already does, instead of crashing the page.
+     *
+     * @param array $child Child rows from the database.
+     * @return array
+     */
+    public function normalize_child_rawdata( array $child ) {
+        foreach ( $child as $key => $row ) {
+            if ( ! is_array( $row ) || ! isset( $row['rawdata'] ) || ! is_string( $row['rawdata'] ) ) {
+                continue;
+            }
+            if ( is_array( json_decode( stripslashes( $row['rawdata'] ), true ) ) ) {
+                continue;
+            }
+            $decoded = self::decode_rawdata_array( $row['rawdata'] );
+            $encoded = is_array( $decoded ) ? wp_json_encode( $decoded, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) : false;
+            if ( false === $encoded ) {
+                unset( $child[ $key ] );
+                continue;
+            }
+            $child[ $key ]['rawdata'] = addslashes( $encoded );
+        }
+        return $child;
+    }
+
     public function name_converter( $data ) {
         $data = str_replace( '_', ' ', $data );
         $data = str_replace( '-', ' ', $data );
@@ -665,7 +744,7 @@ class Public_Render {
         if ( count( $dbdata ) > 0 ) :
             global $wpdb;
             $this->dbdata = $dbdata;
-            $this->child = $child;
+            $this->child = $this->normalize_child_rawdata( $child );
             $this->admin = $admin;
             $this->wpdb = $wpdb;
             $this->parent_table = $this->wpdb->prefix . 'image_hover_ultimate_style';
@@ -811,7 +890,7 @@ class Public_Render {
      * @since 9.3.0
      */
     public function loader() {
-        $this->style = json_decode( stripslashes( $this->dbdata['rawdata'] ), true );
+        $this->style = self::decode_rawdata_array( $this->dbdata['rawdata'] );
         $this->CSSDATA = $this->dbdata['stylesheet'];
         $this->WRAPPER = 'oxi-image-hover-wrapper-' . $this->dbdata['id'];
         $this->hooks();

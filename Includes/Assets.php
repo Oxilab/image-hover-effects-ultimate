@@ -122,6 +122,10 @@ class Assets {
             if ( isset( $_GET['effects'] ) && isset( $_GET['styleid'] ) ) {
                 wp_enqueue_style( 'oxilab-image-hover-single-editor-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/single_editor_page.css', false, filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/single_editor_page.css' ) );
             }
+
+            if ( 'oxi-image-hover-ultimate-settings' === $current_page ) {
+                wp_enqueue_style( 'oxilab-image-hover-settings-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/settings.css', [ 'oxilab-image-hover-admin-css' ], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/settings.css' ) );
+            }
 		}
 
 		if ( 'image-hover-ultimate-getting-started' === $current_page ) {

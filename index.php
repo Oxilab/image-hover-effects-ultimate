@@ -4,7 +4,7 @@
  * Plugin Name:       Image Hover Effects Ultimate
  * Plugin URI:        https://oxilab.dev
  * Description:       Create Awesome Image Hover Effects as Image Gallery, Lightbox, Comparison and Magnifier with Impressive, Lightweight, Responsive Image Hover Effects Ultimate. Use 500+ modern and elegant CSS hover effects and animations.
- * Version:           9.11.8
+ * Version:           9.11.9
  * Author:            Oxilab
  * Author URI:        https://oxilab.dev
  * Text Domain:       image-hover-effects-ultimate
@@ -61,6 +61,11 @@ if (! function_exists('oxilab_iheu_v')) {
 	oxilab_iheu_v();
 	// Signal that SDK was initiated.
 	do_action('oxilab_iheu_v_loaded');
+
+	// Freemius owns the uninstall hook, so cleanup runs from its after_uninstall
+	// action (an uninstall.php would replace Freemius' hook). It only removes
+	// data on sites that switched on "Delete data when the plugin is deleted".
+	oxilab_iheu_v()->add_action('after_uninstall', ['\OXI_IMAGE_HOVER_PLUGINS\Classes\Data_Cleaner', 'uninstall']);
 }
 
 /** If class `Oxilab_Imagehover` doesn't exists yet. */
@@ -147,7 +152,7 @@ if (! class_exists('Oxilab_Imagehover')) {
 			define('OXI_IMAGE_HOVER_BASENAME', plugin_basename(__FILE__));
 			define('OXI_IMAGE_HOVER_PATH', plugin_dir_path(__FILE__));
 			define('OXI_IMAGE_HOVER_URL', plugins_url('/', __FILE__));
-			define('OXI_IMAGE_HOVER_PLUGIN_VERSION', '9.11.8');
+			define('OXI_IMAGE_HOVER_PLUGIN_VERSION', '9.11.9');
 			define('OXI_IMAGE_HOVER_TEXTDOMAIN', 'image-hover-effects-ultimate');
 		}
 
