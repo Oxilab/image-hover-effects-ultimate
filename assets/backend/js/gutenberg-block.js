@@ -48,7 +48,7 @@
 		edit: function ( props ) {
 			var styleId    = props.attributes.styleId || '';
 			var blockProps = useBlockProps();
-			var options    = [ { value: '', label: '— Select a Style —' } ].concat(
+			var options    = [ { value: '', label: 'Choose a style' } ].concat(
 				shortcodes.map( function ( s ) {
 					return { value: s.value, label: s.label };
 				} )

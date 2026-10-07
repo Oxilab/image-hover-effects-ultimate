@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * template) adds the plugin header and a scoping wrapper, and
  * assets/backend/css/account.css restyles the page inside that wrapper.
  *
- * @since 9.11.9
+ * @since 9.12.0
  */
 class Account {
 

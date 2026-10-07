@@ -55,7 +55,7 @@ class Settings {
      * Each option is "on" unless it holds its off value, which is how the
      * frontend reads it, so an option that was never saved shows as on.
      *
-     * @since 9.11.9
+     * @since 9.12.0
      *
      * @param string $name        Option name, also the AJAX function name.
      * @param string $label       Row label.
@@ -86,7 +86,7 @@ class Settings {
     /**
      * Render a card header.
      *
-     * @since 9.11.9
+     * @since 9.12.0
      *
      * @param string $icon        Dashicons class suffix.
      * @param string $title       Card title.
@@ -109,7 +109,7 @@ class Settings {
      *
      * Wrapped defensively: a Freemius error must never break the settings page.
      *
-     * @since 9.11.9
+     * @since 9.12.0
      *
      * @return array
      */
@@ -166,7 +166,7 @@ class Settings {
      * prints that dialog on the Plugins screen, so it is added to this page's
      * footer here; its AJAX handler is registered on every admin request.
      *
-     * @since 9.11.9
+     * @since 9.12.0
      */
     public function license_card() {
         $state   = $this->license_state();
@@ -277,7 +277,7 @@ class Settings {
      *
      * Administrators only: these actions remove data for the whole site.
      *
-     * @since 9.11.9
+     * @since 9.12.0
      */
     public function danger_zone() {
         if ( ! current_user_can( 'manage_options' ) ) {

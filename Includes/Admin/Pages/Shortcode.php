@@ -112,7 +112,7 @@ class Shortcode {
     /**
      * Shown when there are no shortcodes yet.
      *
-     * @since 9.11.9
+     * @since 9.12.0
      */
     public function empty_state() {
         ?>
@@ -305,7 +305,7 @@ class Shortcode {
     /**
      * Number of image items per shortcode.
      *
-     * @since 9.11.9
+     * @since 9.12.0
      *
      * @return array<int,int>
      */

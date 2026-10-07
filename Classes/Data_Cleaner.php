@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Freemius keeps its own data and handles it on uninstall.
  *
- * @since 9.11.9
+ * @since 9.12.0
  */
 class Data_Cleaner {
 

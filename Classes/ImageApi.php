@@ -863,7 +863,7 @@ class ImageApi
 	 *
 	 * Destructive, so administrators only, whatever role "Who can edit" allows.
 	 *
-	 * @since 9.11.9
+	 * @since 9.12.0
 	 */
 	public function post_oxi_image_hover_delete_data_on_uninstall()
 	{
@@ -881,7 +881,7 @@ class ImageApi
 	 *
 	 * The typed confirmation is checked here too, not only in the browser.
 	 *
-	 * @since 9.11.9
+	 * @since 9.12.0
 	 */
 	public function post_oxi_image_delete_all_data()
 	{
