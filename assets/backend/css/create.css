@@ -1,0 +1,209 @@
+/*
+ * Image Hover Effects Ultimate: Create New (template) page.
+ * Builds on settings.css (tokens, hero, cards, buttons, dialog); everything
+ * here is scoped to .oxi-iheu-create so Bootstrap and admin.css, which also
+ * load on this screen for the previews, cannot reach in.
+ */
+
+.oxi-iheu-settings.oxi-iheu-create {
+    max-width: 1480px;
+}
+
+.oxi-iheu-create .oxi-iheu-set-btn .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+/* Layout cards */
+
+.oxi-iheu-tpl-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.oxi-iheu-create .oxi-iheu-tpl {
+    padding: 0;
+    overflow: hidden;
+    scroll-margin-top: 60px;
+}
+
+.oxi-iheu-tpl-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--iheu-line);
+}
+
+.oxi-iheu-tpl-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.oxi-iheu-settings .oxi-iheu-tpl-title h2 {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--iheu-ink);
+}
+
+.oxi-iheu-tpl-count {
+    padding: 2px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--iheu-brand-strong);
+    background: var(--iheu-brand-soft);
+    border-radius: 999px;
+}
+
+.oxi-iheu-tpl-pro {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #b54708;
+    background: #fffaeb;
+    border-radius: 999px;
+}
+
+.oxi-iheu-settings .oxi-iheu-tpl-pro .dashicons {
+    position: relative;
+    top: 1px;
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+}
+
+/* Designs */
+
+.oxi-iheu-tpl-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    padding: 24px;
+}
+
+.oxi-iheu-tpl-grid.is-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.oxi-iheu-tpl-grid.is-1 {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.oxi-iheu-tpl-item {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--iheu-surface);
+    border: 1px solid var(--iheu-line);
+    border-radius: 12px;
+    transition: border-color 0.15s ease;
+}
+
+.oxi-iheu-tpl-item:hover {
+    border-color: var(--iheu-line-2);
+}
+
+.oxi-iheu-tpl-preview {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 280px;
+    padding: 28px 20px;
+    background:
+        radial-gradient(240px 160px at 50% 0%, rgba(238, 50, 110, 0.07), transparent 70%),
+        #f6f8fa;
+}
+
+.oxi-iheu-tpl-render {
+    width: 100%;
+}
+
+/* The preview renders the real shortcode markup: let it fill the card. */
+.oxi-iheu-create .oxi-iheu-tpl-render .oxi-addons-container {
+    width: 100%;
+    margin: 0;
+}
+
+.oxi-iheu-tpl-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 14px;
+    border-top: 1px solid var(--iheu-line);
+}
+
+.oxi-iheu-tpl-design {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--iheu-ink-2);
+}
+
+/* "Use this design": quiet until hovered, so the designs stay in focus. */
+.oxi-iheu-settings .oxi-iheu-tpl-foot .oxi-iheu-set-btn.is-primary {
+    color: var(--iheu-brand-strong);
+    background: var(--iheu-brand-soft);
+    border-color: transparent;
+    box-shadow: none;
+    transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.oxi-iheu-settings .oxi-iheu-tpl-foot .oxi-iheu-set-btn.is-primary:hover,
+.oxi-iheu-settings .oxi-iheu-tpl-foot .oxi-iheu-set-btn.is-primary:focus-visible {
+    color: #ffffff;
+    background: var(--iheu-brand);
+}
+
+.oxi-iheu-settings .oxi-iheu-tpl-foot .oxi-iheu-set-btn.is-secondary {
+    box-shadow: none;
+}
+
+/* Create dialog */
+
+.oxi-iheu-settings .oxi-iheu-create-design {
+    font-weight: 600;
+    color: var(--iheu-brand-strong);
+}
+
+.oxi-iheu-settings .oxi-iheu-set-dialog #oxi-iheu-create-name {
+    font-family: inherit;
+    letter-spacing: normal;
+}
+
+.oxi-iheu-settings .oxi-iheu-set-dialog #oxi-iheu-create-name:focus {
+    border-color: var(--iheu-brand);
+    box-shadow: 0 0 0 4px var(--iheu-brand-ring);
+}
+
+@media (max-width: 1100px) {
+    .oxi-iheu-tpl-grid,
+    .oxi-iheu-tpl-grid.is-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 782px) {
+    .oxi-iheu-create .oxi-iheu-set-hero {
+        flex-wrap: wrap;
+    }
+
+    .oxi-iheu-tpl-head {
+        padding: 14px 16px;
+    }
+
+    .oxi-iheu-tpl-grid,
+    .oxi-iheu-tpl-grid.is-2 {
+        grid-template-columns: minmax(0, 1fr);
+        padding: 16px;
+    }
+}

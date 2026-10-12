@@ -77,12 +77,49 @@ class Admin
 	public function Render()
 	{
 ?>
-		<div class="oxi-addons-row">
+		<hr class="wp-header-end">
+		<div class="oxi-iheu-settings oxi-iheu-home">
 			<?php
 			$this->Elements_Render();
 			?>
 		</div>
 	<?php
+	}
+
+	/**
+	 * Each effect type's name, as shown on its card.
+	 *
+	 * @since 9.12.1
+	 * @return array
+	 */
+	public function effect_texts()
+	{
+		return [
+			'button'     => [__('Button Effects', 'image-hover-effects-ultimate')],
+			'general'    => [__('General Effects', 'image-hover-effects-ultimate')],
+			'square'     => [__('Square Effects', 'image-hover-effects-ultimate')],
+			'caption'    => [__('Caption Effects', 'image-hover-effects-ultimate')],
+			'flipbox'    => [__('Flipbox Effects', 'image-hover-effects-ultimate')],
+			'magnifier'  => [__('Image Magnifier', 'image-hover-effects-ultimate')],
+			'comparison' => [__('Image Comparison', 'image-hover-effects-ultimate')],
+			'lightbox'   => [__('Image Lightbox', 'image-hover-effects-ultimate')],
+			'display'    => [__('Display Post', 'image-hover-effects-ultimate')],
+			'carousel'   => [__('Carousel Slider', 'image-hover-effects-ultimate')],
+			'filter'     => [__('Filter & Sorting', 'image-hover-effects-ultimate')],
+		];
+	}
+
+	/**
+	 * Number of ready made layouts of an effect type (its Layouts folders).
+	 *
+	 * @since 9.12.1
+	 * @param string $effect Effect key, for example "button".
+	 * @return int
+	 */
+	public function layout_count($effect)
+	{
+		$dirs = glob(OXI_IMAGE_HOVER_PATH . 'Modules/' . ucfirst($effect) . '/Layouts/*', GLOB_ONLYDIR);
+		return is_array($dirs) ? count($dirs) : 0;
 	}
 
 	public function Elements_Render()
@@ -194,90 +231,86 @@ class Admin
 			],
 		];
 	?>
-		<div class="oxi-addons-wrapper">
-			<div class="oxi-addons-row">
+		<?php
+		$texts  = $this->effect_texts();
+		$is_free = apply_filters('oxi-image-hover-plugin-version', false) == false;
+		$total  = (int) $this->wpdb->get_var("SELECT COUNT(*) FROM {$this->parent_table}"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table name from $wpdb->prefix.
+		// Saved styles per effect type (style_name is "button-3", "general-1", ...).
+		$saved = [];
+		foreach ((array) $this->wpdb->get_results("SELECT SUBSTRING_INDEX(style_name, '-', 1) AS effect, COUNT(*) AS total FROM {$this->parent_table} GROUP BY effect", ARRAY_A) as $row) { // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table name from $wpdb->prefix.
+			$saved[strtolower($row['effect'])] = (int) $row['total'];
+		}
+		$groups = [
+			'Image Effects' => [__('Image Effects', 'image-hover-effects-ultimate')],
+			'Extension'     => [__('Extensions', 'image-hover-effects-ultimate')],
+		];
+		?>
+		<header class="oxi-iheu-set-hero">
+			<img class="oxi-iheu-set-hero-logo" src="<?php echo esc_url(OXI_IMAGE_HOVER_URL . 'image/logo.png'); ?>" alt="" width="52" height="52">
+			<div class="oxi-iheu-set-hero-text">
+				<h1 class="oxi-iheu-set-title"><?php esc_html_e('Image Hover Effects', 'image-hover-effects-ultimate'); ?></h1>
+				<p class="oxi-iheu-set-subtitle"><?php esc_html_e('Choose an effect type, pick a design, then add your images in the editor.', 'image-hover-effects-ultimate'); ?></p>
+			</div>
+			<a class="oxi-iheu-set-btn is-secondary" href="<?php echo esc_url(admin_url('admin.php?page=oxi-image-hover-shortcode')); ?>">
+				<span class="dashicons dashicons-shortcode" aria-hidden="true"></span><?php esc_html_e('Your shortcodes', 'image-hover-effects-ultimate'); ?>
+				<span class="oxi-iheu-home-total"><?php echo esc_html(number_format_i18n($total)); ?></span>
+			</a>
+		</header>
 
-				<?php
-				foreach ($Elements as $key => $elements) {
-				?>
-					<div class="oxi-addons-text-blocks-body-wrapper">
-						<div class="oxi-addons-text-blocks-body">
-							<div class="oxi-addons-text-blocks">
-								<div class="oxi-addons-text-blocks-heading"><?php echo esc_html($key); ?></div>
-								<div class="oxi-addons-text-blocks-border">
-									<div class="oxi-addons-text-block-border"></div>
-								</div>
-								<div class="oxi-addons-text-blocks-content">Available
-									(<?php echo (int) count($elements); ?>)
-								</div>
-								<div class="oxi-addons-text-blocks-description">
-									<div class="oxi-addons-marketing-text">
+		<?php
+		foreach ($Elements as $key => $elements) {
+			$group = isset($groups[$key]) ? $groups[$key] : [$key, ''];
+			$locked = $is_free && 'Extension' === $key;
+		?>
+			<section class="oxi-iheu-home-group">
+				<div class="oxi-iheu-home-group-head">
+					<h2><?php echo esc_html($group[0]); ?> <span class="oxi-iheu-home-group-count"><?php echo (int) count($elements); ?></span></h2>
+					<?php if (! empty($group[1])) : ?><p><?php echo esc_html($group[1]); ?></p><?php endif; ?>
+				</div>
+				<div class="oxi-iheu-home-grid">
+					<?php
+					foreach ($elements as $k => $value) {
+						$oxilink = admin_url('admin.php?page=oxi-image-hover-ultimate&effects=' . $k);
+						$title   = isset($texts[$k]) ? $texts[$k][0] : ucwords(str_replace(['-', '_'], ' ', $value['name']));
+						$layouts = $this->layout_count($k);
+						$badge   = $value['status'];
+						$sub     = $locked ? 'premium' : '';
+					?>
+						<div class="oxi-iheu-home-card" id="<?php echo esc_attr($value['name']); ?>">
+							<a class="oxi-iheu-home-card-main addons-pre-check" href="<?php echo esc_url($oxilink); ?>" sub-type="<?php echo esc_attr($sub); ?>">
+								<span class="oxi-iheu-home-icon"><img src="<?php echo esc_url($value['icon']); ?>" alt=""></span>
+								<span class="oxi-iheu-home-card-text">
+									<span class="oxi-iheu-home-card-title"><?php echo esc_html($title); ?></span>
+									<span class="oxi-iheu-home-card-meta">
 										<?php
-										$total_templates = 150;
-										// foreach ($elements as $item) {
-										// 	if (isset($item['items']) && is_numeric($item['items'])) {
-										// 		$total_templates += (int) $item['items'];
-										// 	}
-										// }
-										// if ($total_templates > 0) {
-										// 	echo '<span> ' . $total_templates . '+</span> Templates & <span>500+</span> Effects 🚀';
-										// }
-										if ($key == 'Image Effects') {
-											echo '<span> ' . $total_templates . '+</span> Templates & <span>500+</span> Effects 🚀';
+										$meta = [];
+										if ($layouts) {
+											$meta[] = sprintf(/* translators: %s: number of layouts */ _n('%s layout', '%s layouts', $layouts, 'image-hover-effects-ultimate'), number_format_i18n($layouts));
 										}
+										if (! empty($saved[$k])) {
+											$meta[] = sprintf(/* translators: %s: number of saved styles */ _n('%s saved', '%s saved', $saved[$k], 'image-hover-effects-ultimate'), number_format_i18n($saved[$k]));
+										}
+										echo esc_html(implode(' · ', $meta));
 										?>
-									</div>
-								</div>
+									</span>
+								</span>
+								<?php if ($badge) : ?>
+									<span class="oxi-iheu-home-badge is-<?php echo esc_attr(strtolower($badge)); ?>"><?php echo 'Premium' === $badge ? '<span class="dashicons dashicons-lock" aria-hidden="true"></span>' : ''; ?><?php echo esc_html('Premium' === $badge ? __('Pro', 'image-hover-effects-ultimate') : $badge); ?></span>
+								<?php endif; ?>
+							</a>
+							<div class="oxi-iheu-home-actions">
+								<a class="oxi-iheu-home-action addons-pre-check" href="<?php echo esc_url($oxilink); ?>" sub-type="<?php echo esc_attr($sub); ?>"><span class="dashicons dashicons-layout" aria-hidden="true"></span><?php esc_html_e('Templates', 'image-hover-effects-ultimate'); ?></a>
+								<a class="oxi-iheu-home-action" href="<?php echo esc_url($value['doc']); ?>" target="_blank" rel="noopener noreferrer"><span class="dashicons dashicons-media-document" aria-hidden="true"></span><?php esc_html_e('Docs', 'image-hover-effects-ultimate'); ?></a>
+								<a class="oxi-iheu-home-action" href="<?php echo esc_url($value['demos']); ?>" target="_blank" rel="noopener noreferrer"><span class="dashicons dashicons-visibility" aria-hidden="true"></span><?php esc_html_e('Demo', 'image-hover-effects-ultimate'); ?></a>
 							</div>
 						</div>
-					</div>
-					<div class="oxi-addons-elements-list">
-						<?php
-						$elementshtml = '';
-
-						foreach ($elements as $k => $value) {
-							$oxilink = 'admin.php?page=oxi-image-hover-ultimate&effects=' . $k;
-						?>
-							<div class="oxi-addons-shortcode-import" id="<?php echo esc_attr($value['name']); ?>" oxi-addons-search="<?php echo esc_html($value['name']); ?>">
-								<a class="addons-pre-check" href="<?php echo esc_url(admin_url($oxilink)); ?>" sub-type="<?php echo (apply_filters('oxi-image-hover-plugin-version', false) == false && $key == 'Extension') ? 'premium' : ''; ?>">
-									<?php if ($value['status']) {
-										$status = '';
-										if ('Premium' === $value['status']) {
-											$status = 'pro-status';
-										} elseif ('Updated' === $value['status']) {
-											$status = 'Updated-status';
-										}
-									?>
-										<div class="oxi-addons-element-status <?php echo esc_attr($status); ?>"><?php echo esc_html($value['status']); ?></div>
-									<?php } ?>
-									<div class="oxi-addons-shortcode-import-top">
-										<div class="oxi-addons-image-hover-icon">
-											<img src="<?php echo $value['icon']; ?>" alt="">
-										</div>
-									</div>
-									<div class="oxi-addons-shortcode-import-bottom">
-										<span><?php $this->name_converter($value['name']); ?> </span>
-									</div>
-									<?php if (! empty($value['items'])) : ?>
-										<div class="oxi-addons-element-items">
-											<span class="oxi-addons-items-count"><?php echo (int) $value['items']; ?></span> Templates
-										</div>
-									<?php endif; ?>
-								</a>
-								<div class="oxi-card-actions">
-									<a href="<?php echo esc_url(admin_url($oxilink)); ?>" class="oxi-card-btn oxi-btn-template addons-pre-check" sub-type="<?php echo (apply_filters('oxi-image-hover-plugin-version', false) == false && $key == 'Extension') ? 'premium' : ''; ?>">Templates</a>
-									<a href="<?php echo esc_url($value['demos']); ?>" target="_blank" rel="noopener noreferrer" class="oxi-card-btn oxi-btn-demo">Demos</a>
-									<a href="<?php echo esc_url($value['doc']); ?>" target="_blank" rel="noopener noreferrer" class="oxi-card-btn oxi-btn-doc">Docs</a>
-								</div>
-							</div>
 					<?php
-						}
 					}
 					?>
-					</div>
-			</div>
-		</div>
-	<?php
+				</div>
+			</section>
+		<?php
+		}
 	}
 	public function Admin_header()
 	{

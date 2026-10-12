@@ -4,7 +4,7 @@ Tags: image hover effects, css3 effects, image hover animation, image gallery, p
 Requires at least: 6.2
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 9.12.0
+Stable tag: 9.12.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,7 +20,7 @@ The plugin is lightweight, fully responsive, and compatible with Elementor, Gute
 
 🎬 **[Live Demos](https://demos.oxilab.dev/imagehover/demos/)** | ⭐ **[Upgrade to Pro](https://oxilab.dev/image-hover-effects/pricing/)** | 📖 **[Documentation](https://oxilab.dev/docs/image-hover-effects/)** | 🆘 **[Support](https://wordpress.org/support/plugin/image-hover-effects-ultimate#new-post)**
 
-[youtube https://www.youtube.com/watch?v=SbXhwL2hyVs]
+[youtube https://www.youtube.com/watch?v=GF3mTkOavj8]
 
 ---
 
@@ -185,6 +185,11 @@ The free version gives you access to all 10 modules and hundreds of layouts. Pro
 ---
 
 == Changelog ==
+
+= 9.12.1 =
+* ✨ Improvement: Redesigned the Image Hover page, every effect type now has a card showing its number of ready made layouts and how many styles you saved, with quick links to its templates, docs and demo
+* ✨ Improvement: Redesigned the Create New page, every design now has its own preview card and "Use this design" button, and naming the new style happens in a clean dialog
+* ✨ Improvement: New getting started video on the Getting Started page and the plugin page
 
 = 9.12.0 =
 * 🆕 New: Danger zone on the Settings page, delete all shortcodes, image items and settings at once after typing DELETE to confirm, or choose to remove all plugin data when the plugin is deleted (deactivating never removes data)

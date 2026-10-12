@@ -113,7 +113,7 @@ class GettingStarted
 				</div>
 			</div>
 			<div class="oxi-iheu-gs-video">
-				<iframe src="https://www.youtube.com/embed/SbXhwL2hyVs" title="<?php esc_attr_e( 'Image Hover Effects tutorial', 'image-hover-effects-ultimate' ); ?>" loading="lazy" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				<iframe src="https://www.youtube.com/embed/GF3mTkOavj8" title="<?php esc_attr_e( 'Image Hover Effects tutorial', 'image-hover-effects-ultimate' ); ?>" loading="lazy" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 			</div>
 		</section>
 

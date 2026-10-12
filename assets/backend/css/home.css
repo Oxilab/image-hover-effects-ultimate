@@ -1,0 +1,263 @@
+/*
+ * Image Hover Effects Ultimate: Image Hover page (the effect types).
+ * Builds on settings.css (tokens, hero, buttons); everything here is scoped
+ * to .oxi-iheu-home so Bootstrap and admin.css, which also load on this
+ * screen, cannot reach in.
+ */
+
+.oxi-iheu-settings.oxi-iheu-home {
+    max-width: 1480px;
+}
+
+.oxi-iheu-home .oxi-iheu-set-btn .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.oxi-iheu-home-total {
+    padding: 0 8px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 20px;
+    color: var(--iheu-brand-strong);
+    background: var(--iheu-brand-soft);
+    border-radius: 999px;
+}
+
+/* Groups */
+
+.oxi-iheu-home-group + .oxi-iheu-home-group {
+    margin-top: 36px;
+}
+
+.oxi-iheu-home-group-head {
+    margin-bottom: 16px;
+}
+
+.oxi-iheu-settings .oxi-iheu-home-group-head h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--iheu-ink);
+}
+
+.oxi-iheu-home-group-count {
+    padding: 1px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.6;
+    color: var(--iheu-ink-2);
+    background: #f2f4f7;
+    border-radius: 999px;
+}
+
+.oxi-iheu-settings .oxi-iheu-home-group-head p {
+    margin-top: 2px;
+    font-size: 13px;
+    color: var(--iheu-ink-3);
+}
+
+/* Cards */
+
+.oxi-iheu-home-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 20px;
+}
+
+/* Same card behaviour as Product Layouts' layout picker, in Image Hover pink. */
+.oxi-iheu-home-card {
+    display: flex;
+    flex-direction: column;
+    padding: 22px 22px 0;
+    background: var(--iheu-surface);
+    border: 1px solid var(--iheu-line);
+    border-radius: var(--iheu-radius);
+    box-shadow: var(--iheu-shadow);
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+.oxi-iheu-home-card:hover {
+    border-color: #f9c0d3;
+    box-shadow: rgba(238, 50, 110, 0.12) 0 10px 28px;
+    transform: translateY(-2px);
+}
+
+.oxi-iheu-home-card:focus-within {
+    border-color: var(--iheu-brand);
+    box-shadow: 0 0 0 4px var(--iheu-brand-ring);
+}
+
+.oxi-iheu-home-card:hover .oxi-iheu-home-card-title {
+    color: var(--iheu-brand-strong);
+}
+
+.oxi-iheu-settings a.oxi-iheu-home-card-main {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding-bottom: 18px;
+    color: inherit;
+    text-decoration: none;
+}
+
+.oxi-iheu-settings a.oxi-iheu-home-card-main:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.oxi-iheu-settings a.oxi-iheu-home-card-main:focus-visible .oxi-iheu-home-card-title {
+    text-decoration: underline;
+}
+
+/* The icon files carry their own rounded tile. */
+.oxi-iheu-home-icon {
+    display: inline-flex;
+    width: 48px;
+    height: 48px;
+}
+
+.oxi-iheu-home-icon img {
+    display: block;
+    width: 48px;
+    height: 48px;
+}
+
+.oxi-iheu-home-card-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.oxi-iheu-home-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--iheu-ink);
+    transition: color 0.15s;
+}
+
+.oxi-iheu-home-card-meta {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--iheu-ink-3);
+}
+
+.oxi-iheu-home-badge {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.6;
+    color: var(--iheu-ink-2);
+    background: #f2f4f7;
+    border-radius: 999px;
+}
+
+.oxi-iheu-home-badge.is-popular {
+    color: var(--iheu-brand-strong);
+    background: var(--iheu-brand-soft);
+}
+
+.oxi-iheu-home-badge.is-new {
+    color: var(--iheu-success);
+    background: var(--iheu-success-soft);
+}
+
+.oxi-iheu-home-badge.is-updated {
+    color: #b54708;
+    background: #fff6ed;
+}
+
+.oxi-iheu-home-badge.is-premium {
+    color: #b54708;
+    background: #fffaeb;
+}
+
+.oxi-iheu-settings .oxi-iheu-home-badge .dashicons {
+    font-size: 12px;
+    width: 12px;
+    height: 12px;
+}
+
+/* Links: Templates, Docs, Demo */
+
+.oxi-iheu-home-actions {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 14px;
+    padding: 14px 0 16px;
+    border-top: 1px solid var(--iheu-line);
+}
+
+.oxi-iheu-settings a.oxi-iheu-home-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.6;
+    white-space: nowrap;
+    color: var(--iheu-ink-2);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.oxi-iheu-settings a.oxi-iheu-home-action:hover {
+    color: var(--iheu-brand-strong);
+}
+
+.oxi-iheu-settings a.oxi-iheu-home-action:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.oxi-iheu-settings a.oxi-iheu-home-action:focus-visible {
+    text-decoration: underline;
+}
+
+.oxi-iheu-settings .oxi-iheu-home-action .dashicons {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+}
+
+@media (max-width: 1700px) {
+    .oxi-iheu-home-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 1200px) {
+    .oxi-iheu-home-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 960px) {
+    .oxi-iheu-home-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .oxi-iheu-home .oxi-iheu-set-hero {
+        flex-wrap: wrap;
+    }
+
+    .oxi-iheu-home-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

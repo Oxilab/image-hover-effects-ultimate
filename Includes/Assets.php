@@ -127,6 +127,20 @@ class Assets {
                 wp_enqueue_style( 'oxilab-image-hover-settings-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/settings.css', [ 'oxilab-image-hover-admin-css' ], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/settings.css' ) );
             }
 
+            // Image Hover page: the effect types (no effect chosen yet).
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            if ( 'oxi-image-hover-ultimate' === $current_page && empty( $_GET['effects'] ) ) {
+                wp_enqueue_style( 'oxilab-image-hover-settings-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/settings.css', [ 'oxilab-image-hover-admin-css' ], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/settings.css' ) );
+                wp_enqueue_style( 'oxilab-image-hover-home-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/home.css', [ 'oxilab-image-hover-settings-css' ], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/home.css' ) );
+            }
+
+            // Create New (template) page: one effect type, no style open yet.
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            if ( 'oxi-image-hover-ultimate' === $current_page && ! empty( $_GET['effects'] ) && empty( $_GET['styleid'] ) ) {
+                wp_enqueue_style( 'oxilab-image-hover-settings-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/settings.css', [ 'oxilab-image-hover-admin-css' ], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/settings.css' ) );
+                wp_enqueue_style( 'oxilab-image-hover-create-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/create.css', [ 'oxilab-image-hover-settings-css' ], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/create.css' ) );
+            }
+
             if ( 'oxi-image-hover-shortcode' === $current_page ) {
                 wp_enqueue_style( 'oxilab-image-hover-shortcode-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/shortcode.css', [ 'oxilab-image-hover-settings-css' ], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/shortcode.css' ) );
             }
