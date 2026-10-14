@@ -17,6 +17,7 @@ class Assets {
 	public function __construct() {
 
 		add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scriptss' ] );
+		add_filter( 'admin_body_class', [ $this, 'editor_body_class' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'public_enqueue_scripts' ] );
 		add_action( 'wp_footer', [ $this, 'print_late_styles' ], 5 );
 
@@ -121,6 +122,8 @@ class Assets {
             // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.NonceVerification.Recommended
             if ( isset( $_GET['effects'] ) && isset( $_GET['styleid'] ) ) {
                 wp_enqueue_style( 'oxilab-image-hover-single-editor-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/single_editor_page.css', false, filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/single_editor_page.css' ) );
+                // Visual layer of the editor, scoped to body.oxi-iheu-editor (see editor_body_class()).
+                wp_enqueue_style( 'oxilab-image-hover-editor-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/editor.css', [ 'oxilab-image-hover-single-editor-css' ], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/editor.css' ) );
             }
 
             if ( 'oxi-image-hover-ultimate-settings' === $current_page || 'oxi-image-hover-shortcode' === $current_page ) {
@@ -144,6 +147,8 @@ class Assets {
             if ( 'oxi-image-hover-shortcode' === $current_page ) {
                 wp_enqueue_style( 'oxilab-image-hover-shortcode-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/shortcode.css', [ 'oxilab-image-hover-settings-css' ], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/shortcode.css' ) );
             }
+
+            $this->enqueue_howto_css();
 		}
 
 		// Freemius Account page: only our own scoped styles, no Bootstrap or
@@ -152,6 +157,7 @@ class Assets {
 			wp_enqueue_style( 'oxilab-image-hover-settings-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/settings.css', [], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/settings.css' ) );
 			wp_enqueue_style( 'oxilab-image-hover-account-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/account.css', [ 'oxilab-image-hover-settings-css' ], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/account.css' ) );
 			wp_enqueue_style( 'oxilab-image-hover-admin-menu-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/admin-menu.css', [], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/admin-menu.css' ) );
+			$this->enqueue_howto_css();
 		}
 
 		if ( 'image-hover-ultimate-getting-started' === $current_page ) {
@@ -159,7 +165,39 @@ class Assets {
 			wp_enqueue_style( 'oxilab-image-hover-settings-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/settings.css', [], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/settings.css' ) );
 			wp_enqueue_style( 'oxilab-image-hover-admin-menu-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/admin-menu.css', [], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/admin-menu.css' ) );
 			wp_enqueue_style( 'image-hover-ultimate-admin-welcome', OXI_IMAGE_HOVER_URL . 'assets/backend/css/getting-started.css', [ 'oxilab-image-hover-settings-css' ], filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/getting-started.css' ) );
+			$this->enqueue_howto_css();
 		}
+	}
+
+	/**
+	 * "How to use?" guides dropdown (Classes/Docs.php), on every page whose
+	 * header shows it. Depends on whichever header styles are queued, so it
+	 * always prints after them and wins at equal specificity.
+	 */
+	private function enqueue_howto_css() {
+		$deps = [];
+		foreach ( [ 'oxilab-image-hover-admin-css', 'oxilab-image-hover-single-editor-css', 'oxilab-image-hover-editor-css', 'oxilab-image-hover-admin-menu-css' ] as $handle ) {
+			if ( wp_style_is( $handle, 'enqueued' ) ) {
+				$deps[] = $handle;
+			}
+		}
+		wp_enqueue_style( 'oxilab-image-hover-howto-css', OXI_IMAGE_HOVER_URL . 'assets/backend/css/howto.css', $deps, filemtime( OXI_IMAGE_HOVER_PATH . 'assets/backend/css/howto.css' ) );
+	}
+
+	/**
+	 * Mark the style editor screen, so editor.css only ever applies there.
+	 *
+	 * @since 9.12.1
+	 *
+	 * @param string $classes Admin body classes.
+	 * @return string
+	 */
+	public function editor_body_class( $classes ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( isset( $_GET['page'] ) && 'oxi-image-hover-ultimate' === $_GET['page'] && ! empty( $_GET['effects'] ) && ! empty( $_GET['styleid'] ) ) {
+			$classes .= ' oxi-iheu-editor';
+		}
+		return $classes;
 	}
 
 	public function loader_font_familly_validation( $data = [] ) {

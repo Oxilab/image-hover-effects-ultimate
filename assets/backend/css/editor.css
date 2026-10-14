@@ -1,0 +1,925 @@
+/*
+ * Image Hover Effects Ultimate: style editor, visual layer.
+ *
+ * Loaded after single_editor_page.css on the editor page only, and every rule
+ * is scoped to body.oxi-iheu-editor (added in Includes/Assets.php). It only
+ * changes how things look: no markup, class, id or field name is changed, and
+ * the sizes the editor scripts rely on (the 56px header, the 300px sidebar,
+ * the resize and collapse behaviour) stay exactly as they are.
+ */
+
+body.oxi-iheu-editor {
+    --iheu-brand: #ee326e;
+    --iheu-brand-strong: #c41d55;
+    --iheu-brand-soft: #fdecf2;
+    --iheu-brand-line: #f9c0d3;
+    --iheu-brand-ring: rgba(238, 50, 110, 0.22);
+    --iheu-ink: #101828;
+    --iheu-ink-2: #344054;
+    --iheu-ink-3: #667085;
+    --iheu-ink-4: #98a2b3;
+    --iheu-line: #eaecf0;
+    --iheu-line-2: #d0d5dd;
+    --iheu-canvas: #f6f7f9;
+    --iheu-surface: #ffffff;
+    background: var(--iheu-canvas);
+}
+
+body.oxi-iheu-editor #wpwrap,
+body.oxi-iheu-editor #wpcontent,
+body.oxi-iheu-editor #wpbody-content {
+    background: var(--iheu-canvas);
+}
+
+/* ---------------------------------------------------------------------------
+ * Top bar
+ * ------------------------------------------------------------------------- */
+
+body.oxi-iheu-editor .oxi-addons-header {
+    min-height: 56px;
+    background: var(--iheu-surface);
+    border-bottom: 1px solid var(--iheu-line);
+    box-shadow: none;
+}
+
+body.oxi-iheu-editor .oxi-addons-header-left a {
+    color: var(--iheu-ink-2);
+    font-weight: 500;
+    transition: color 0.15s, background-color 0.15s;
+}
+
+body.oxi-iheu-editor .oxi-addons-header-left a:hover {
+    color: var(--iheu-brand-strong);
+    background: #fcfcfd;
+}
+
+body.oxi-iheu-editor .oxi-addons-header-right {
+    gap: 10px;
+}
+
+body.oxi-iheu-editor .oxi-btn-visit {
+    height: 36px;
+    padding: 0 14px;
+    color: var(--iheu-ink-2) !important;
+    font-weight: 600;
+    background: var(--iheu-surface);
+    border: 1px solid var(--iheu-line-2);
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+}
+
+body.oxi-iheu-editor .oxi-btn-visit:hover {
+    color: var(--iheu-brand-strong) !important;
+    background: var(--iheu-surface);
+    border-color: var(--iheu-brand-line);
+}
+
+body.oxi-iheu-editor .oxi-btn-visit i {
+    color: inherit;
+}
+
+body.oxi-iheu-editor #shortcode-addons-name-change-submit {
+    height: 36px;
+    overflow: hidden;
+    background: var(--iheu-surface);
+    border: 1px solid var(--iheu-line-2);
+    border-radius: 8px;
+}
+
+body.oxi-iheu-editor #shortcode-addons-name-change-submit:focus-within {
+    border-color: var(--iheu-brand);
+    box-shadow: 0 0 0 3px var(--iheu-brand-ring);
+}
+
+body.oxi-iheu-editor #shortcode-addons-name-change-submit .oxi-header-name-input {
+    height: 34px;
+    color: var(--iheu-ink);
+    font-size: 13px;
+}
+
+body.oxi-iheu-editor #shortcode-addons-name-change-submit .oxi-header-name-save-btn {
+    height: 34px;
+    padding: 0 16px;
+    color: #ffffff;
+    font-weight: 600;
+    background: var(--iheu-brand);
+    border: 0;
+    border-radius: 0;
+}
+
+body.oxi-iheu-editor #shortcode-addons-name-change-submit .oxi-header-name-save-btn:hover {
+    background: var(--iheu-brand-strong);
+}
+
+/* ---------------------------------------------------------------------------
+ * Sidebar
+ * ------------------------------------------------------------------------- */
+
+body.oxi-iheu-editor .oxi-addons-settings {
+    background: var(--iheu-surface);
+    border-right: 1px solid var(--iheu-line);
+}
+
+body.oxi-iheu-editor .oxi-sidebar-main-title {
+    padding: 14px 16px;
+    color: var(--iheu-ink);
+    font-size: 15px;
+    font-weight: 600;
+    text-align: left;
+    background: var(--iheu-surface);
+    border-bottom: 1px solid var(--iheu-line);
+}
+
+body.oxi-iheu-editor .oxi-addons-tabs-wrapper {
+    background: var(--iheu-canvas);
+}
+
+/* Content / Style / Advanced: a segmented control. */
+body.oxi-iheu-editor .oxi-addons-style-left .oxi-addons-tabs-ul {
+    width: calc(100% - 24px);
+    margin: 12px 12px 4px;
+    padding: 4px;
+    gap: 4px;
+    background: #eceef2;
+    border-radius: 10px;
+}
+
+body.oxi-iheu-editor .oxi-addons-style-left .oxi-addons-tabs-ul li {
+    padding: 7px 8px;
+    color: var(--iheu-ink-3);
+    font-size: 13px;
+    font-weight: 600;
+    border: 0;
+    border-radius: 7px;
+    transition: color 0.15s, background-color 0.15s, box-shadow 0.15s;
+}
+
+body.oxi-iheu-editor .oxi-addons-style-left .oxi-addons-tabs-ul li:hover {
+    color: var(--iheu-ink);
+}
+
+body.oxi-iheu-editor .oxi-addons-style-left .oxi-addons-tabs-ul li.active {
+    color: var(--iheu-brand-strong);
+    background: var(--iheu-surface);
+    border: 0;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.08);
+}
+
+/* Section cards (Column & Effects, General Settings, ...). */
+body.oxi-iheu-editor .oxi-addons-style-left .oxi-addons-content-div,
+body.oxi-iheu-editor .oxi-addons-style-left .oxi-addons-item-form {
+    display: flow-root; /* holds the floated head/body without clipping open popovers */
+    width: calc(100% - 24px);
+    margin: 8px 12px;
+    background: var(--iheu-surface);
+    border: 1px solid var(--iheu-line);
+    border-radius: 12px;
+}
+
+body.oxi-iheu-editor .oxi-addons-style-left .oxi-addons-content-div .oxi-head,
+body.oxi-iheu-editor .oxi-addons-style-left .oxi-addons-item-form-heading {
+    padding: 0 40px 0 14px;
+    color: var(--iheu-ink);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 44px;
+    background: transparent;
+    border-bottom: 0;
+}
+
+body.oxi-iheu-editor .oxi-addons-style-left .oxi-addons-item-form-heading {
+    position: relative;
+}
+
+body.oxi-iheu-editor .oxi-addons-style-left .oxi-addons-content-div .oxi-head-toggle,
+body.oxi-iheu-editor .oxi-addons-style-left .oxi-addons-item-form-heading .oxi-head-toggle {
+    color: var(--iheu-ink-4);
+    font-size: 18px;
+}
+
+/* Transparent so square corners never cover the card's rounded border. */
+body.oxi-iheu-editor .oxi-addons-style-left .oxi-addons-content-div-body {
+    padding-top: 14px;
+    background: transparent;
+    border-top: 1px solid var(--iheu-line);
+}
+
+/* Add New Image / Rearrange: a dashed drop tile with the label shown. */
+body.oxi-iheu-editor .oxi-addons-style-left .oxi-addons-item-form-item {
+    padding: 0 12px 12px;
+    background: transparent;
+}
+
+body.oxi-iheu-editor .oxi-addons-style-left .oxi-addons-item-form-item:hover {
+    background: transparent;
+}
+
+body.oxi-iheu-editor .oxi-addons-style-left .oxi-addons-item-form-item span {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 16px 10px;
+    color: var(--iheu-brand-strong);
+    font-size: 13px;
+    font-weight: 600;
+    background: #fff7fa;
+    border: 1.5px dashed var(--iheu-brand-line);
+    border-radius: 10px;
+    transition: background-color 0.15s, border-color 0.15s;
+}
+
+body.oxi-iheu-editor .oxi-addons-style-left .oxi-addons-item-form-item:hover span {
+    background: var(--iheu-brand-soft);
+    border-color: var(--iheu-brand);
+}
+
+body.oxi-iheu-editor .oxi-addons-style-left .oxi-addons-item-form-item span .oxi-icons,
+body.oxi-iheu-editor .oxi-addons-style-left .oxi-addons-item-form-item:hover span .oxi-icons {
+    width: 30px;
+    height: 30px;
+    color: var(--iheu-brand);
+    font-size: 30px;
+}
+
+/* ---------------------------------------------------------------------------
+ * Fields (sidebar, the item dialog and popovers)
+ * ------------------------------------------------------------------------- */
+
+body.oxi-iheu-editor .shortcode-form-control {
+    padding: 0 16px 16px;
+}
+
+body.oxi-iheu-editor .shortcode-form-control.shortcode-form-control-separator-before {
+    padding-top: 16px;
+}
+
+body.oxi-iheu-editor .shortcode-form-control.shortcode-form-control-separator-before:before {
+    background-color: var(--iheu-line);
+}
+
+body.oxi-iheu-editor .shortcode-form-control-title {
+    color: var(--iheu-ink-2);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 28px;
+}
+
+body.oxi-iheu-editor .shortcode-form-control-description {
+    margin-top: 6px;
+    color: var(--iheu-ink-4);
+    font-size: 12px;
+    font-style: normal;
+    line-height: 1.45;
+}
+
+body.oxi-iheu-editor .shortcode-form-control-content input,
+body.oxi-iheu-editor .shortcode-form-control-content select,
+body.oxi-iheu-editor .shortcode-form-control-content textarea {
+    height: 34px;
+    min-height: 34px;
+    padding: 0 10px;
+    color: var(--iheu-ink);
+    font-size: 13px;
+    background: var(--iheu-surface);
+    border-radius: 8px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+body.oxi-iheu-editor .shortcode-form-control-content textarea {
+    height: auto;
+    padding: 8px 10px;
+}
+
+body.oxi-iheu-editor .shortcode-form-control-content input:not(:focus),
+body.oxi-iheu-editor .shortcode-form-control-content select:not(:focus),
+body.oxi-iheu-editor .shortcode-form-control-content textarea:not(:focus) {
+    border-color: var(--iheu-line-2);
+}
+
+body.oxi-iheu-editor .shortcode-form-control-content input:focus,
+body.oxi-iheu-editor .shortcode-form-control-content select:focus,
+body.oxi-iheu-editor .shortcode-form-control-content textarea:focus {
+    border-color: var(--iheu-brand);
+    box-shadow: 0 0 0 3px var(--iheu-brand-ring);
+}
+
+/* Radio and checkbox inputs keep their own size. */
+body.oxi-iheu-editor .shortcode-form-control-content input[type="radio"],
+body.oxi-iheu-editor .shortcode-form-control-content input[type="checkbox"] {
+    height: auto;
+    min-height: 0;
+    padding: 0;
+}
+
+/* Select boxes (Select2). */
+body.oxi-iheu-editor .select2-container--default .select2-selection--single {
+    height: 34px;
+    background: var(--iheu-surface);
+    border: 1px solid var(--iheu-line-2);
+    border-radius: 8px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+body.oxi-iheu-editor .select2-container--default .select2-selection--single .select2-selection__rendered {
+    padding-left: 10px;
+    color: var(--iheu-ink);
+    font-size: 13px;
+    line-height: 32px;
+}
+
+body.oxi-iheu-editor .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 32px;
+}
+
+body.oxi-iheu-editor .select2-container--default.select2-container--open .select2-selection--single,
+body.oxi-iheu-editor .select2-container--default.select2-container--focus .select2-selection--single {
+    border-color: var(--iheu-brand);
+    box-shadow: 0 0 0 3px var(--iheu-brand-ring);
+}
+
+body.oxi-iheu-editor .select2-dropdown {
+    overflow: hidden;
+    border-color: var(--iheu-line-2);
+    border-radius: 8px;
+    box-shadow: 0 12px 24px -6px rgba(16, 24, 40, 0.16);
+}
+
+/* The current choice: light pink instead of the old dark grey. Hover (below) still wins. */
+body.oxi-iheu-editor .select2-container--default .select2-results__option[aria-selected=true],
+body.oxi-iheu-editor .select2-container--default .select2-results__option--selected {
+    color: var(--iheu-brand-strong);
+    font-weight: 600;
+    background: #fff7fa;
+}
+
+body.oxi-iheu-editor .select2-container--default .select2-results__option--highlighted[aria-selected],
+body.oxi-iheu-editor .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+    color: var(--iheu-brand-strong);
+    background: var(--iheu-brand-soft);
+}
+
+body.oxi-iheu-editor .select2-container--default .select2-search--dropdown .select2-search__field {
+    border-color: var(--iheu-line-2);
+    border-radius: 6px;
+}
+
+body.oxi-iheu-editor .select2-container--default .select2-search--dropdown .select2-search__field:focus {
+    border-color: var(--iheu-brand);
+    outline: 0;
+    box-shadow: 0 0 0 3px var(--iheu-brand-ring);
+}
+
+/* Units (PX % EM). */
+body.oxi-iheu-editor .shortcode-form-units-choices label {
+    color: var(--iheu-ink-4);
+    font-weight: 600;
+}
+
+body.oxi-iheu-editor .shortcode-form-units-choices input:checked + label {
+    color: var(--iheu-brand-strong);
+}
+
+/* Choice buttons (left / center / right, outline / inset, ...). */
+body.oxi-iheu-editor .shortcode-form-choices .shortcode-form-choices-label {
+    color: var(--iheu-ink-2);
+    background: var(--iheu-surface);
+    border-color: var(--iheu-line-2);
+}
+
+body.oxi-iheu-editor .shortcode-form-choices input:checked + .shortcode-form-choices-label {
+    color: var(--iheu-brand-strong);
+    background-color: var(--iheu-brand-soft);
+    border-color: var(--iheu-brand-line);
+}
+
+/* Normal / Hover and similar tabs inside a section. */
+body.oxi-iheu-editor .shortcode-control-type-control-tab-child {
+    color: var(--iheu-ink-3);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 32px;
+    background: var(--iheu-surface);
+    border-color: var(--iheu-line-2);
+    transition: color 0.15s, background-color 0.15s;
+}
+
+body.oxi-iheu-editor .shortcode-control-type-control-tabs .shortcode-control-type-control-tab-child:first-child {
+    border-left-color: var(--iheu-line-2);
+    border-radius: 8px 0 0 8px;
+}
+
+body.oxi-iheu-editor .shortcode-control-type-control-tabs .shortcode-control-type-control-tab-child:last-child {
+    border-radius: 0 8px 8px 0;
+}
+
+body.oxi-iheu-editor .shortcode-control-type-control-tab-child.shortcode-control-tab-active,
+body.oxi-iheu-editor .shortcode-control-type-control-tabs .shortcode-control-tab-active.shortcode-control-type-control-tab-child:first-child {
+    color: var(--iheu-brand-strong);
+    background-color: var(--iheu-brand-soft);
+    border-color: var(--iheu-brand-line);
+}
+
+/* Four-value fields (padding, margin, radius). */
+body.oxi-iheu-editor ul.shortcode-form-control-dimensions li.shortcode-form-control-dimension input {
+    border-radius: 0;
+}
+
+body.oxi-iheu-editor ul.shortcode-form-control-dimensions li.shortcode-form-control-dimension:first-child input {
+    border-radius: 8px 0 0 8px;
+}
+
+body.oxi-iheu-editor ul.shortcode-form-control-dimensions .shortcode-form-link-dimensions {
+    height: 34px;
+    background-color: var(--iheu-brand-soft);
+    border-color: var(--iheu-line-2);
+    border-radius: 0 8px 8px 0;
+}
+
+body.oxi-iheu-editor ul.shortcode-form-control-dimensions .shortcode-form-link-dimensions:before {
+    color: var(--iheu-brand-strong);
+}
+
+body.oxi-iheu-editor ul.shortcode-form-control-dimensions .link-dimensions-unlink.shortcode-form-link-dimensions {
+    background-color: var(--iheu-surface);
+}
+
+body.oxi-iheu-editor ul.shortcode-form-control-dimensions .link-dimensions-unlink.shortcode-form-link-dimensions:before {
+    color: var(--iheu-ink-4);
+}
+
+body.oxi-iheu-editor ul.shortcode-form-control-dimensions li.shortcode-form-control-dimension .shortcode-form-control-dimension-label {
+    color: var(--iheu-ink-4);
+}
+
+/* Sliders. */
+body.oxi-iheu-editor .noUi-horizontal.shortcode-form-slider {
+    height: 4px;
+    background: var(--iheu-line);
+    border: 0;
+    border-radius: 999px;
+    box-shadow: none;
+}
+
+body.oxi-iheu-editor .shortcode-form-slider .noUi-connect {
+    background: var(--iheu-brand);
+}
+
+body.oxi-iheu-editor .shortcode-form-slider .noUi-handle {
+    background: var(--iheu-surface);
+    border: 2px solid var(--iheu-brand);
+    box-shadow: 0 1px 3px rgba(16, 24, 40, 0.18);
+}
+
+/* Wider number box next to the slider, so long values like 3183 fit. */
+body.oxi-iheu-editor .shortcode-form-slider {
+    width: 60%;
+}
+
+body.oxi-iheu-editor .shortcode-form-slider-input {
+    width: 36%;
+}
+
+/* Popover rows are narrower, so the box takes a bigger share there. */
+body.oxi-iheu-editor .shortcode-form-control-content-popover-body .shortcode-form-slider {
+    width: 50%;
+}
+
+body.oxi-iheu-editor .shortcode-form-control-content-popover-body .shortcode-form-slider-input {
+    width: 46%;
+}
+
+body.oxi-iheu-editor .shortcode-form-slider-input input {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 4px 0 10px;
+}
+
+/* Popover buttons (box shadow, animation, typography). */
+body.oxi-iheu-editor .shortcode-control-type-popover .shortcode-form-control-content-popover .shortcode-form-control-input-wrapper {
+    height: 34px;
+    color: var(--iheu-ink-3);
+    background: var(--iheu-surface);
+    border-color: var(--iheu-line-2);
+    border-radius: 8px;
+    transition: color 0.15s, border-color 0.15s, background-color 0.15s;
+}
+
+body.oxi-iheu-editor .shortcode-control-type-popover .shortcode-form-control-content-popover .shortcode-form-control-input-wrapper:hover,
+body.oxi-iheu-editor .shortcode-control-type-popover.popover-active .shortcode-form-control-content-popover .shortcode-form-control-input-wrapper {
+    color: var(--iheu-brand-strong);
+    background: var(--iheu-brand-soft);
+    border-color: var(--iheu-brand-line);
+}
+
+/* Open just below its button, as wide as the field column (16px in on both sides). */
+body.oxi-iheu-editor .shortcode-control-type-popover .shortcode-form-control-content-popover-body {
+    top: 44px;
+    right: 16px;
+    left: 16px;
+    width: auto;
+    margin: 0;
+    border: 1px solid var(--iheu-line);
+    border-radius: 12px;
+    box-shadow: 0 16px 32px -8px rgba(16, 24, 40, 0.2);
+}
+
+/* Rows with a separator line above push the button 16px down. */
+body.oxi-iheu-editor .shortcode-control-type-popover.shortcode-form-control-separator-before .shortcode-form-control-content-popover-body {
+    top: 60px;
+}
+
+/* Link field (item form): the input and the gear button as one joined 34px control. */
+body.oxi-iheu-editor .shortcode-form-control-input-wrapper.shortcode-form-control-input-link input {
+    border-right: 0;
+    border-radius: 8px 0 0 8px;
+}
+
+body.oxi-iheu-editor .shortcode-control-type-text .shortcode-form-control-input-wrapper.shortcode-form-control-input-link .dashicons {
+    flex: 0 0 44px;
+    width: 44px;
+    height: 34px;
+    font-size: 15px;
+    color: var(--iheu-ink-3);
+    background: var(--iheu-surface);
+    border: 1px solid var(--iheu-line-2);
+    border-radius: 0 8px 8px 0;
+    transition: color 0.15s, background-color 0.15s, border-color 0.15s;
+}
+
+body.oxi-iheu-editor .shortcode-control-type-text .shortcode-form-control-input-wrapper.shortcode-form-control-input-link .dashicons:hover,
+body.oxi-iheu-editor .shortcode-control-type-text.popover-active .shortcode-form-control-input-wrapper.shortcode-form-control-input-link .dashicons {
+    color: var(--iheu-brand-strong);
+    background: var(--iheu-brand-soft);
+    border-color: var(--iheu-brand-line);
+}
+
+/* Link settings popover: just below the gear, as wide as the field column.
+ * The gear sits under the label: 28px down, plus 16px on rows with a separator. */
+body.oxi-iheu-editor .shortcode-control-type-text > .shortcode-form-control-content-popover-body {
+    top: 72px;
+    right: 16px;
+    left: 16px;
+    width: auto;
+    margin: 0;
+    border: 1px solid var(--iheu-line);
+    border-radius: 12px;
+    box-shadow: 0 16px 32px -8px rgba(16, 24, 40, 0.2);
+}
+
+body.oxi-iheu-editor .shortcode-control-type-text.shortcode-form-control-separator-before > .shortcode-form-control-content-popover-body {
+    top: 88px;
+}
+
+body.oxi-iheu-editor .shortcode-control-type-text > .shortcode-form-control-content-popover-body:before {
+    top: -17px;
+    right: 14px;
+}
+
+/* Arrow centred under the 50px button, covering the top border line. */
+body.oxi-iheu-editor .shortcode-control-type-popover .shortcode-form-control-content-popover-body:before {
+    top: -17px;
+    right: 16px;
+}
+
+/* Color fields. */
+body.oxi-iheu-editor .minicolors-theme-bootstrap .minicolors-swatch {
+    border-radius: 6px;
+}
+
+/* Swatch inside the setting fields: 22px, centred in the 34px field with even space around it. */
+body.oxi-iheu-editor .shortcode-form-control .minicolors-theme-bootstrap > .minicolors-swatch {
+    top: 50%;
+    left: 6px;
+    width: 22px;
+    height: 22px;
+    margin-top: -11px;
+    border-radius: 5px;
+}
+
+/* !important: minicolors.css forces padding-left: 28px !important. */
+body.oxi-iheu-editor .shortcode-form-control .minicolors-theme-bootstrap > .minicolors-input {
+    padding-right: 8px;
+    padding-left: 34px !important;
+}
+
+/* Popover rows are narrow: slightly smaller text so a full rgba() value fits. */
+body.oxi-iheu-editor .shortcode-form-control-content-popover-body .minicolors-theme-bootstrap > .minicolors-input {
+    font-size: 12px;
+}
+
+/* Color inside a popover: label above and a full width field, like the other popover rows. */
+body.oxi-iheu-editor .shortcode-form-control-content-popover-body .shortcode-control-type-color .shortcode-form-control-field {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+}
+
+body.oxi-iheu-editor .shortcode-form-control-content-popover-body .shortcode-control-type-color .shortcode-form-control-input-wrapper,
+body.oxi-iheu-editor .shortcode-form-control-content-popover-body .shortcode-control-type-color .minicolors {
+    width: 100%;
+}
+
+body.oxi-iheu-editor .shortcode-form-control-content-popover-body .shortcode-control-type-color .minicolors-input {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* ---------------------------------------------------------------------------
+ * Save bar
+ * ------------------------------------------------------------------------- */
+
+body.oxi-iheu-editor .oxi-addons-setting-save {
+    gap: 8px;
+    padding: 12px 14px;
+    background: var(--iheu-surface);
+    border-top: 1px solid var(--iheu-line);
+}
+
+body.oxi-iheu-editor .oxi-addons-setting-save .btn {
+    height: 36px;
+    padding: 0 16px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 34px;
+    border-radius: 8px;
+    transition: color 0.15s, background-color 0.15s, border-color 0.15s;
+}
+
+body.oxi-iheu-editor .oxi-addons-setting-save .btn-secondary,
+body.oxi-iheu-editor .oxi-addons-setting-save .btn-danger,
+body.oxi-iheu-editor .oxi-addons-setting-save .btn-secondary:focus,
+body.oxi-iheu-editor .oxi-addons-setting-save .btn-danger:focus {
+    color: var(--iheu-ink-2);
+    background: var(--iheu-surface);
+    border: 1px solid var(--iheu-line-2) !important;
+}
+
+body.oxi-iheu-editor .oxi-addons-setting-save .btn-secondary:hover,
+body.oxi-iheu-editor .oxi-addons-setting-save .btn-danger:hover {
+    color: var(--iheu-ink);
+    background: #f9fafb;
+    border-color: var(--iheu-ink-4) !important;
+}
+
+body.oxi-iheu-editor .oxi-addons-setting-save .btn-success {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 112px;
+    margin-left: auto;
+    padding: 0 22px;
+    color: #ffffff;
+    background: #16a34a;
+    border: 1px solid #16a34a;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.08), 0 4px 12px rgba(22, 163, 74, 0.24);
+}
+
+body.oxi-iheu-editor .oxi-addons-setting-save .btn-success:focus {
+    color: #ffffff;
+    background: #16a34a;
+    border-color: #16a34a;
+}
+
+body.oxi-iheu-editor .oxi-addons-setting-save .btn-success:hover {
+    color: #ffffff;
+    background: #15803d;
+    border-color: #15803d;
+}
+
+/* Saving state. editors.js swaps the label for a dashicons gear span while the
+ * request runs (Save, Rename, item form Submit); show a centred spinning ring
+ * and "Saving" instead of the bare gear. */
+body.oxi-iheu-editor #addonsstylenamechange,
+body.oxi-iheu-editor #oxi-template-modal-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 104px;
+}
+
+body.oxi-iheu-editor #oxi-addons-templates-submit .dashicons-admin-generic,
+body.oxi-iheu-editor #addonsstylenamechange .dashicons-admin-generic,
+body.oxi-iheu-editor #oxi-template-modal-submit .dashicons-admin-generic {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: auto;
+    height: auto;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+body.oxi-iheu-editor #oxi-addons-templates-submit .dashicons-admin-generic:before,
+body.oxi-iheu-editor #addonsstylenamechange .dashicons-admin-generic:before,
+body.oxi-iheu-editor #oxi-template-modal-submit .dashicons-admin-generic:before {
+    content: "";
+    box-sizing: border-box;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: oxi-iheu-spin 0.7s linear infinite;
+}
+
+body.oxi-iheu-editor #oxi-addons-templates-submit .dashicons-admin-generic:after,
+body.oxi-iheu-editor #addonsstylenamechange .dashicons-admin-generic:after,
+body.oxi-iheu-editor #oxi-template-modal-submit .dashicons-admin-generic:after {
+    content: "Saving";
+}
+
+@keyframes oxi-iheu-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ---------------------------------------------------------------------------
+ * Preview
+ * ------------------------------------------------------------------------- */
+
+body.oxi-iheu-editor .oxi-addons-Preview {
+    background: var(--iheu-canvas);
+}
+
+body.oxi-iheu-editor .oxi-addons-style-left-preview {
+    overflow: hidden;
+    background: var(--iheu-surface);
+    border: 1px solid var(--iheu-line);
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+body.oxi-iheu-editor .oxi-addons-style-left-preview-heading {
+    background: #fcfcfd;
+    border-bottom: 1px solid var(--iheu-line);
+}
+
+body.oxi-iheu-editor .oxi-header-tooltip {
+    color: var(--iheu-ink-4);
+}
+
+/* Open from the icon towards the right, so the card edge never cuts it off. */
+body.oxi-iheu-editor .oxi-tooltip-text {
+    left: -8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: left;
+    background-color: var(--iheu-ink);
+    border-radius: 8px;
+    transform: none;
+}
+
+body.oxi-iheu-editor .oxi-tooltip-text::after {
+    left: 16px;
+    border-color: transparent transparent var(--iheu-ink) transparent;
+}
+
+body.oxi-iheu-editor .oxi-header-shortcode {
+    overflow: hidden;
+    background: var(--iheu-surface);
+    border: 1px solid var(--iheu-line-2);
+    border-radius: 8px;
+}
+
+body.oxi-iheu-editor .oxi-shortcode-text {
+    color: var(--iheu-ink-2);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 13px;
+}
+
+body.oxi-iheu-editor .oxi-copy-btn {
+    color: var(--iheu-brand-strong);
+    background: var(--iheu-brand-soft);
+    border: 0;
+    border-left: 1px solid var(--iheu-line);
+    transition: color 0.15s, background-color 0.15s;
+}
+
+body.oxi-iheu-editor .oxi-copy-btn:hover {
+    color: #ffffff;
+    background: var(--iheu-brand);
+}
+
+/* Desktop / tablet / mobile. */
+body.oxi-iheu-editor .oxi-iheu-header-devices {
+    gap: 2px;
+    padding: 3px;
+    background: #eceef2;
+    border: 0;
+    border-radius: 10px;
+}
+
+body.oxi-iheu-editor .oxi-iheu-header-devices .oxi-device-btn {
+    color: var(--iheu-ink-3);
+    background: transparent;
+    border: 0;
+    border-radius: 7px;
+}
+
+body.oxi-iheu-editor .oxi-iheu-header-devices .oxi-device-btn:hover {
+    color: var(--iheu-ink);
+    background: transparent;
+}
+
+body.oxi-iheu-editor .oxi-iheu-header-devices .oxi-device-btn.active {
+    color: var(--iheu-brand-strong);
+    background: var(--iheu-surface);
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.08);
+}
+
+body.oxi-iheu-editor .oxi-preview-header-right .oxi-addons-minicolor {
+    border-color: var(--iheu-line-2);
+    border-radius: 8px;
+}
+
+/* Sidebar collapse button. */
+body.oxi-iheu-editor .oxi-sidebar-toggle-btn {
+    color: var(--iheu-brand-strong);
+    border-color: var(--iheu-line);
+}
+
+/* ---------------------------------------------------------------------------
+ * Item dialog (Image Hover Form)
+ * ------------------------------------------------------------------------- */
+
+body.oxi-iheu-editor #oxi-addons-list-data-modal .modal-content {
+    overflow: hidden;
+    border: 0;
+    border-radius: 16px;
+    box-shadow: 0 24px 48px -12px rgba(16, 24, 40, 0.28);
+}
+
+body.oxi-iheu-editor #oxi-addons-list-data-modal .modal-header {
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--iheu-line);
+}
+
+body.oxi-iheu-editor #oxi-addons-list-data-modal .modal-title {
+    color: var(--iheu-ink);
+    font-size: 17px;
+    font-weight: 600;
+}
+
+body.oxi-iheu-editor #oxi-addons-list-data-modal .modal-header .close {
+    color: var(--iheu-ink-3);
+    opacity: 1;
+    text-shadow: none;
+}
+
+body.oxi-iheu-editor #oxi-addons-list-data-modal .modal-header .close:hover {
+    color: var(--iheu-ink);
+}
+
+body.oxi-iheu-editor #oxi-addons-list-data-modal .modal-body {
+    padding-top: 18px;
+}
+
+body.oxi-iheu-editor #oxi-addons-list-data-modal .modal-footer {
+    gap: 8px;
+    padding: 14px 20px;
+    background: #fcfcfd;
+    border-top: 1px solid var(--iheu-line);
+}
+
+body.oxi-iheu-editor #oxi-addons-list-data-modal .modal-footer .btn {
+    height: 38px;
+    margin: 0;
+    padding: 0 18px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+body.oxi-iheu-editor #oxi-addons-list-data-modal .modal-footer .btn-danger,
+body.oxi-iheu-editor #oxi-addons-list-data-modal .modal-footer .btn-danger:focus {
+    color: var(--iheu-ink-2);
+    background: var(--iheu-surface);
+    border: 1px solid var(--iheu-line-2) !important;
+}
+
+body.oxi-iheu-editor #oxi-addons-list-data-modal .modal-footer .btn-danger:hover {
+    color: var(--iheu-ink);
+    background: #f9fafb;
+}
+
+/* Submit: the same green as the sidebar Save. */
+body.oxi-iheu-editor #oxi-addons-list-data-modal .modal-footer .btn-success,
+body.oxi-iheu-editor #oxi-addons-list-data-modal .modal-footer .btn-success:focus {
+    color: #ffffff;
+    background: #16a34a;
+    border: 1px solid #16a34a;
+}
+
+body.oxi-iheu-editor #oxi-addons-list-data-modal .modal-footer .btn-success:hover {
+    color: #ffffff;
+    background: #15803d;
+    border-color: #15803d;
+}

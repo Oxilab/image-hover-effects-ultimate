@@ -20,7 +20,7 @@ The plugin is lightweight, fully responsive, and compatible with Elementor, Gute
 
 🎬 **[Live Demos](https://demos.oxilab.dev/imagehover/demos/)** | ⭐ **[Upgrade to Pro](https://oxilab.dev/image-hover-effects/pricing/)** | 📖 **[Documentation](https://oxilab.dev/docs/image-hover-effects/)** | 🆘 **[Support](https://wordpress.org/support/plugin/image-hover-effects-ultimate#new-post)**
 
-[youtube https://www.youtube.com/watch?v=GF3mTkOavj8]
+[youtube https://www.youtube.com/watch?v=9nqUpIjAFdA]
 
 ---
 
@@ -189,6 +189,8 @@ The free version gives you access to all 10 modules and hundreds of layouts. Pro
 = 9.12.1 =
 * ✨ Improvement: Redesigned the Image Hover page, every effect type now has a card showing its number of ready made layouts and how many styles you saved, with quick links to its templates, docs and demo
 * ✨ Improvement: Redesigned the Create New page, every design now has its own preview card and "Use this design" button, and naming the new style happens in a clean dialog
+* ✨ Improvement: Refreshed the style editor look, cleaner header, tabs, setting cards, fields, preview bar and item form, all your saved styles and settings stay exactly the same
+* ✨ Improvement: Redesigned the "How to use?" menu, every guide now has an icon and a short line on what it covers, with a link to browse all documentation
 * ✨ Improvement: New getting started video on the Getting Started page and the plugin page
 
 = 9.12.0 =

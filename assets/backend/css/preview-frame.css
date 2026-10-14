@@ -1,0 +1,84 @@
+/**
+ * Image Hover editor preview frame: the Edit / Clone / Delete toolbar that shows
+ * on each item while hovering it. Loaded only inside the editor's preview
+ * iframe (Page/PreviewFrame.php), after admin.css. Look only: the markup,
+ * classes and the click forwarding (iframe-button-forwarders.js) are unchanged.
+ */
+
+.oxi-addons-admin-absulote {
+    gap: 6px;
+    padding: 6px;
+    background: #ffffff;
+    border: 1px solid #eaecf0;
+    border-radius: 12px;
+    box-shadow: 0 10px 24px -8px rgba(16, 24, 40, 0.2);
+    transition: opacity 0.15s ease;
+}
+
+.oxi-addons-admin-absulote .oxi-addons-admin-absulate-edit,
+.oxi-addons-admin-absulote .oxi-addons-admin-absulate-clone,
+.oxi-addons-admin-absulote .oxi-addons-admin-absulate-delete {
+    display: block;
+    margin: 0;
+}
+
+.oxi-addons-admin-absulote .btn {
+    height: 32px;
+    margin: 0;
+    padding: 0 14px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 30px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    box-shadow: none;
+    transition: color 0.15s, background-color 0.15s, border-color 0.15s;
+}
+
+.oxi-addons-admin-absulote .btn:focus {
+    outline: 0;
+    box-shadow: 0 0 0 3px rgba(238, 50, 110, 0.2);
+}
+
+/* Edit: filled brand pink. */
+.oxi-addons-admin-absulote .btn-primary,
+.oxi-addons-admin-absulote .btn-primary:focus {
+    color: #ffffff;
+    background: #ee326e;
+    border-color: #ee326e;
+}
+
+.oxi-addons-admin-absulote .btn-primary:hover {
+    color: #ffffff;
+    background: #c41d55;
+    border-color: #c41d55;
+}
+
+/* Clone: white with a grey border. */
+.oxi-addons-admin-absulote .btn-secondary,
+.oxi-addons-admin-absulote .btn-secondary:focus {
+    color: #101828;
+    background: #ffffff;
+    border-color: #d0d5dd;
+}
+
+.oxi-addons-admin-absulote .btn-secondary:hover {
+    color: #101828;
+    background: #f9fafb;
+    border-color: #98a2b3;
+}
+
+/* Delete: soft red. */
+.oxi-addons-admin-absulote .btn-danger,
+.oxi-addons-admin-absulote .btn-danger:focus {
+    color: #b42318;
+    background: #fef3f2;
+    border-color: #fecdca;
+}
+
+.oxi-addons-admin-absulote .btn-danger:hover {
+    color: #ffffff;
+    background: #d92d20;
+    border-color: #d92d20;
+}

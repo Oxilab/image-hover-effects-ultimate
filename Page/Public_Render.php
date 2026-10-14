@@ -293,7 +293,7 @@ class Public_Render {
                 <button class="btn btn-secondary shortcode-addons-template-item-clone" type="button" value="<?php echo esc_attr( $param ); ?>" title="Clone">Clone</button>
             </div>
             <div class="oxi-addons-admin-absulate-delete">
-                <button class="btn btn-danger shortcode-addons-template-item-delete" type="submit" value="<?php echo esc_attr( $param ); ?>" title="Delete">Del</button>
+                <button class="btn btn-danger shortcode-addons-template-item-delete" type="submit" value="<?php echo esc_attr( $param ); ?>" title="Delete">Delete</button>
             </div>
         </div>
 		<?php

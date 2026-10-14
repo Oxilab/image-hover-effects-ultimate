@@ -1477,7 +1477,7 @@ class Modules extends Admin_Render
 			[
 				'type' => Controls::MODALOPENER,
 				'title' => esc_html__('Add New Image', 'image-hover-effects-ultimate'),
-				'sub-title' => esc_html__('Open Image Hover Form', 'image-hover-effects-ultimate'),
+				'sub-title' => esc_html__('Add New Image', 'image-hover-effects-ultimate'),
 				'showing' => true,
 				'notcondition' => true,
 				'condition' => [

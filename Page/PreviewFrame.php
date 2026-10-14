@@ -163,6 +163,8 @@ class PreviewFrame
 			wp_enqueue_style('oxi-image-hover-admin', OXI_IMAGE_HOVER_URL . 'assets/backend/css/admin.css', array(), OXI_IMAGE_HOVER_PLUGIN_VERSION);
 			wp_enqueue_style('oxi-image-hover-single-editor', OXI_IMAGE_HOVER_URL . 'assets/backend/css/single_editor_page.css', array(), OXI_IMAGE_HOVER_PLUGIN_VERSION);
 			wp_enqueue_style('oxi-image-hover-frontend-style', OXI_IMAGE_HOVER_URL . 'assets/frontend/css/style.css', array(), OXI_IMAGE_HOVER_PLUGIN_VERSION);
+			// Look of the Edit / Clone / Del toolbar on each preview item.
+			wp_enqueue_style('oxi-image-hover-preview-frame', OXI_IMAGE_HOVER_URL . 'assets/backend/css/preview-frame.css', array('oxi-image-hover-admin', 'oxi-image-hover-single-editor'), filemtime(OXI_IMAGE_HOVER_PATH . 'assets/backend/css/preview-frame.css'));
 
 			// Enqueue OverlayScrollbars library for preview iframe
 			wp_enqueue_style('overlayscrollbars', OXI_IMAGE_HOVER_URL . 'assets/backend/css/overlayscrollbars.min.css', array(), '2.4.6');
