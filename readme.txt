@@ -171,16 +171,17 @@ The free version gives you access to all 10 modules and hundreds of layouts. Pro
 
 == Screenshots ==
 
-1. 🗂️ Image Hover dashboard showing all effect modules.
-2. 🖼️ Template library: browse and select from 150+ pre-designed layouts.
-3. ✏️ Naming a new shortcode before customization begins.
-4. 🎛️ Fully customizable admin panel with live preview.
-5. ➕ Image upload and content form for individual hover items.
-6. 🎨 Background settings with gradient and image upload options.
-7. 🔤 Typography controls with Google Fonts for headings and descriptions.
-8. 📱 Responsive device preview controls: Desktop, Tablet, and Mobile.
-9. 🎠 Carousel and Slider extension with hover effects.
-10. 🔽 Shortcode List.
+1. 🗂️ The Image Hover page: every effect type as a card, with its number of ready made layouts, how many styles you saved, and quick links to its templates, docs and demo.
+2. 🖼️ The template library: preview every ready made design and start from the one you like.
+3. ✏️ Name your new style in a clean dialog, then go straight to the editor.
+4. 🎛️ The style editor: settings on the left, a live preview of your hover effect on the right.
+5. ➕ The image form: add the image, title, description, link and button text for each item.
+6. 🎨 Style settings with the hover effect showing live in the preview, plus Edit, Clone and Delete on every item.
+7. 🔤 Typography controls with Google Fonts, size, weight, line height and letter spacing.
+8. 📱 Preview your design on desktop, tablet and mobile, each with its own column settings.
+9. 📘 The "How to use?" menu: step by step guides for your first hover effect, the Gutenberg block, Elementor, WPBakery and widgets.
+10. 🔽 The shortcode list: copy a shortcode or its PHP code, or edit, clone, export and delete a style.
+11. 🚀 The Getting Started page: a video tutorial, three simple steps and how to use it with your page builder.
 
 ---
 
