@@ -6,6 +6,7 @@
 /src export-ignore
 /vendor/bin export-ignore
 /tests export-ignore
+/docs export-ignore
 
 # Files 
 .gitattributes export-ignore
