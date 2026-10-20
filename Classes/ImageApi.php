@@ -248,6 +248,35 @@ class ImageApi
 		return $clean;
 	}
 
+	/**
+	 * Whether custom CSS could close the <style> tag it is printed in.
+	 *
+	 * Public_Render::inline_render() prints it after replacing &nbsp;, removing <br> and html_entity_decode(), so the
+	 * same steps run here (decoding until nothing changes) and any "<" left is refused: </style> and <script>, also
+	 * written as &lt; or &#60;. CSS words such as font-style stay allowed.
+	 *
+	 * @since 9.12.2
+	 * @param mixed $css The image-hover-custom-css value, null when missing.
+	 * @return bool
+	 */
+	public function custom_css_is_unsafe( $css ) {
+		if ( null === $css ) {
+			return false;
+		}
+		if ( ! is_string( $css ) ) {
+			return true;
+		}
+		$css = str_replace( '<br>', '', str_replace( '&nbsp;', ' ', $css ) );
+		for ( $i = 0; $i < 10; $i++ ) {
+			$decoded = html_entity_decode( $css );
+			if ( $decoded === $css ) {
+				break;
+			}
+			$css = $decoded;
+		}
+		return false !== strpos( $css, '<' );
+	}
+
 	public function update_image_hover_plugin()
 	{
 
@@ -601,9 +630,8 @@ class ImageApi
 		$style = $params['style'];
 		$child = $params['child'];
 		$raw = json_decode($style['rawdata'], true); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$custom = strtolower($raw['image-hover-custom-css']);
-		if (preg_match('/style/i', $custom) || preg_match('/script/i', $custom)) {
-			return 'Don\'t be smart, Kindly add validate data.';
+		if ( $this->custom_css_is_unsafe( isset( $raw['image-hover-custom-css'] ) ? $raw['image-hover-custom-css'] : null ) ) {
+			return esc_html__( 'Custom CSS cannot contain HTML tags or the less than sign. Remove them and save again.', 'image-hover-effects-ultimate' );
 		}
 
 		// Ensure rawdata is unslashed before insertion
@@ -1004,9 +1032,8 @@ class ImageApi
 		global $wpdb;
 		$settings = json_decode($this->rawdata, true); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
-		$custom = strtolower($settings['image-hover-custom-css']);
-		if (preg_match('/style/i', $custom) || preg_match('/script/i', $custom)) {
-			return 'Don\'t be smart, Kindly add validated data.';
+		if ( $this->custom_css_is_unsafe( isset( $settings['image-hover-custom-css'] ) ? $settings['image-hover-custom-css'] : null ) ) {
+			return esc_html__( 'Custom CSS cannot contain HTML tags or the less than sign. Remove them and save again.', 'image-hover-effects-ultimate' );
 		}
 
 		$StyleName = sanitize_text_field($settings['image-hover-template']);
@@ -1121,6 +1148,58 @@ class ImageApi
 		add_action('wp_ajax_image_hover_ultimate', [$this, 'ajax_action']);
 		add_action('wp_ajax_image_hover_settings', [$this, 'save_action']);
 		add_action('wp_ajax_oxi_image_hover_preview_frame', [$this, 'preview_frame_action']);
+		add_action( 'wp_ajax_nopriv_oxi_image_hover_load_more', [ $this, 'load_more_action' ] );
+		add_action( 'wp_ajax_oxi_image_hover_load_more', [ $this, 'load_more_action' ] );
+	}
+
+	/**
+	 * Load More for visitors: the next page of a Display Post style, or of a dynamic (Pro) style.
+	 *
+	 * Public and read only, like the shortcode itself, so there is no capability check and no nonce (a nonce in a
+	 * cached page expires and would break the button). The request carries only the style id and the page number;
+	 * the query is built on the server from the style's saved settings (Display\Render\Effects1::load_more_query(),
+	 * Compailer::load_more_query()), so a visitor can't change which posts are queried. Only styles with Load More
+	 * switched on answer, dynamic styles only with Pro, exactly like their page render.
+	 *
+	 * @since 9.12.2
+	 * @return void
+	 */
+	public function load_more_action() {
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- public read only output, see above.
+		$styleid = isset( $_POST['styleid'] ) && is_scalar( $_POST['styleid'] ) ? (int) $_POST['styleid'] : 0;
+		$page    = isset( $_POST['page'] ) && is_scalar( $_POST['page'] ) ? (int) $_POST['page'] : 0;
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
+		if ( $styleid < 1 || $page < 2 || $page > 1000 ) {
+			wp_die();
+		}
+
+		global $wpdb;
+		$row = $wpdb->get_row(
+			$wpdb->prepare( 'SELECT * FROM ' . esc_sql( $this->parent_table ) . ' WHERE id = %d', $styleid ),
+			ARRAY_A
+		);
+		if ( ! is_array( $row ) ) {
+			wp_die();
+		}
+		$style = json_decode( stripslashes( $row['rawdata'] ), true );
+		if ( ! is_array( $style ) ) {
+			wp_die();
+		}
+
+		if ( 0 === strpos( (string) $row['style_name'], 'display-' ) ) {
+			if ( isset( $style['display_post_load_more'] ) && 'yes' === $style['display_post_load_more'] ) {
+				$query = \OXI_IMAGE_HOVER_PLUGINS\Modules\Display\Render\Effects1::load_more_query( $style );
+				new \OXI_IMAGE_HOVER_PLUGINS\Modules\Display\Files\Style_1_Post_Query( '__rest_api_post', $query['settings'], $query['args'], $page );
+			}
+		} elseif ( isset( $style['image_hover_dynamic_load'] ) && 'yes' === $style['image_hover_dynamic_load'] && apply_filters( 'oxi-image-hover-plugin-version', false ) ) { // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores -- the plugin's existing Pro filter, used everywhere.
+			$query = \OXI_IMAGE_HOVER_PLUGINS\Modules\Compailer::load_more_query( $style, $styleid );
+			if ( $query['posts'] ) {
+				new \OXI_IMAGE_HOVER_PLUGINS\Modules\Dynamic\Post_Query( '__rest_api_post', $query['settings'], $query['args'], $page );
+			} else {
+				new \OXI_IMAGE_HOVER_PLUGINS\Modules\Dynamic\Layouts_Query( '__rest_api_post', $query['settings'], $query['args'], $page );
+			}
+		}
+		wp_die();
 	}
 
 	/**

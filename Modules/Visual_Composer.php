@@ -99,7 +99,8 @@ class Visual_Composer {
 				'base'        => 'iheu_oxi_VC',
 				'category'    => esc_html__( 'Content', 'image-hover-effects-ultimate' ),
 				'description' => esc_html__( 'Display Image Hover Effects', 'image-hover-effects-ultimate' ),
-				'icon'        => 'icon-wpb-image-hover',
+				// WPBakery shows a URL here as the element's icon (the old class name matched no icon: a blank placeholder).
+				'icon'        => OXI_IMAGE_HOVER_URL . 'image/logo.png',
 				'params'      => [
 					[
 						'type'        => 'dropdown',
@@ -119,7 +120,7 @@ class Visual_Composer {
         global $wpdb;
         $this->wpdb = $wpdb;
         $this->parent_table = $this->wpdb->prefix . 'image_hover_ultimate_style';
-        add_action( 'vc_before_init', [ $this, 'iheu_oxi_VC_extension' ] );
+        // The element itself is registered from Oxilab_Imagehover::register_vc_element() on vc_before_init.
         add_shortcode( 'iheu_oxi_VC', [ $this, 'iheu_oxi_VC_shortcode' ] );
     }
 }

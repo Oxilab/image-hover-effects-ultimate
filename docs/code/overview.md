@@ -49,8 +49,12 @@ widget, a WPBakery element or a classic widget.
      plugins notice after 1 day, then the review notice after 7 days, or else the Pro upgrade notice after 10 days)
    - `Admin_Filters()`: registers `oxi-image-hover-support-and-comments`, `oxi-image-hover-plugin-version`,
      `oxi-image-hover-plugin/admin_menu` (written as hex in the code)
-   - `Shortcode_loader()`: `[iheu_ultimate_oxi]`, `Modules\Visual_Composer`, `Modules\Elementor`,
-     `Modules\Gutenberg`, `Modules\Widget`, and `widget_text` → `do_shortcode`
+   - `Shortcode_loader()`: `[iheu_ultimate_oxi]`, `Modules\Visual_Composer` (the `[iheu_oxi_VC]` shortcode),
+     `Modules\Elementor`, `Modules\Gutenberg`, and `widget_text` → `do_shortcode`
+   - The classic widget and the WPBakery element are hooked in the constructor, not here: `widgets_init` fires on
+     `init` priority 1 and WPBakery fires `vc_before_init` on `init` priority 9, both before `init_plugin()`
+     (priority 20). `register_widget()` and `register_vc_element()` in `index.php` (fixed 2026-10-18; in 9.12.1 and
+     earlier neither registered)
    - `Public_loader()`: table names on the main object
    - `register_image_hover_ultimate_update()`: while the option `image_hover_ultimate_update_complete` is not `done`,
      schedules the one-off cron `image_hover_ultimate_update`, which re-renders the CSS of every style

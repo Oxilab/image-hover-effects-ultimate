@@ -47,51 +47,67 @@ class Effects2 extends Public_Render {
         endif;
     }
 
+    /**
+     * The number at the end of a column class (oxi-bt-col-lg-4 gives 4), used to size the items.
+     *
+     * A missing or empty column setting (a style saved before it existed, an import) gave a fatal "Division by zero"
+     * on PHP 8 and stopped the page; it now counts as 1. Every real column class gives the same number as before.
+     *
+     * @since 9.12.2
+     * @param mixed $col_class Saved column class.
+     * @return float|int
+     */
+    protected function item_columns( $col_class ) {
+        $parts = explode( '-', is_string( $col_class ) ? $col_class : '' );
+        $count = isset( $parts[4] ) ? $this->num( $parts[4] ) : 0.0;
+        return $count > 0 ? $count : 1;
+    }
+
     public function inline_public_css() {
         $this->custom_column_render( 'category_col' );
         $styledata = $this->style;
 
         $item_width = '.' . $this->WRAPPER . ' .image-hover-category-item-show {
-                        width: ' . ( 100 / explode( '-', $styledata['category_col-lap'] )[4] ) . '%;
+                        width: ' . ( 100 / $this->item_columns( $styledata['category_col-lap'] ) ) . '%;
                     }
                     .' . $this->WRAPPER . ' .image-hover-category-item-show.grid_item_width_2-lap {
-                        width: ' . ( ( 100 / explode( '-', $styledata['category_col-lap'] )[4] ) * 2 ) . '%;
+                        width: ' . ( ( 100 / $this->item_columns( $styledata['category_col-lap'] ) ) * 2 ) . '%;
                     }
                     .' . $this->WRAPPER . ' .image-hover-category-item-show.grid_item_width_3-lap {
-                        width: ' . ( ( 100 / explode( '-', $styledata['category_col-lap'] )[4] ) * 3 ) . '%;
+                        width: ' . ( ( 100 / $this->item_columns( $styledata['category_col-lap'] ) ) * 3 ) . '%;
                     }
                     .' . $this->WRAPPER . ' .image-hover-category-item-show.grid_item_width_4-lap {
-                        width: ' . ( ( 100 / explode( '-', $styledata['category_col-lap'] )[4] ) * 4 ) . '%;
+                        width: ' . ( ( 100 / $this->item_columns( $styledata['category_col-lap'] ) ) * 4 ) . '%;
                     }
                     .' . $this->WRAPPER . ' .image-hover-category-item-show {
                         max-width: 100%;
                     }
                 @media only screen and (min-width : 669px) and (max-width : 993px){
                     .' . $this->WRAPPER . ' .image-hover-category-item-show {
-                        width: ' . ( 100 / explode( '-', $styledata['category_col-tab'] )[4] ) . '%;
+                        width: ' . ( 100 / $this->item_columns( $styledata['category_col-tab'] ) ) . '%;
                     }
                     .' . $this->WRAPPER . ' .image-hover-category-item-show.grid_item_width_2-tab {
-                        width: ' . ( ( 100 / explode( '-', $styledata['category_col-tab'] )[4] ) * 2 ) . '%;
+                        width: ' . ( ( 100 / $this->item_columns( $styledata['category_col-tab'] ) ) * 2 ) . '%;
                     }
                     .' . $this->WRAPPER . ' .image-hover-category-item-show.grid_item_width_3-tab {
-                        width: ' . ( ( 100 / explode( '-', $styledata['category_col-tab'] )[4] ) * 3 ) . '%;
+                        width: ' . ( ( 100 / $this->item_columns( $styledata['category_col-tab'] ) ) * 3 ) . '%;
                     }
                     .' . $this->WRAPPER . ' .image-hover-category-item-show.grid_item_width_4-tab {
-                        width: ' . ( ( 100 / explode( '-', $styledata['category_col-tab'] )[4] ) * 4 ) . '%;
+                        width: ' . ( ( 100 / $this->item_columns( $styledata['category_col-tab'] ) ) * 4 ) . '%;
                     }
                 }
                 @media only screen and (max-width : 668px){
                     .' . $this->WRAPPER . ' .image-hover-category-item-show {
-                        width: ' . ( 100 / explode( '-', $styledata['category_col-mob'] )[4] ) . '%;
+                        width: ' . ( 100 / $this->item_columns( $styledata['category_col-mob'] ) ) . '%;
                     }
                     .' . $this->WRAPPER . ' .image-hover-category-item-show.grid_item_width_2-mob {
-                        width: ' . ( ( 100 / explode( '-', $styledata['category_col-mob'] )[4] ) * 2 ) . '%;
+                        width: ' . ( ( 100 / $this->item_columns( $styledata['category_col-mob'] ) ) * 2 ) . '%;
                     }
                     .' . $this->WRAPPER . ' .image-hover-category-item-show.grid_item_width_3-mob {
-                        width: ' . ( ( 100 / explode( '-', $styledata['category_col-mob'] )[4] ) * 3 ) . '%;
+                        width: ' . ( ( 100 / $this->item_columns( $styledata['category_col-mob'] ) ) * 3 ) . '%;
                     }
                     .' . $this->WRAPPER . ' .image-hover-category-item-show.grid_item_width_4-mob {
-                        width: ' . ( ( 100 / explode( '-', $styledata['category_col-mob'] )[4] ) * 4 ) . '%;
+                        width: ' . ( ( 100 / $this->item_columns( $styledata['category_col-mob'] ) ) * 4 ) . '%;
                     }
                 }
                 ';
@@ -101,7 +117,14 @@ class Effects2 extends Public_Render {
     public function inline_public_jquery() {
         $jquery = '';
         $oxiid = $this->oxiid;
-        $jquery = ' $(".image-hover-category-data-' . $oxiid . '").imagesLoaded(function(){
+        // Isotope moves the items after the entrance animations (Waypoints) measured them, so items that ended up in
+        // view never started their animation and stayed hidden; measure again after every layout and filter.
+        $jquery = ' $(".image-hover-category-data-' . $oxiid . '").on("arrangeComplete layoutComplete", function () {
+                        if (window.Waypoint && typeof window.Waypoint.refreshAll === "function") {
+                            window.Waypoint.refreshAll();
+                        }
+                    });
+                    $(".image-hover-category-data-' . $oxiid . '").imagesLoaded(function(){
                         $(".image-hover-category-data-' . $oxiid . '").isotope({
                             filter: "*",
                             animationOptions: {

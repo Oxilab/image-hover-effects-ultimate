@@ -185,7 +185,7 @@ class Effects2 extends Public_Render
                 spacing: ' . (isset($style['carousel_flipster_spacing']) ? $style['carousel_flipster_spacing'] : 0) . ',
                 click: ' . $click . ',
                 scrollwheel: false,
-                tocuh: ' . $touch . ',
+                touch: ' . $touch . ',
                 nav: false,
                 buttons: "' . $arrows . '",
                 buttonPrev: \'<div class="oxi_carousel_arrows oxi_carousel_prev">' . $prev . '</div>\',

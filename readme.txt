@@ -4,7 +4,7 @@ Tags: image hover effects, css3 effects, image hover animation, image gallery, p
 Requires at least: 6.2
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 9.12.1
+Stable tag: 9.12.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -155,6 +155,10 @@ Yes. The plugin includes a native Elementor widget. Search for "Image Hover" in 
 
 Yes. The plugin includes a native Gutenberg block. Search for "Image Hover" in the block inserter, add the block, and select your effect from the Inspector Controls sidebar. A live preview renders directly in the editor, no shortcode needed.
 
+= 🧱 Does it work with the WPBakery Page Builder? =
+
+Yes. The plugin includes a native WPBakery element. Click Add Element, search for "Image Hover", add the **Image Hover Ultimate** element (in the Content tab), and choose your effect in **Select Image Hover Style**. It works in both the backend and the frontend editor, and the frontend editor shows your gallery live. You can also paste the shortcode into a Text Block if you prefer.
+
 = 💻 Do I need to write any code? =
 
 No. All effects are created through the visual admin panel. Developers who want more control can also add custom CSS, but it is completely optional.
@@ -182,10 +186,30 @@ The free version gives you access to all 10 modules and hundreds of layouts. Pro
 9. 📘 The "How to use?" menu: step by step guides for your first hover effect, the Gutenberg block, Elementor, WPBakery and widgets.
 10. 🔽 The shortcode list: copy a shortcode or its PHP code, or edit, clone, export and delete a style.
 11. 🚀 The Getting Started page: a video tutorial, three simple steps and how to use it with your page builder.
+12. 🧩 Works with Elementor: search "Image Hover" in the widget panel and drop the Image Hover widget on your page.
+13. 🟦 Works with the block editor: add the Image Hover Effects block and pick a style, with a live preview.
+14. 🧱 Works with WPBakery: find the Image Hover Ultimate element in Add Element and choose your style.
+15. 🔗 Use the shortcode anywhere: paste it into a Shortcode block, a widget or any builder that runs shortcodes.
 
 ---
 
 == Changelog ==
+
+= 9.12.2 =
+* 🐛 Fix: On PHP 8, an empty or text value in a number setting no longer stops the page right after the gallery (Lightbox 2 Z-index, Comparison 4 strips, Filter 2 columns, and styles saved before version 9.3)
+* 🐛 Fix: The Image Hover Effects Ultimate widget is back on the Widgets screen and the Image Hover Ultimate element is back in WPBakery Page Builder, both had stopped loading since 9.10.5
+* ✨ Improvement: The plugin's own colored icon now shows for the Image Hover Ultimate element in WPBakery (it was a blank placeholder) and for the Image Hover widget in Elementor (it was grey)
+* ✨ Improvement: Elementor lists the plugin once, as the Image Hover widget: the classic Image Hover Effects Ultimate widget no longer shows in the Elementor panel, and pages that already use it keep working
+* 🐛 Fix: Entrance animations with Looping turned on play and repeat again, before they did not play at all
+* 🐛 Fix: Custom CSS with everyday words such as font-style saves again, only HTML tags are refused, and a message now tells you why instead of the Save button spinning
+* 🐛 Fix: A shortcode whose style was deleted now shows visitors nothing, as the Delete dialog says, while administrators still see a note with the missing style ID
+* 🐛 Fix: Load More works again for your visitors in Display Post and in styles with dynamic loading, with the button and with infinite scroll, and it now keeps to the posts, categories and tags you chose
+* 🔒 Security: Load More now sends only the style and the page number, and the posts are chosen on the server from the style's saved settings, so the query can't be changed from the browser
+* 🐛 Fix: The On Touch Play? setting of Carousel 2 (Flipster) now works; carousels saved with No no longer move with a swipe
+* 🐛 Fix: Filter & Sorting no longer leaves items blank when their hover style has an entrance animation, every item now shows, also after picking a filter
+* 🐛 Fix: The Filter 1 design now starts with the category "All Members" instead of "All Menbers"
+* 🐛 Fix: In the style editor, the preview of Carousel 1 no longer stretches very tall with the arrows and dots far below the slides
+* 🐛 Fix: Corrected the "Comparison Offset" label in the Comparison effect settings, and the Spacing field of the Carousel 2 (Flipster) settings, which was labeled Autoplay Speed
 
 = 9.12.1 =
 * ✨ Improvement: Redesigned the Image Hover page, every effect type now has a card showing its number of ready made layouts and how many styles you saved, with quick links to its templates, docs and demo

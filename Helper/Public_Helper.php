@@ -85,10 +85,9 @@ trait Public_Helper {
 		);
 
 		if ( ! is_array( $style ) || empty( $style ) ) {
+			// Visitors see nothing, as the Delete dialog and the Settings Danger zone promise; admins get the note.
 			if ( current_user_can( 'manage_options' ) ) {
 				echo '<p style="color:red;">Image Hover: Style ID ' . esc_html( $styleid ) . ' not found in database</p>';
-			} else {
-				echo '<p>Shortcode Deleted, kindly add correct Shortcode</p>';
 			}
 			return;
 		}

@@ -69,7 +69,7 @@ class Effects2 extends Modules
 			'carousel_flipster_spacing',
 			$this->style,
 			[
-				'label' => esc_html__('Autoplay Speed', 'image-hover-effects-ultimate'),
+				'label' => esc_html__( 'Spacing', 'image-hover-effects-ultimate' ),
 				'type' => Controls::NUMBER,
 				'default' => -0.25,
 				'step' => 0.01,

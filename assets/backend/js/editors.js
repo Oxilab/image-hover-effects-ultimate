@@ -348,6 +348,13 @@ jQuery.noConflict();
                 $("#OXIAADDONSCHANGEDPOPUP").modal("show");
                 OxiAddonsModalConfirm("#oxi-addons-templates-submit", "Save");
                 OxiAddonsPreviewDataLoader();
+            } else {
+                // Not saved (for example Custom CSS was refused): show the reason as text and reset the button.
+                $("#OXIAADDONSCHANGEDPOPUP .icon-box").html('<span class="dashicons dashicons-no"></span>');
+                $("#OXIAADDONSCHANGEDPOPUP .modal-body.text-center h4").text("Not saved");
+                $("#OXIAADDONSCHANGEDPOPUP .modal-body.text-center p").text(typeof callback === "string" && callback !== "" ? callback : "Something went wrong. Kindly try again.");
+                $("#OXIAADDONSCHANGEDPOPUP").modal("show");
+                OxiAddonsModalConfirm("#oxi-addons-templates-submit", "Save");
             }
         });
     });

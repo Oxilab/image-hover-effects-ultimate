@@ -84,5 +84,5 @@ Items:   INSERT / UPDATE / DELETE in _list; Rearrange re-inserts rows
 Render:  SELECT style + children by id → Render class → HTML + queued CSS
 Export:  {"style": row, "child": rows} as JSON;  Import: post_json_import() inserts it as a new style
 Delete:  DELETE style row and its children (pages that use the shortcode then show a notice to admins and
-         "Shortcode Deleted, kindly add correct Shortcode" to visitors)
+         nothing to visitors since 9.12.2)
 ```

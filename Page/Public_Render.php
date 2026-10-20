@@ -300,6 +300,36 @@ class Public_Render {
     }
 
     /**
+     * A saved setting as a number, for the values a layout calculates with.
+     *
+     * PHP 8 stops with a fatal TypeError when it calculates with an empty or text value (PHP 7 only warned and used
+     * 0), so one cleared number field ended the whole page right after the gallery. Empty and text values count as 0
+     * here, the number PHP 7 used; real numbers give the same result as before.
+     *
+     * @since 9.12.2
+     * @param mixed $value A saved setting.
+     * @return float
+     */
+    public function num( $value ) {
+        return is_scalar( $value ) ? (float) $value : 0.0;
+    }
+
+    /**
+     * Height as a percentage of width, for the item ratio of styles saved before 9.3.0.
+     *
+     * A width of 0 or empty gives 0 instead of a fatal "Division by zero" on PHP 8.
+     *
+     * @since 9.12.2
+     * @param mixed $height Saved height.
+     * @param mixed $width  Saved width.
+     * @return float|int
+     */
+    public function percent( $height, $width ) {
+        $width = $this->num( $width );
+        return 0.0 === $width ? 0 : $this->num( $height ) / $width * 100;
+    }
+
+    /**
      * old empty old render
      *
      * @since 9.3.0
@@ -640,8 +670,9 @@ class Public_Render {
 
         if ( array_key_exists( $id . '-type', $style ) && $style[ $id . '-type' ] != '' ) :
             echo 'sa-data-animation="' . esc_attr( $style[ $id . '-type' ] );
-            if ( array_key_exists( $id . '-looping', $style ) && $style[ $id . '-looping' ] != '0' ) :
-                echo 'infinite';
+            // The Looping switch saves "yes"; " infinite" is a second class, matched by .animated.infinite in animation.css.
+            if ( array_key_exists( $id . '-looping', $style ) && 'yes' === $style[ $id . '-looping' ] ) :
+                echo ' infinite';
             endif;
             echo '"';
             echo ( array_key_exists( $id . '-offset-size', $style ) ? ' sa-data-animation-offset="' . esc_attr( $style[ $id . '-offset-size' ] ) . '%"' : '' );

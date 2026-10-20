@@ -149,16 +149,16 @@ class Effects2 extends Public_Render {
         $style = $this->style;
         return '.oxi-image-hover-wrapper-' . $this->oxiid . '.Oxipopup-bg{
                         background: ' . $style['oxi_image_light_bg_color'] . ';
-                        z-index: ' . ($style['oxi_image_light_z_ind'] - 1) . ';
+                        z-index: ' . ( $this->num( $style['oxi_image_light_z_ind'] ) - 1 ) . ';
                       }
                   .oxi-image-hover-wrapper-' . $this->oxiid . '.Oxipopup-wrap{
                    z-index: ' . $style['oxi_image_light_z_ind'] . ';
                   }
                   .oxi-image-hover-wrapper-' . $this->oxiid . ' .Oxipopup-content{
-                    z-index: ' . ($style['oxi_image_light_z_ind'] + 2) . ';
+                    z-index: ' . ( $this->num( $style['oxi_image_light_z_ind'] ) + 2 ) . ';
                     }
                   .oxi-image-hover-wrapper-' . $this->oxiid . ' .Oxipopup-close{
-                      z-index: ' . ($style['oxi_image_light_z_ind'] + 3) . ';
+                      z-index: ' . ( $this->num( $style['oxi_image_light_z_ind'] ) + 3 ) . ';
                   }
 
                  .oxi-image-hover-wrapper-' . $this->oxiid . ' .Oxipopup-image-holder .Oxipopup-close,

@@ -4,7 +4,7 @@
  * Plugin Name:       Image Hover Effects Ultimate
  * Plugin URI:        https://oxilab.dev
  * Description:       Create Awesome Image Hover Effects as Image Gallery, Lightbox, Comparison and Magnifier with Impressive, Lightweight, Responsive Image Hover Effects Ultimate. Use 500+ modern and elegant CSS hover effects and animations.
- * Version:           9.12.1
+ * Version:           9.12.2
  * Author:            Oxilab
  * Author URI:        https://oxilab.dev
  * Text Domain:       image-hover-effects-ultimate
@@ -122,6 +122,32 @@ if (! class_exists('Oxilab_Imagehover')) {
 			register_deactivation_hook(__FILE__, [$this, 'deactivate']);
 			do_action('image-hover-effects-ultimate/before_init');
 			add_action('init', [$this, 'init_plugin'], 20);
+
+			// WordPress fires widgets_init on init priority 1 and WPBakery fires vc_before_init on init priority 9,
+			// both before init_plugin() runs, so these two are hooked when the plugin loads.
+			add_action( 'widgets_init', [ $this, 'register_widget' ] );
+			add_action( 'vc_before_init', [ $this, 'register_vc_element' ] );
+		}
+
+		/**
+		 * Register the classic "Image Hover Effects Ultimate" widget.
+		 *
+		 * @since 9.12.2
+		 * @return void
+		 */
+		public function register_widget() {
+			register_widget( new \OXI_IMAGE_HOVER_PLUGINS\Modules\Widget() );
+		}
+
+		/**
+		 * Register the "Image Hover Ultimate" element for WPBakery Page Builder.
+		 *
+		 * @since 9.12.2
+		 * @return void
+		 */
+		public function register_vc_element() {
+			$element = new \OXI_IMAGE_HOVER_PLUGINS\Modules\Visual_Composer();
+			$element->iheu_oxi_VC_extension();
 		}
 
 		/**
@@ -152,7 +178,7 @@ if (! class_exists('Oxilab_Imagehover')) {
 			define('OXI_IMAGE_HOVER_BASENAME', plugin_basename(__FILE__));
 			define('OXI_IMAGE_HOVER_PATH', plugin_dir_path(__FILE__));
 			define('OXI_IMAGE_HOVER_URL', plugins_url('/', __FILE__));
-			define('OXI_IMAGE_HOVER_PLUGIN_VERSION', '9.12.1');
+			define( 'OXI_IMAGE_HOVER_PLUGIN_VERSION', '9.12.2' );
 			define('OXI_IMAGE_HOVER_TEXTDOMAIN', 'image-hover-effects-ultimate');
 		}
 
@@ -234,9 +260,7 @@ if (! class_exists('Oxilab_Imagehover')) {
 			new \OXI_IMAGE_HOVER_PLUGINS\Modules\Visual_Composer();
 			new \OXI_IMAGE_HOVER_PLUGINS\Modules\Elementor();
 			new \OXI_IMAGE_HOVER_PLUGINS\Modules\Gutenberg();
-			$ImageWidget = new \OXI_IMAGE_HOVER_PLUGINS\Modules\Widget();
 			add_filter('widget_text', 'do_shortcode');
-			add_action('widgets_init', [$ImageWidget, 'iheu_widget_widget']);
 		}
 
 		public function register_image_hover_ultimate_update()

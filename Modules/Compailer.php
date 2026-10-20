@@ -33,101 +33,105 @@ class Compailer extends Public_Render {
         <?php
     }
 
-    public function default_render( $style, $child, $admin ) {
-        if ( $this->dynamicPost == true ) :
+    /**
+     * The query of a dynamic style (posts, or the style's own items page by page), built from its saved settings
+     * only. Used by the page render and by the public Load More request (ImageApi::load_more_action()), which sends
+     * nothing but the style id and the page number.
+     *
+     * @since 9.12.2
+     * @param array $style   Saved settings of the style.
+     * @param int   $styleid The style id.
+     * @return array{posts: bool, args: array, settings: array}
+     */
+    public static function load_more_query( $style, $styleid ) {
+        if ( isset( $style['image_hover_dynamic_content'] ) && 'yes' === $style['image_hover_dynamic_content'] ) {
             $args = [
-                'post_status' => 'publish',
+                'post_status'         => 'publish',
                 'ignore_sticky_posts' => 1,
-                'post_type' => $style['image_hover_dynamic_content_type'],
-                'orderby' => $style['image_hover_dynamic_content_orderby'],
-                'order' => $style['image_hover_dynamic_content_ordertype'],
-                'posts_per_page' => $style['image_hover_dynamic_load_per_page'],
-                'offset' => $style['image_hover_dynamic_content_offset'],
-                'tax_query' => [],
+                'post_type'           => $style['image_hover_dynamic_content_type'],
+                'orderby'             => $style['image_hover_dynamic_content_orderby'],
+                'order'               => $style['image_hover_dynamic_content_ordertype'],
+                'posts_per_page'      => $style['image_hover_dynamic_load_per_page'],
+                'offset'              => $style['image_hover_dynamic_content_offset'],
+                'tax_query'           => [], // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- the category and tag filters of the style.
             ];
-            if ( ! empty( $style['image_hover_dynamic_content_author'] ) ) :
+            if ( ! empty( $style['image_hover_dynamic_content_author'] ) ) {
                 $args['author__in'] = $style['image_hover_dynamic_content_author'];
-            endif;
+            }
 
             $type = $style['image_hover_dynamic_content_type'];
 
             if ( ! empty( $style[ $type . '_exclude' ] ) ) {
-                $args['post__not_in'] = $style[ $type . '_exclude' ];
+                $args['post__not_in'] = $style[ $type . '_exclude' ]; // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- the style's Exclude Post setting.
             }
             if ( ! empty( $style[ $type . '_include' ] ) ) {
                 $args['post__in'] = $style[ $type . '_include' ];
             }
-            if ( $type != 'page' ) :
-                if ( ! empty( $style[ $type . '_category' ] ) ) :
+            if ( 'page' !== $type ) {
+                if ( ! empty( $style[ $type . '_category' ] ) ) {
                     $args['tax_query'][] = [
-                        'taxonomy' => $type == 'post' ? 'category' : $type . '_category',
-                        'field' => 'term_id',
-                        'terms' => $style[ $type . '_category' ],
+                        'taxonomy' => 'post' === $type ? 'category' : $type . '_category',
+                        'field'    => 'term_id',
+                        'terms'    => $style[ $type . '_category' ],
                     ];
-                endif;
-                if ( ! empty( $style[ $type . '_tag' ] ) ) :
+                }
+                if ( ! empty( $style[ $type . '_tag' ] ) ) {
                     $args['tax_query'][] = [
                         'taxonomy' => $type . '_tag',
-                        'field' => 'term_id',
-                        'terms' => $style[ $type . '_tag' ],
+                        'field'    => 'term_id',
+                        'terms'    => $style[ $type . '_tag' ],
                     ];
-                endif;
-                if ( ! empty( $args['tax_query'] ) ) :
+                }
+                if ( ! empty( $args['tax_query'] ) ) {
                     $args['tax_query']['relation'] = 'OR';
-                endif;
-            endif;
-            $settings = [
-                'display_post_id' => $this->oxiid,
-                'display_post_thumb_sizes' => $style['image_hover_dynamic_content_thumb_sizes'],
-                'display_post_excerpt' => (int) $style['image_hover_dynamic_post_excerpt'] ? $style['image_hover_dynamic_post_excerpt'] : 15,
+                }
+            }
+            return [
+                'posts'    => true,
+                'args'     => $args,
+                'settings' => [
+                    'display_post_id'          => $styleid,
+                    'display_post_thumb_sizes' => $style['image_hover_dynamic_content_thumb_sizes'],
+                    'display_post_excerpt'     => (int) $style['image_hover_dynamic_post_excerpt'] ? $style['image_hover_dynamic_post_excerpt'] : 15,
+                ],
             ];
-            new Post_Query( 'post_query', $this->dbdata, $args, $settings );
-            if ( $this->dynamicLoad ) :
-                if ( $style['image_hover_dynamic_load_type'] == 'button' ) :
-					?>
-
-
-                    <div class="oxi-image-hover-load-more-button-wrap oxi-bt-col-sm-12">
-                        <button class="oxi-image-load-more-button" data-class="OXI_IMAGE_HOVER_PLUGINS\Modules\Dynamic\Post_Query" data-function="__rest_api_post" data-args='<?php echo esc_attr( json_encode( $args ) ); ?>' data-settings='<?php echo esc_attr( json_encode( $settings ) ); ?>' data-page="1">
-                            <div class="oxi-image-hover-loader button__loader"></div>
-                            <span><?php $this->text_render( $style['image_hover_dynamic_load_button_text'] ); ?></span>
-                        </button>
-                    </div>
-					<?php
-                else :
-					?>
-                    <div class="oxi-image-hover-dynamic-load-infinite" id="oxi-image-hover-dynamic-load-infinite-<?php echo (int) $this->dbdata['id']; ?>" data-class="OXI_IMAGE_HOVER_PLUGINS\Modules\Dynamic\Post_Query" data-function="__rest_api_post" data-args='<?php echo esc_attr( json_encode( $args ) ); ?>' data-settings='<?php echo esc_attr( json_encode( $settings ) ); ?>' data-page="1">
-                    </div>
-					<?php
-                endif;
-            endif;
-        else :
-            $args = [
+        }
+        return [
+            'posts'    => false,
+            'args'     => [
                 'posts_per_page' => isset( $style['image_hover_dynamic_load_per_page'] ) ? $style['image_hover_dynamic_load_per_page'] : 10,
-                'offset' => 0,
-            ];
-            $settings = [
-                'display_post_id' => $this->oxiid,
-            ];
+                'offset'         => 0,
+            ],
+            'settings' => [
+                'display_post_id' => $styleid,
+            ],
+        ];
+    }
 
-            new Layouts_Query( 'layouts_query', $this->dbdata, $args, $settings );
+    public function default_render( $style, $child, $admin ) {
+        $query = self::load_more_query( $style, $this->oxiid );
+        if ( true === $this->dynamicPost ) :
+            new Post_Query( 'post_query', $this->dbdata, $query['args'], $query['settings'] );
+        else :
+            new Layouts_Query( 'layouts_query', $this->dbdata, $query['args'], $query['settings'] );
+        endif;
 
-            if ( $this->dynamicLoad ) :
-                if ( $style['image_hover_dynamic_load_type'] == 'button' ) :
-					?>
-                    <div class="oxi-image-hover-load-more-button-wrap oxi-bt-col-sm-12">
-                        <button class="oxi-image-load-more-button" data-class="OXI_IMAGE_HOVER_PLUGINS\Modules\Dynamic\Layouts_Query" data-function="__rest_api_post" data-args='<?php echo esc_attr( json_encode( $args ) ); ?>' data-settings='<?php echo esc_attr( json_encode( $settings ) ); ?>' data-page="1">
-                            <div class="oxi-image-hover-loader button__loader"></div>
-                            <span><?php $this->text_render( $style['image_hover_dynamic_load_button_text'] ); ?></span>
-                        </button>
-                    </div>
-					<?php
-                else :
-					?>
-                    <div class="oxi-image-hover-dynamic-load-infinite" id="oxi-image-hover-dynamic-load-infinite-<?php echo (int) $this->dbdata['id']; ?>" data-class="OXI_IMAGE_HOVER_PLUGINS\Modules\Dynamic\Layouts_Query" data-function="__rest_api_post" data-args='<?php echo esc_attr( json_encode( $args ) ); ?>' data-settings='<?php echo esc_attr( json_encode( $settings ) ); ?>' data-page="1">
-                    </div>
-					<?php
-                endif;
+        // Load More sends only this style's id and the next page number; the query is built again on the server.
+        if ( $this->dynamicLoad ) :
+            if ( 'button' === $style['image_hover_dynamic_load_type'] ) :
+				?>
+                <div class="oxi-image-hover-load-more-button-wrap oxi-bt-col-sm-12">
+                    <button class="oxi-image-load-more-button" data-styleid="<?php echo (int) $this->oxiid; ?>" data-page="1">
+                        <div class="oxi-image-hover-loader button__loader"></div>
+                        <span><?php $this->text_render( $style['image_hover_dynamic_load_button_text'] ); ?></span>
+                    </button>
+                </div>
+				<?php
+            else :
+				?>
+                <div class="oxi-image-hover-dynamic-load-infinite" id="oxi-image-hover-dynamic-load-infinite-<?php echo (int) $this->dbdata['id']; ?>" data-styleid="<?php echo (int) $this->oxiid; ?>" data-page="1">
+                </div>
+				<?php
             endif;
         endif;
 
@@ -156,6 +160,7 @@ class Compailer extends Public_Render {
 
             $jquery = '(function ($) {
             $(".' . $this->WRAPPER . ' .oxi-addons-row").slick({
+                slide: ":not(style):not(script):not(link)",
                 fade: false,
                 autoplay: ' . $autoplay . ',
                 autoplaySpeed: ' . $autoplayspeed . ',

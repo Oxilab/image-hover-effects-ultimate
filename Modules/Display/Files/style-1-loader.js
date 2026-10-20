@@ -12,23 +12,16 @@ jQuery.noConflict();
             if ($(window).scrollTop() >= ($('#' + $WRAPPERID).offset().top - $(window).height() + 100)) {
                 if (!($WRAPPER.hasClass("post-loading"))) {
                     $WRAPPER.addClass("post-loading");
-                    var $CLASS = $WRAPPER.data('class'),
-                            $function = $WRAPPER.data('function'),
-                            $args = $WRAPPER.data('args'),
-                            $settings = $WRAPPER.data('settings'),
-                            $page = parseInt($WRAPPER.data("page")) + 1;
+                    var $styleid = $WRAPPER.data('styleid'),
+                $page = parseInt($WRAPPER.data("page")) + 1;
 
                     $.ajax({
                         url: oxi_image_style_1_loader.ajaxurl,
                         method: 'POST',
                         data: {
-                            action: 'image_hover_ultimate',
-                            _wpnonce: oxi_image_style_1_loader.nonce,
-                            class: $CLASS,
-                            functionname: $function,
-                            rawdata: JSON.stringify($settings),
-                            args: $args,
-                            optional: $page
+                            action: 'oxi_image_hover_load_more',
+                            styleid: $styleid,
+                            page: $page
                         }
                     }).done(function (response) {
                         var word = 'Image Hover Empty Data';
@@ -57,22 +50,15 @@ jQuery.noConflict();
         e.stopImmediatePropagation();
         var $WRAPPER = $(this);
         $WRAPPER.addClass("button--loading");
-        var $CLASS = $WRAPPER.data('class'),
-                $function = $WRAPPER.data('function'),
-                $args = $WRAPPER.data('args'),
-                $settings = $WRAPPER.data('settings'),
+        var $styleid = $WRAPPER.data('styleid'),
                 $page = parseInt($WRAPPER.data("page")) + 1;
         $.ajax({
             url: oxi_image_style_1_loader.ajaxurl,
             method: 'POST',
             data: {
-                action: 'image_hover_ultimate',
-                _wpnonce: oxi_image_style_1_loader.nonce,
-                class: $CLASS,
-                functionname: $function,
-                rawdata: JSON.stringify($settings),
-                args: $args,
-                optional: $page
+                action: 'oxi_image_hover_load_more',
+                styleid: $styleid,
+                page: $page
             }
         }).done(function (response) {
             var word = 'Image Hover Empty Data';

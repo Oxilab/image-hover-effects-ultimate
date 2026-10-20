@@ -17,7 +17,7 @@ Nothing touches the plugin folder before step 3. Back up the old screenshots to 
 | --- | --- |
 | Capture | Playwright, 1500 px wide, device scale 2, height per shot (860 to 992) |
 | Output | 3256 px wide PNG, the Shop Manager width |
-| Stage | `linear-gradient(148deg, #33104a, #220b38, #150722)`, magenta glow top left `rgba(214,40,160,.72)`, pink glow bottom right `rgba(238,50,110,.92)`, coral glow along the bottom `rgba(255,128,64,.62)` (taken from `.wordpress-org/banner-1544x500.png`), faint 58 px grid, padding 64 |
+| Stage | `linear-gradient(148deg, #33104a, #220b38, #150722)`, magenta glow top left `rgba(214,40,160,.72)`, pink glow bottom right `rgba(238,50,110,.92)`, coral glow along the bottom `rgba(255,128,64,.62)` (taken from `.wordpress-org/banner-1544x500.png`), no grid or pattern (see Background below), padding 64 |
 | Window | macOS window: 42 px bar with traffic lights, 15 px corners, deep shadow |
 | Logo pill | Top left: the mark `.wordpress-org/icon-256x256.png` plus a two-line wordmark, "Image Hover" over "Effects Ultimate" in pink `#ff7aa2` |
 | Title | Centred, 800 weight, 62 px, white, no dashes, about 30 characters. The frame shrinks a long title to fit between the logo and its mirror, and the build fails if the gap to the logo is under 24 px |
@@ -74,3 +74,14 @@ Both helper files live in the scratchpad, never in the project.
 
 To change one shot later: edit its entry in `build.mjs`, rebuild only that number, show Richard, then replace only
 that file and its caption.
+
+## Background: no grid, no squares (Richard, 2026-10-17)
+
+The stage, frame or canvas behind a screenshot is a plain color or a smooth gradient with soft glows only: **no grid,
+squares, lines, dots or any repeated pattern**, not even faint. The same rule covers videos, thumbnails and blog
+images. On 2026-10-17 the pipelines `image-hover-tutorial-video/scripts/wporg/frame.mjs` and
+`wporg-screenshots/product-layouts/frame.mjs` still draw a 58 px grid ("so the flat areas of the gradient are not
+dead space"): remove that layer before the next build, and never copy it into a new pipeline. The installed
+WordPress.org sets of Shop Manager, Image Hover and Product Layouts still show a grid until they are rebuilt.
+
+- **No version numbers** (Richard, 2026-10-17): hide every plugin and WordPress version on screen and never say one; see [00-general.md](00-general.md) rule 18.

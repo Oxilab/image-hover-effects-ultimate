@@ -10,6 +10,8 @@ admin screens look, and how a release goes out. Read [00-general.md](00-general.
 | --- | --- |
 | Namespace | `OXI_IMAGE_HOVER_PLUGINS\` maps to the plugin root (Composer PSR-4, `vendor/autoload.php`). Folder and class names match exactly: `Includes/Admin/Pages/Settings.php` is `OXI_IMAGE_HOVER_PLUGINS\Includes\Admin\Pages\Settings`. |
 | Main file | `index.php`: Freemius init, final class `Oxilab_Imagehover` (singleton `oxilab_imagehover()`), boot on `init` priority 20. |
+| Hooks that fire early | Anything added inside `init_plugin()` runs on `init` priority 20, so a hook that fires earlier is never reached: `widgets_init` (init 1), WPBakery's `vc_before_init` (init 9), `plugins_loaded`, `after_setup_theme`. Add those in the constructor, as `register_widget()` and `register_vc_element()` do. In 9.12.1 and earlier the widget and the WPBakery element never registered for this reason (fixed 2026-10-18). |
+| Math with saved values (PHP 8) | Never calculate with a saved setting directly: PHP 8 stops the whole page with a TypeError for an empty or text value and a DivisionByZeroError for / 0, which ends the page right after the gallery. Use `$this->num( $value )` (empty or text counts as 0) and `$this->percent( $height, $width )` from `Page/Public_Render.php`. Check new layouts with `security-tests/image-hover-effects-ultimate/php8-fuzz.php` (0 fatal errors). Fixed in 9.12.2 after a Flipbox customer's page died this way (2026-10-20). |
 | Admin pages | `Includes/Admin/Pages/` (Image Hover home, Shortcode, Settings, Getting Started). The template library and the editor are routed by `Includes/Admin/Menu::Image_Parent()` to module classes. |
 | AJAX | One router: `Classes/ImageApi.php`. `image_hover_settings` calls `post_<functionname>()` on `ImageApi`; a new admin action is a new `post_<name>()` method there. Notices have their own small handlers in their `Support_*` class. |
 | Effect types | `Modules/<Type>/`: `<Type>.php` (template library page), `Modules.php` (editor controls, shared by all effects of the type), `Admin/EffectsN.php` (editor per effect), `Render/EffectsN.php` (front-end HTML), `Files/` (CSS and JS), `Layouts/N/*.json` (ready designs). See [../code/modules.md](../code/modules.md). |
@@ -249,6 +251,11 @@ home, Create New, the editor). They share one look:
 2. The version lives in three places: the `Version:` header and `define('OXI_IMAGE_HOVER_PLUGIN_VERSION', ...)` in
    `index.php`, and `Stable tag:` in `readme.txt`.
 3. Changelog lines go in the top section of `readme.txt` (format in [00-general.md](00-general.md) rule 6).
+3a. **Integration check before every release** (added 2026-10-18 after the widget and WPBakery element were found
+   silently missing from 9.10.5 to 9.12.1, about a year): run
+   `security-tests/image-hover-effects-ultimate/builder-registration.php` and `render-hash.php`. The widget, the
+   WPBakery element (once), the block, the Elementor widget and both shortcodes must register, and every saved style
+   must render. A missing integration blocks the release.
 4. Richard commits on `dev` and pushes a tag. `.github/workflows/deploy-org.yml` (10up deploy action, slug
    `image-hover-effects-ultimate`) then ships to WordPress.org SVN, including the `.wordpress-org/` banners, icons and
    screenshots. `update-assets.yml` listens to a `trunk` branch this repo doesn't have. Claude never commits, tags or

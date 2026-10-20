@@ -166,6 +166,7 @@ class Effects1 extends Public_Render
 
 		$jquery = '(function ($) {
             $("#' . $this->WRAPPER . '.oxi-addons-container > .oxi-addons-row").slick({
+                slide: ":not(style):not(script):not(link)",
                 fade: false,
                 autoplay: ' . $autoplay . ',
                 autoplaySpeed: ' . $autoplayspeed . ',

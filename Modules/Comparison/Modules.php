@@ -305,7 +305,7 @@ class Modules extends Admin_Render
 				'oxi_image_comparison_body_offset',
 				$this->style,
 				[
-					'label' => esc_html__('Coparison Offset', 'image-hover-effects-ultimate'),
+					'label' => esc_html__( 'Comparison Offset', 'image-hover-effects-ultimate' ),
 					'type' => Controls::SLIDER,
 					'default' => [
 						'unit' => 'px',

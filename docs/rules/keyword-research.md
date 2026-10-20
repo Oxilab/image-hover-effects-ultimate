@@ -61,6 +61,10 @@ run the free comparison first (15 to 20 keywords from DataForSEO against Keyword
 
 Without a Keyword Planner export the brief says "no volume data" and nothing is written until Richard sends it.
 
+**Docs are exempt** (Richard, 2026-10-18): docs need no keyword research. Claude picks a doc's focus keyword itself
+(the phrase users really search, used naturally in the doc); see [docs-publishing-seo.md](docs-publishing-seo.md).
+This workflow is for blog posts.
+
 Every number in a brief carries its source and date ("Keyword Planner, all locations, 2026-10-16").
 
 ## What to measure for every candidate keyword

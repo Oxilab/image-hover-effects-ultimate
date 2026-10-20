@@ -15,6 +15,31 @@ their SEO pass (2026-07 to 2026-09), where Richard set every rule below.
 
 Never skip ahead or batch several docs without his go.
 
+## Fixing the existing docs (Richard, 2026-10-18)
+
+Richard: "vul information dewa jabe na" (no wrong information may be given). For the docs that are already live:
+
+- **Every fact matches the plugin.** Read every doc against the code and the real UI. When something doesn't match
+  (a number, a menu path, a button label, a field, Free or Pro, a link, a screenshot), fix it. Leave out what can't
+  be verified.
+- **Remove what isn't needed.** A doc that only repeats other docs is removed: move anything useful into the doc that
+  covers the topic, set the removed doc to draft (the MCP has no delete), and give Richard the 301 redirect
+  (old URL → new URL) to add in Rank Math, because the MCP can't add redirects. Never remove a doc the plugin links
+  to (see "Links into these docs from the plugin" below).
+- **Modify the rest** in place: same id, same slug, current UI, house HTML, new screenshots.
+- For this kind of fix Richard gave a standing go: no brief and no "YES" per doc. A brand new doc still follows the
+  workflow above.
+- **Still one doc at a time** (Richard, 2026-10-18: "ami chaiteci 1 ta 1ta kore doc update korte"): fix and publish
+  one doc, give Richard its id and link, and wait for his check before starting the next. Never run ahead through
+  several docs in one go.
+
+## Focus keywords for docs: no keyword research (Richard, 2026-10-18)
+
+Docs don't go through Keyword Planner. Claude picks the focus keyword: the 2 or 3 word phrase a user would really
+type to find that doc, which the doc uses naturally. One keyword per page (check the other docs' keywords in the
+table at the end of this file). The Keyword Planner workflow in [keyword-research.md](keyword-research.md) is for
+blog posts only.
+
 ## Audience and voice
 
 - Beginners: site owners and designers, not developers. Plain English, short paragraphs (under 120 words), numbered
@@ -49,10 +74,10 @@ Extensions (Pro) = 18. Assign a doc to the parent **and** its section, for examp
 | --- | --- |
 | ihe-getting-started | what-is-image-hover-effects-ultimate, how-to-install-activate-image-hover-effects-ultimate, creating-your-first-hover-effect (id 291), image-hover-effects-shortcode, free-vs-pro-whats-the-difference |
 | effect-types | general-hover-effects, caption-hover-effects, flip-box-hover-effects, lightbox-gallery-effects, before-after-image-comparison-slider, button-overlay-hover-effects, square-image-magnifier-filter-gallery-carousel-effects |
-| settings-configuration | general-plugin-settings-explained, mobile-touch-device-behavior, google-fonts-font-awesome-custom-css |
+| settings-configuration | general-plugin-settings-explained (id 301), google-fonts-font-awesome-custom-css (mobile-touch-device-behavior, id 302, removed 2026-10-18 and merged into 301) |
 | page-builder-integration | how-to-use-image-hover-effects-with-elementor, how-to-use-with-wpbakery-visual-composer, using-as-a-wordpress-widget-in-gutenberg, using-the-native-gutenberg-block (id 429) |
 | customization | typography-font-customization, colors-gradients-overlay-settings, animations-transition-effects, responsive-mobile-layout-settings, border-shadow-box-styling |
-| troubleshooting-faq | hover-effects-not-working-how-to-fix, plugin-conflicts-performance-optimization, frequently-asked-questions-faq |
+| troubleshooting-faq | hover-effects-not-working-how-to-fix (id 312), frequently-asked-questions-faq (plugin-conflicts-performance-optimization, id 313, removed 2026-10-18 and merged into 312) |
 | extensions | display-post-show-wordpress-posts-with-hover-effects, carousel-slider-turn-hover-effects-into-a-sliding-carousel, filter-sorting-create-a-filterable-image-gallery |
 
 30 docs, written 2026-03 (the Gutenberg block doc 2026-05). They already use H2 steps and R2 images
@@ -99,8 +124,8 @@ the free tier: some tools may be Pro only.
 
 ## SEO recipe per doc (scores land around 80)
 
-1. Focus keyword: chosen with measured data ([keyword-research.md](keyword-research.md)) and checked in the keyword
-   map, 2 or 3 words the doc uses naturally (4 word phrases can't reach 1% density without stuffing). Examples:
+1. Focus keyword: Claude's pick, no keyword research (see "Focus keywords for docs" above), 2 or 3 words the doc
+   uses naturally (4 word phrases can't reach 1% density without stuffing), not used by another doc. Examples:
    "image hover effects", "image comparison slider", "lightbox gallery".
 2. SEO title up to 60 characters, keyword first; add a number and a power word only where both are true of the doc.
 3. Meta description up to 158 characters, keyword early.

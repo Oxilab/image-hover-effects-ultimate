@@ -5,6 +5,7 @@ namespace OXI_IMAGE_HOVER_PLUGINS\Modules;
 class Elementor {
     public function __construct() {
         add_action( 'elementor/widgets/register', [ $this, 'register' ] );
+        add_filter( 'elementor/widgets/black_list', [ $this, 'classic_widget_black_list' ] );
         add_action( 'elementor/editor/after_enqueue_styles', [ $this, 'editor_icon_style' ] );
         add_action( 'elementor/editor/after_enqueue_scripts', [ $this, 'editor_enqueue_scripts' ] );
     }
@@ -20,7 +21,9 @@ class Elementor {
     }
 
     public function editor_icon_style() {
-        $icon_url = OXI_IMAGE_HOVER_URL . 'image/dash-icon.svg';
+        // The colored plugin logo, the same one WPBakery and the block show (dash-icon.svg is the white menu glyph,
+        // which the Elementor panel showed as a grey circle).
+        $icon_url = OXI_IMAGE_HOVER_URL . 'image/logo.png';
         echo '<style>
             i.icon-image-hover-ultimate::before { display: none !important; }
             i.icon-image-hover-ultimate {
@@ -44,6 +47,63 @@ class Elementor {
             oxilab_define_image_hover_elementor_widget();
         }
         $widgets_manager->register( new Image_Hover_Elementor_Widget() );
+
+        // The classic widget, registered again under its usual name (wp-widget-iheu_widget) so pages that already use
+        // it keep working, but hidden from the panel and its search: the Image Hover widget above is the one to use.
+        $key = $this->classic_widget_key();
+        if ( '' !== $key && class_exists( '\Elementor\Widget_WordPress' ) ) {
+            oxilab_define_image_hover_classic_elementor_widget();
+            $widgets_manager->register( new Image_Hover_Classic_Elementor_Widget( [], [ 'widget_name' => $key ] ) );
+        }
+    }
+
+    /**
+     * Elementor lists every classic WordPress widget in its search, so the plugin showed up twice ("Image Hover" and
+     * "Image Hover Effects Ultimate"). Leave the classic widget out of Elementor's own list; register() adds it back
+     * hidden.
+     *
+     * @param array $black_list Keys of the WordPress widgets Elementor skips.
+     * @return array
+     */
+    public function classic_widget_black_list( $black_list ) {
+        $key = $this->classic_widget_key();
+        if ( '' !== $key && is_array( $black_list ) ) {
+            $black_list[] = $key;
+        }
+        return $black_list;
+    }
+
+    /**
+     * The classic widget's key in the WordPress widget factory. It is registered as an object, so the key is the
+     * object hash, not the class name.
+     *
+     * @return string Empty when the widget is not registered.
+     */
+    private function classic_widget_key() {
+        global $wp_widget_factory;
+        if ( ! $wp_widget_factory instanceof \WP_Widget_Factory ) {
+            return '';
+        }
+        foreach ( $wp_widget_factory->widgets as $key => $widget ) {
+            if ( $widget instanceof Widget ) {
+                return (string) $key;
+            }
+        }
+        return '';
+    }
+}
+function oxilab_define_image_hover_classic_elementor_widget() {
+    if ( class_exists( '\Elementor\Widget_WordPress' ) && ! class_exists( __NAMESPACE__ . '\Image_Hover_Classic_Elementor_Widget' ) ) {
+        // Defined here, like the Image Hover widget below, because the parent class exists only when Elementor loads.
+        // phpcs:ignore Generic.Files.OneObjectStructurePerFile.MultipleFound
+        class Image_Hover_Classic_Elementor_Widget extends \Elementor\Widget_WordPress {
+            public function hide_on_search() {
+                return true;
+            }
+            public function get_icon() {
+                return 'icon-image-hover-ultimate';
+            }
+        }
     }
 }
 function oxilab_define_image_hover_elementor_widget() {

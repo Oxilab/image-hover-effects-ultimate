@@ -43,7 +43,7 @@ each rule.
 The first seconds decide whether people keep watching, so no video starts with a logo, a slow "Welcome" or a list
 of chapters.
 
-| Video | Hook length | What the hook does |
+| Video | Hook length | What the hook does; every platform and its format: see Platforms and formats below |
 | --- | --- | --- |
 | Ad | 0 to 2 s | Movement plus one short line; an image turning into a hover effect in the first second ([video-ads.md](video-ads.md)) |
 | Explainer or launch | 0 to 5 s | The viewer's problem in one line over real output (flat images that do nothing), then the reveal ([video-explainer.md](video-explainer.md)) |
@@ -101,6 +101,21 @@ Oxilab video).
 - Pace: calm. Gaps of about 0.4 to 0.55 s between lines, about 1 s before a new section, holds of 0.4 to 0.9 s
   after a click so the screen can be read. Richard found the first fast cuts hard to follow.
 
+## Backgrounds: no grid, no squares (Richard, 2026-10-17)
+
+Richard, pointing at the ThankRedirect explainer: no square shapes or marks in the background. So, in every video
+(every scene, light and dark backdrops, intro, outro, thumbnails, ad frames):
+
+- **No grid, no squares, no lines, no dots, no checkerboard, no tile or repeated pattern** behind the UI or the text,
+  not even faint or faded out with a mask.
+- Allowed: a plain color, smooth gradients and soft blurred glows in the brand colors, and the real UI itself.
+- Check a still of every scene type at full size before rendering: the background must be clean.
+- In code a grid looks like `linear-gradient(<color> 1px, transparent 1px)` with a `backgroundSize` in px,
+  `repeating-linear-gradient`, `repeating-radial-gradient` or a pattern SVG: remove the layer, don't just fade it.
+- On 2026-10-17 these still draw one: `src/components/Backdrop.tsx` (light and dark backdrop) in
+  `thankredirect-explainer-video` and `shop-manager-launch-video`. Remove it before their next render, and never copy
+  it into a new project.
+
 ## Layout and type
 
 - **No text, counter or graphic on top of the UI.** Headlines and pills sit beside or above the screen; push in only
@@ -112,14 +127,69 @@ Oxilab video).
 
 | Item | Spec |
 | --- | --- |
-| Video | 1920 x 1080 (and 1080 x 1920 for vertical cuts), 60 fps, H.264 High, CRF 14 to 16 (the tutorial master: 12 Mbps) |
+| Video | 1920 x 1080 (and 1080 x 1920 for vertical cuts), 60 fps, H.264 High, CRF 14 to 16 (the tutorial master: 12 Mbps); every platform and its format: see Platforms and formats below |
 | Audio | AAC 48 kHz, mastered to -14 LUFS (`master.mjs`) |
 | Captions | `.srt` timed to the spoken words |
 | Thumbnail | 1280 x 720, under 2 MB, real UI, one short line of text, readable at 320 x 180, no text on top of the UI |
-| Upload pack | `youtube.md`: title plus 2 alternatives, description with chapters and links, tags, pinned comment, settings |
+| Upload pack | `youtube.md`: title plus 2 alternatives, description with chapters and links, tags (see YouTube tags below), pinned comment, settings |
 | QA | `QA.md`: every check and its result (privacy, clicks, sync, loudness, glyphs) |
 
 Links for descriptions: docs `https://oxilab.dev/docs/image-hover-effects/`, WordPress.org
 `https://wordpress.org/plugins/image-hover-effects-ultimate/`, demos `https://demos.oxilab.dev/imagehover/demos/`.
 YouTube settings: category Science & Technology, not made for kids, English captions uploaded from the `.srt`, end
 screen with Subscribe and a related video. Channel: `https://www.youtube.com/@oxilabdev`.
+
+## YouTube tags (Richard, 2026-10-17)
+
+Richard, on the ThankRedirect explainer: the tags came to 278 characters, too few; they must use the 500 character
+limit. So, for every YouTube upload (tutorial, explainer, Short):
+
+- **Fill the tags to 480 to 495 characters** of YouTube's 500, counted the way YouTube counts: each tag's length,
+  **plus 2 for a tag with a space** (YouTube wraps it in quotes), plus 1 for each comma. Plain "comma space" text
+  comes out shorter, so it is not the measure. Check it before writing the pack:
+  `node -e 'const t=["tag one","tag2"];console.log(t.reduce((a,x)=>a+x.length+(x.includes(" ")?2:0),0)+t.length-1)'`
+- **Every tag true and relevant to the video**: the main keyword first, then its close variations, then the features
+  the video shows, then broad ones (woocommerce plugin, wordpress plugin), then the plugin name. No unrelated or
+  trending words (YouTube treats misleading tags as spam), no plan or price words.
+- In the upload pack: the tags on **one line, ready to paste**, with the count written next to it
+  (example: `thankredirect-explainer-video/out/final/upload-pack.md`, 16 tags, 489).
+
+## Platforms and formats (Richard, 2026-10-17)
+
+Richard posts every explainer and launch video on **YouTube, YouTube Shorts, Facebook Reels, X, LinkedIn and
+Reddit**, so it is rendered for all six from one timeline. Paid ads follow [video-ads.md](video-ads.md); tutorials
+are YouTube only (16:9) unless Richard asks for more.
+
+| Platform | Who sees it there | File | Size | Length limit | Also deliver |
+| --- | --- | --- | --- | --- | --- |
+| YouTube | Store owners searching how to do something | `youtube/<name>.mp4` | 1920 x 1080 (16:9) | none that matters | Thumbnail 1280 x 720, `.srt`, chapters, tags (see YouTube tags) |
+| YouTube Shorts | Phone viewers scrolling | `youtube-shorts/<name>-shorts.mp4` | 1080 x 1920 (9:16) | under 3:00 | Title ends with #Shorts; the link goes in a pinned comment (description links are not clickable everywhere) |
+| Facebook Reels | Store owners on Facebook, on phones | `facebook-reels/<name>-reels.mp4` | 1080 x 1920 (9:16) | **under 1:30** | The link goes in the first comment |
+| X | The WordPress and developer crowd | `x/<name>-x.mp4` and `x/<name>-x-square.mp4` | 1920 x 1080, plus 1080 x 1080 for the phone feed | under 2:20, under 512 MB | Post text under 280 characters |
+| LinkedIn | Agencies, freelancers, store owners at work | `linkedin/<name>-linkedin.mp4` | 1080 x 1080 (1:1) | under 10:00 | `.srt` (LinkedIn plays muted) |
+| Reddit | WordPress and WooCommerce communities | `reddit/<name>-reddit.mp4` | 1080 x 1350 (4:5) | under 15:00, under 1 GB | Title and one paragraph body, the subreddit's title tag (below) |
+
+How to make them:
+
+1. **One timeline, four renders**: the 16:9 master (`Launch`) and three social cuts (`Social-9x16`, `Social-1x1`,
+   `Social-4x5`), H.264 yuv420p with AAC, each mastered to -14 LUFS. Copy them into the six folders above
+   (`out/final/<platform>/`, APFS clones so they take no extra space).
+2. **Length**: keep an explainer **under 1:30**, so the same cut fits Reels and every other platform. A longer video
+   (a feature tour) goes to YouTube, LinkedIn and X (if under 2:20) only, unless Richard asks for a short cut.
+3. **Social cut layout**: the 16:9 video as a big rounded card, the logo and the WordPress.org link above it, big
+   word synced captions burned in below it (feeds play muted), on the clean brand background. In 9:16 keep every text
+   out of the top 14% and the bottom 35% (Reels and Shorts put their buttons there); 1:1 and 4:5 use the same layout,
+   tighter.
+4. **Check before delivery**: a still of each format, the length on the final files, file sizes under each limit,
+   -14 LUFS on each.
+5. **Upload pack** (`out/final/upload-pack.md`): per platform the title, the post text and where the link goes; every
+   text on one line so a copy carries no hard line breaks; every claim checked in the code.
+6. **Reddit title tags**: r/WordpressPlugins removes posts without one of [FREE], [PREMIUM], [FREEMIUM], [PROMOTION],
+   [REVIEW], [DISCUSSION], [REQUEST] or [HELP] at the start of the title. All five Oxilab plugins are free on
+   WordPress.org with a Pro license, so use **[FREEMIUM]** (and the Freemium flair). Read every subreddit's rules
+   before posting; r/woocommerce and r/Wordpress limit self promotion.
+
+Worked example and template: `/Users/richard/Local Sites/oxilab/thankredirect-explainer-video/` (`src/Vertical.tsx`
+LAYOUTS, `scripts/render-all.sh`, `scripts/platforms.sh`, `out/final/upload-pack.md`).
+
+- **No version numbers** (Richard, 2026-10-17): hide every plugin and WordPress version on screen and never say one; see [00-general.md](00-general.md) rule 18.

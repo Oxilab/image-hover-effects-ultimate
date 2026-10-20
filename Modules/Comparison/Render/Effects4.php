@@ -46,7 +46,8 @@ class Effects4 extends Public_Render {
                 <div class="oxi_addons_image_style_4_box_body oxi-addons-main <?php echo esc_attr( $style['oxi_image_magnifier_image_switcher'] ); ?>">
                     <div class="oxi_addons_hover_view_img" style="background: url('<?php echo esc_url( $this->custom_media_render( 'oxi_image_comparison_image_one', $data ) ); ?>') no-repeat;">
                         <?php
-                        $loop = $style['oxi_image_comparison_hover_width-size'];
+                        // An empty strip count would stop the page on PHP 8 (TypeError); count it as 0 like PHP 7 did.
+                        $loop = $this->num( $style['oxi_image_comparison_hover_width-size'] );
                         $middleloop = $loop - 1;
                         for ( $i = 0; $i < $loop; $i++ ) {
                             if ( $i == 0 ) :

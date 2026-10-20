@@ -10,7 +10,8 @@ names and registers the actions (`build_api()`).
 | Method | What it does |
 | --- | --- |
 | `save_action()` | Handler of `wp_ajax_image_hover_settings`. Checks `get_permissions_check()` and the nonce `image_hover_ultimate`, reads `functionname`, `rawdata` (through `sanitize_rawdata()`), `styleid`, `childid`, calls `post_<functionname>()`, then prints the result as kses-cleaned JSON, a URL, or HTML through `wp_kses($allowed_tags)`, and `wp_die()` |
-| `ajax_action()` | Handler of `wp_ajax_image_hover_ultimate` and `wp_ajax_nopriv_image_hover_ultimate`. Permission check, nonce, then `new $class` for a class name inside `OXI_IMAGE_HOVER_PLUGINS` with `functionname` `__rest_api_post` only (used by load more) |
+| `ajax_action()` | Handler of `wp_ajax_image_hover_ultimate` and `wp_ajax_nopriv_image_hover_ultimate`. Permission check, nonce, then `new $class` for a class name inside `OXI_IMAGE_HOVER_PLUGINS` with `functionname` `__rest_api_post` only. Nothing in the plugin calls it since 9.12.2 |
+| `load_more_action()` | Handler of `wp_ajax(_nopriv)_oxi_image_hover_load_more` (9.12.2): public, read only. Takes `styleid` and `page`; Display Post styles go to `Display\Files\Style_1_Post_Query`, dynamic styles (Pro) to `Dynamic\Post_Query` or `Dynamic\Layouts_Query`, with the query from `load_more_query()` of the render |
 | `preview_frame_action()` | Handler of `wp_ajax_oxi_image_hover_preview_frame`: loads `Page/PreviewFrame.php` |
 | `get_permissions_check()` | The role from `oxi_image_user_permission` → its first capability (default `manage_options`), cached 1 hour in the transient `oxi_image_user_permission_role`, then `current_user_can()` |
 | `sanitize_rawdata()`, `kses_json_array()` | Decode the editor JSON and `wp_kses_post` every key and string value, encode again (raw `wp_kses_post` over the JSON broke attribute quotes in older versions) |
@@ -61,7 +62,7 @@ Support, Settings icon), `User_Reviews()`, `admin_notice()`, `admin_upgrade_noti
 ## Helper\Public_Helper
 
 `shortcode_render($id, $user)`: validates the id, loads the row (admins see a red message for a missing id or class,
-visitors see "Shortcode Deleted, kindly add correct Shortcode"), sends Pro dynamic styles to `Modules\Compailer`,
+visitors see nothing since 9.12.2), sends Pro dynamic styles to `Modules\Compailer`,
 otherwise loads the child rows and runs `Modules\<Type>\Render\EffectsN`. Also `name_converter()`,
 `font_familly_charecter()`, `icon_font_selector()`, `allowed_html()`.
 

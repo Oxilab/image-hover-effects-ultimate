@@ -139,7 +139,9 @@ class Post_Query {
 				++$i;
 			}
 		} else {
+			// No more posts: only the marker, so Load More removes its button (as Display Post does).
 			esc_html_e( 'Image Hover Empty Data', 'image-hover-effects-ultimate' );
+			return;
 		}
 
 		if ( count( $postdata ) != $args['posts_per_page'] ) {

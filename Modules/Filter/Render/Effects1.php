@@ -27,7 +27,14 @@ class Effects1 extends Public_Render
 	{
 		$jquery = '';
 		$oxiid = $this->oxiid;
-		$jquery = ' $(".image-hover-category-data-' . $oxiid . '").imagesLoaded(function(){
+		// Isotope moves the items after the entrance animations (Waypoints) measured them, so items that ended up in
+		// view never started their animation and stayed hidden; measure again after every layout and filter.
+		$jquery = ' $(".image-hover-category-data-' . $oxiid . '").on("arrangeComplete layoutComplete", function () {
+						if (window.Waypoint && typeof window.Waypoint.refreshAll === "function") {
+						    window.Waypoint.refreshAll();
+						}
+				    });
+				    $(".image-hover-category-data-' . $oxiid . '").imagesLoaded(function(){
                         $(".image-hover-category-data-' . $oxiid . '").isotope({
                             filter: "*",
                             animationOptions: {
