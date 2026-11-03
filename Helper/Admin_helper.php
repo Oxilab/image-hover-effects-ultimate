@@ -154,16 +154,7 @@ trait Admin_helper
 	public function User_Reviews()
 	{
 
-		$user_role = get_option('oxi_image_user_permission');
-		$role_object = get_role($user_role);
-		$first_key = '';
-		if (isset($role_object->capabilities) && is_array($role_object->capabilities)) {
-			reset($role_object->capabilities);
-			$first_key = key($role_object->capabilities);
-		} else {
-			$first_key = 'manage_options';
-		}
-		if (! current_user_can($first_key)) :
+		if ( ! current_user_can( \OXI_IMAGE_HOVER_PLUGINS\Classes\ImageApi::plugin_capability() ) ) :
 			return;
 		endif;
 		$this->admin_recommended();

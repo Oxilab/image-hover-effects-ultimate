@@ -330,6 +330,35 @@ class Public_Render {
     }
 
     /**
+     * A saved value as a JavaScript string, quotes included, for the inline scripts of the effects.
+     *
+     * Quotes, backslashes and line breaks are escaped and < > are written as < >, so a saved value can
+     * never end the string or the script tag (CVE-2026-118056). Slashes stay as they are: without < they can't
+     * close a tag.
+     *
+     * @since 9.12.3
+     * @param mixed $value Saved value.
+     * @return string
+     */
+    public function js_string( $value ) {
+        $json = wp_json_encode( is_scalar( $value ) ? (string) $value : '', JSON_HEX_TAG | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
+        return false === $json ? '""' : $json;
+    }
+
+    /**
+     * A saved number for the inline scripts of the effects: the value as saved when it is a number, otherwise the
+     * fallback, so text can never become code (CVE-2026-118056).
+     *
+     * @since 9.12.3
+     * @param mixed     $value    Saved value.
+     * @param int|float $fallback Used when the value is empty or not a number.
+     * @return string
+     */
+    public function js_number( $value, $fallback = 0 ) {
+        return is_numeric( $value ) ? trim( (string) $value ) : (string) $fallback;
+    }
+
+    /**
      * old empty old render
      *
      * @since 9.3.0

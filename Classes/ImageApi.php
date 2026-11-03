@@ -153,22 +153,42 @@ class ImageApi
 
 	public function get_permissions_check()
 	{
-		$transient = get_transient('oxi_image_user_permission_role');
-		if (false === $transient) {
-			$user_role = get_option('oxi_image_user_permission');
-			$role_object = get_role($user_role);
-			$first_key = '';
-			if (isset($role_object->capabilities) && is_array($role_object->capabilities)) {
-				reset($role_object->capabilities);
-				$first_key = key($role_object->capabilities);
-			} else {
-				$first_key = 'manage_options';
-			}
-			$transient = 'oxi_image_user_permission_role';
-			set_transient($transient, $first_key, 1 * HOUR_IN_SECONDS);
-			return current_user_can($first_key);
+		return current_user_can( self::plugin_capability() );
+	}
+
+	/**
+	 * The capability that opens the plugin's admin pages, its AJAX saves and the editor preview.
+	 *
+	 * It follows "Who can edit" (Settings, Access) but never goes below Editor. A style has no owner, so whoever can
+	 * edit one can edit every style on the site, the administrator's too (CVE-2026-118056). Administrator, or no
+	 * choice saved, gives manage_options; any other role gives edit_others_posts, which editors and administrators
+	 * have, so a site that picked Subscriber, Contributor or Author in an older version now works as Editor.
+	 *
+	 * @since 9.12.3
+	 * @return string
+	 */
+	public static function plugin_capability() {
+		$role = get_role( (string) get_option( 'oxi_image_user_permission' ) );
+		if ( ! $role || $role->has_cap( 'manage_options' ) ) {
+			return 'manage_options';
 		}
-		return current_user_can($transient);
+		return 'edit_others_posts';
+	}
+
+	/**
+	 * The roles "Who can edit" may be set to: the ones that can edit other people's posts, or manage the site.
+	 *
+	 * @since 9.12.3
+	 * @return string[] Role keys.
+	 */
+	public static function allowed_edit_roles() {
+		$roles = [];
+		foreach ( wp_roles()->role_objects as $key => $role ) {
+			if ( $role->has_cap( 'manage_options' ) || $role->has_cap( 'edit_others_posts' ) ) {
+				$roles[] = $key;
+			}
+		}
+		return $roles;
 	}
 
 	/**
@@ -760,8 +780,18 @@ class ImageApi
 	 */
 	public function post_oxi_image_user_permission()
 	{
+		// Who can edit is a site wide access setting: only an administrator changes it, and only to a role from
+		// allowed_edit_roles(), so it can't be opened to subscribers again (CVE-2026-118056).
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
 		$rawdata = $this->validate_post();
-		update_option('oxi_image_user_permission', $rawdata['value']);
+		$value   = isset( $rawdata['value'] ) && is_string( $rawdata['value'] ) ? sanitize_key( $rawdata['value'] ) : '';
+		if ( ! in_array( $value, self::allowed_edit_roles(), true ) ) {
+			return;
+		}
+		update_option( 'oxi_image_user_permission', $value );
+		delete_transient( 'oxi_image_user_permission_role' );
 		return '<span class="oxi-confirmation-success"></span>';
 	}
 
@@ -1208,6 +1238,10 @@ class ImageApi
 	 */
 	public function preview_frame_action()
 	{
+		// The same people as the editor, and only from an editor page that made the link (CVE-2026-118056).
+		if ( ! $this->get_permissions_check() || ! check_ajax_referer( 'image_hover_ultimate', '_wpnonce', false ) ) {
+			wp_die( esc_html__( 'Sorry, you are not allowed to preview this style.', 'image-hover-effects-ultimate' ), 403 );
+		}
 		require_once OXI_IMAGE_HOVER_PATH . 'Page/PreviewFrame.php';
 		new \OXI_IMAGE_HOVER_PLUGINS\Page\PreviewFrame();
 	}

@@ -70,7 +70,7 @@ Freemius keeps its own options (`fs_*`) and handles them itself.
 
 | Name | Content |
 | --- | --- |
-| `oxi_image_user_permission_role` | The capability of the chosen role, 1 hour (not cleared when the role changes) |
+| `oxi_image_user_permission_role` | Old cache of the chosen role's capability (1 hour). Nothing reads it since 9.12.3; saving "Who can edit" deletes it |
 | `oxi_image_hover_activation_redirect` | Set on activation for 30 s; nothing reads it (Freemius' first path does the redirect) |
 | Cron `image_hover_ultimate_update` | Single event 10 s after load while `image_hover_ultimate_update_complete` is not `done`: re-renders every style's CSS |
 

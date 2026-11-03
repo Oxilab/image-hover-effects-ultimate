@@ -115,14 +115,14 @@ class Effects2 extends Public_Render {
             if ($value['oxi_image_light_box_select_type'] == 'image') {
                 $image_video = 'items: [
                     {
-                        src: "' . $this->custom_media_render('oxi_image_light_box_image', $value) . '",
+                        src: ' . $this->js_string( esc_url_raw( (string) $this->custom_media_render( 'oxi_image_light_box_image', $value ) ) ) . ',
                     }
                 ],
                 type: "image",';
             } else {
                 $image_video = 'items: [
                     {
-                        src: "' . $value['oxi_image_light_box_video'] . '",
+                        src: ' . $this->js_string( esc_url_raw( (string) $value['oxi_image_light_box_video'] ) ) . ',
                     }
                 ],
                 type: "iframe",';

@@ -34,10 +34,10 @@ admin screens look, and how a release goes out. Read [00-general.md](00-general.
 ## Security checklist (every change)
 
 Admin side:
-- Capability: the plugin's own permission, `ImageApi::get_permissions_check()` (the role chosen in Settings → Access,
-  resolved to that role's first capability, default `manage_options`, cached for an hour in the transient
-  `oxi_image_user_permission_role`). Destructive or site-wide actions (Danger zone) additionally require
-  `manage_options`.
+- Capability: the plugin's own permission, `ImageApi::get_permissions_check()`, which checks
+  `ImageApi::plugin_capability()`: `manage_options` for Administrator or nothing saved, `edit_others_posts` for any
+  other role, never below Editor (CVE-2026-118056, 9.12.3). Never derive a capability from a role's capability
+  list again. Destructive or site-wide actions (Danger zone, "Who can edit") additionally require `manage_options`.
 - Nonce `image_hover_ultimate` on every AJAX call (created in `CSS_JS_Loader::admin_js()` as
   `image_hover_settings.nonce`); the import form uses `image-hover-effects-ultimate-import`.
 - Destructive actions confirm on the server too (Delete all data needs `confirm=DELETE`).
@@ -51,6 +51,10 @@ Every request:
   `esc_sql`.
 - Files: only read layout JSON from inside the plugin (`realpath()` check as in `post_create_new()`); never write files
   into the plugin folder; read uploads from `tmp_name`.
+- A saved value written into inline JavaScript goes through `$this->js_string()` (text, quotes included) or
+  `$this->js_number( $value, $fallback )` (numbers) from `Page/Public_Render.php`, and a URL through `esc_url_raw()`
+  first; never `'"' . $value . '"'` (CVE-2026-118056, 9.12.3). Test with `cve-2026-118056.php` (add the layout's
+  fields to its case list).
 - CSS printed inside `<style>` must not be able to close the tag. Today only the exact `</style>` is removed
   (`str_ireplace`), which misses `</style >`; new code writes every `</` as `<\/` instead (see
   [../code/security.md](../code/security.md), open item 1).
@@ -174,7 +178,8 @@ running the attack against the old code and the new code (see Testing).
 | --- | --- |
 | `image_hover_settings` → `ImageApi::post_*` | The plugin's role (can be Editor or Author), nonce `image_hover_ultimate` |
 | `image_hover_ultimate` (also `nopriv`) → `ajax_action()` dynamic class | Anyone; must stay refused for visitors unless a safe public endpoint is designed |
-| `oxi_image_hover_preview_frame` | Any logged-in user today (open item) |
+| `oxi_image_hover_preview_frame` | The plugin's role with the `image_hover_ultimate` nonce (9.12.3) |
+| Saved values in an effect's inline script (Comparison, Lightbox, Magnifier, Carousel, dynamic carousel) | Anyone who can save or import a style; runs for every visitor |
 | JSON import form (Shortcode page) | Users with the plugin's role and `upload_files`; the file is attacker controlled |
 | Style CSS printed in `<style>` (late CSS, admin, Elementor, block preview, preview frame) | Anyone who can save or import a style; seen by every visitor (open item 1) |
 | `[iheu_ultimate_oxi id]`, the block, Elementor, WPBakery, the widget | Authors who can add shortcodes or blocks |
@@ -222,6 +227,10 @@ home, Create New, the editor). They share one look:
   class with enough specificity rather than editing `admin.css`.
 - For non-technical site owners: plain words, an example line where a setting is abstract, friendly empty states,
   Pro parts labelled.
+- The Freemius license dialogs ("Activate/Update License" and "Send License Key") are restyled in `settings.css`
+  (loads only on the plugin's pages), scoped to `.fs-modal-license-activation-oxi-image-hover-ultimate` and
+  `.fs-modal-license-key-resend`: Freemius markup and JavaScript untouched (Richard, 2026-11-04). Freemius'
+  `dialog-boxes.css` loads after ours, so a tie in specificity loses: add a class. Test: `license-modal.mjs`.
 - Never restyle Freemius screens globally: the Account page is wrapped and scoped (`Includes/Admin/Account.php`,
   `account.css`).
 
@@ -234,12 +243,14 @@ home, Create New, the editor). They share one look:
 - Admin notice dismissal through `post_notice_dissmiss()` reads `$this->request`, which is never set; the working
   path is `Support_Reviews::ajax_action()` (`wp_ajax_oxi_image_admin_notice`). That handler checks the nonce but not
   the capability and doesn't end with `wp_die()`.
-- The role cache: after changing "Who can edit", AJAX keeps the old capability for up to an hour (transient
-  `oxi_image_user_permission_role` is not cleared on save); the menu uses the new role at once.
 - `post_web_import()` reads a `template/` folder that doesn't exist in the plugin; the Create page's old "Demos"
   buttons that called it are gone. Dead code.
 - `Includes/Installation.php` (a Flipbox copy, uses `OXI_FLIP_BOX_PLUGIN_VERSION`) and `Includes/Frontend.php` are
-  not used; `Includes/Admin/Notice.php` is an empty class. Don't call them.
+  not used. Don't call them.
+- Only the plugin's own notices show on its pages (Richard, 2026-11-04): `Includes/Admin/Notice.php` removes every
+  other notice callback there. A new plugin notice must be a method of a class in `OXI_IMAGE_HOVER_PLUGINS\`
+  hooked to a notice hook (a closure or plain function is removed too). Tests: `notices-filter.php`,
+  `notices-browser.mjs`.
 - `Public_Helper::validate_post()` reads `$data` before it is set when called with an empty value (PHP warning).
 - The free plan labels the color and gradient fields "Pro Only" in the editor (inline script in
   `Admin_Render::import_font_family()`).

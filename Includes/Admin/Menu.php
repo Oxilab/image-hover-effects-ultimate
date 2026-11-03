@@ -26,15 +26,7 @@ class Menu
 
 	public function regiter_admin_menu()
 	{
-		$user_role = get_option('oxi_image_user_permission');
-		$role_object = get_role($user_role);
-		$first_key = '';
-		if (isset($role_object->capabilities) && is_array($role_object->capabilities)) {
-			reset($role_object->capabilities);
-			$first_key = key($role_object->capabilities);
-		} else {
-			$first_key = 'manage_options';
-		}
+		$first_key = \OXI_IMAGE_HOVER_PLUGINS\Classes\ImageApi::plugin_capability();
 		add_menu_page('Image Hover', 'Image Hover', $first_key, 'oxi-image-hover-ultimate', [$this, 'Image_Parent'], OXI_IMAGE_HOVER_URL . 'image/dash-icon.svg');
 		add_submenu_page('oxi-image-hover-ultimate', 'Image Hover', 'Image Hover', $first_key, 'oxi-image-hover-ultimate', [$this, 'Image_Parent']);
 		add_submenu_page('oxi-image-hover-ultimate', 'Shortcode', 'Shortcode', $first_key, 'oxi-image-hover-shortcode', [$this, 'Image_Shortcode']);

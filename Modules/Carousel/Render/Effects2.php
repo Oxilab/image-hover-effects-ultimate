@@ -147,10 +147,11 @@ class Effects2 extends Public_Render
 		$next = $this->custom_font_awesome_render($style['carousel_right_arrow']);
 		$start = '';
 
+		// Saved values reach the script only as numbers or as escaped strings (CVE-2026-118056).
 		$effect = $style['carousel_effect'];
-		$autoplayspeed = ! empty($style['carousel_autoplay_speed']) ? $style['carousel_autoplay_speed'] : 2000;
+		$autoplayspeed = $this->js_number( ! empty( $style['carousel_autoplay_speed'] ) ? $style['carousel_autoplay_speed'] : '', 2000 );
 		$autoplay = ($style['carousel_autoplay'] == 'yes') ? $autoplayspeed : 'false';
-		$fadein = $style['carousel_fadeIn'];
+		$fadein = $this->js_number( $style['carousel_fadeIn'], 400 );
 		if ($style['carousel_center_mode'] == 'yes') :
 			$start = 'center';
 		else :
@@ -176,13 +177,13 @@ class Effects2 extends Public_Render
             
             });
             $(flipContainer).flipster({
-                style: "' . $effect . '",
-                start: "' . $start . '",
+                style: ' . $this->js_string( $effect ) . ',
+                start: ' . $this->js_string( $start ) . ',
                 fadeIn: ' . $fadein . ',
                 loop: ' . $infinite . ',
                 autoplay: ' . $autoplay . ',
                 pauseOnHover: ' . $pause_on_hover . ',
-                spacing: ' . (isset($style['carousel_flipster_spacing']) ? $style['carousel_flipster_spacing'] : 0) . ',
+                spacing: ' . $this->js_number( isset( $style['carousel_flipster_spacing'] ) ? $style['carousel_flipster_spacing'] : 0 ) . ',
                 click: ' . $click . ',
                 scrollwheel: false,
                 touch: ' . $touch . ',

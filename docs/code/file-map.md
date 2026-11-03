@@ -48,7 +48,7 @@ Checked 2026-10-16.
 | `Admin.php` | Starts `Admin\Menu`, `Admin\Notice`, `Admin\Account` |
 | `Admin/Menu.php` | The WordPress menu (Image Hover, Shortcode, Getting Started, Settings) and the router for the Image Hover page |
 | `Admin/Account.php` | Brands the Freemius Account page (header, scoping wrapper, hides tabs) |
-| `Admin/Notice.php` | Empty class |
+| `Admin/Notice.php` | On the plugin's pages (home, library, editor, Shortcode, Getting Started, Settings, Freemius pages `oxi-image-hover-ultimate-*`) takes every notice callback that isn't the plugin's own off `admin_notices`, `all_admin_notices`, `network_admin_notices`, `user_admin_notices` at `in_admin_header` (9.12.3). Own = a class in `OXI_IMAGE_HOVER_PLUGINS\` or the Freemius notice manager with id `oxi-image-hover-ultimate`. Other admin pages are left alone |
 | `Admin/Pages/Admin.php` | The Image Hover home: effect type cards |
 | `Admin/Pages/Shortcode.php` | The Shortcode page: list, copy, clone, export, delete, import |
 | `Admin/Pages/Settings.php` | Settings: License, Access, Mobile and touch, Assets, Advanced, Danger zone |

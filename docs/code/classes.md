@@ -12,8 +12,10 @@ names and registers the actions (`build_api()`).
 | `save_action()` | Handler of `wp_ajax_image_hover_settings`. Checks `get_permissions_check()` and the nonce `image_hover_ultimate`, reads `functionname`, `rawdata` (through `sanitize_rawdata()`), `styleid`, `childid`, calls `post_<functionname>()`, then prints the result as kses-cleaned JSON, a URL, or HTML through `wp_kses($allowed_tags)`, and `wp_die()` |
 | `ajax_action()` | Handler of `wp_ajax_image_hover_ultimate` and `wp_ajax_nopriv_image_hover_ultimate`. Permission check, nonce, then `new $class` for a class name inside `OXI_IMAGE_HOVER_PLUGINS` with `functionname` `__rest_api_post` only. Nothing in the plugin calls it since 9.12.2 |
 | `load_more_action()` | Handler of `wp_ajax(_nopriv)_oxi_image_hover_load_more` (9.12.2): public, read only. Takes `styleid` and `page`; Display Post styles go to `Display\Files\Style_1_Post_Query`, dynamic styles (Pro) to `Dynamic\Post_Query` or `Dynamic\Layouts_Query`, with the query from `load_more_query()` of the render |
-| `preview_frame_action()` | Handler of `wp_ajax_oxi_image_hover_preview_frame`: loads `Page/PreviewFrame.php` |
-| `get_permissions_check()` | The role from `oxi_image_user_permission` → its first capability (default `manage_options`), cached 1 hour in the transient `oxi_image_user_permission_role`, then `current_user_can()` |
+| `preview_frame_action()` | Handler of `wp_ajax_oxi_image_hover_preview_frame`: the plugin permission and the `image_hover_ultimate` nonce (9.12.3), then loads `Page/PreviewFrame.php` |
+| `get_permissions_check()` | `current_user_can( plugin_capability() )` |
+| `plugin_capability()` (static, 9.12.3) | `manage_options` when `oxi_image_user_permission` is a role with `manage_options`, empty or unknown; `edit_others_posts` for any other role (Editor floor, CVE-2026-118056). Used by the menu, the review notice and every AJAX check |
+| `allowed_edit_roles()` (static, 9.12.3) | Role keys with `manage_options` or `edit_others_posts`: the only values "Who can edit" offers and saves |
 | `sanitize_rawdata()`, `kses_json_array()` | Decode the editor JSON and `wp_kses_post` every key and string value, encode again (raw `wp_kses_post` over the JSON broke attribute quotes in older versions) |
 | `decode_rawdata()` | Tolerant decode for old rows (plain, `stripslashes`, repaired quotes) |
 | `validate_post()`, `allowed_html()` | Decode `rawdata` and `wp_kses` with the class's allow list |

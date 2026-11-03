@@ -76,23 +76,24 @@ class Effects1 extends Public_Render {
         $width = $height = '';
         $jquery = '';
         if ( array_key_exists( 'oxi_image_magnifier_magnifi_switcher', $style ) && $style['oxi_image_magnifier_magnifi_switcher'] == 'yes' ) {
-            $width = '' . ( $style['oxi_image_magnifier_magnifi_width-size'] != '' ) ? 'width: ' . $style['oxi_image_magnifier_magnifi_width-size'] . ',' : '' . '';
-            $height = '' . ( $style['oxi_image_magnifier_magnifi_height-size'] != '' ) ? 'height: ' . $style['oxi_image_magnifier_magnifi_height-size'] . ',' : '' . '';
+            // Saved sizes reach the script only as numbers (CVE-2026-118056); an empty size is left out, as before.
+            $width  = is_numeric( $style['oxi_image_magnifier_magnifi_width-size'] ) ? 'width: ' . $this->js_number( $style['oxi_image_magnifier_magnifi_width-size'] ) . ',' : '';
+            $height = is_numeric( $style['oxi_image_magnifier_magnifi_height-size'] ) ? 'height: ' . $this->js_number( $style['oxi_image_magnifier_magnifi_height-size'] ) . ',' : '';
         }
 
-        $zoom = ( array_key_exists( 'oxi_image_magnifier_magnifi_zoom-size', $style ) && $style['oxi_image_magnifier_magnifi_zoom-size'] != '' ) ? 'maxZoom: ' . $style['oxi_image_magnifier_magnifi_zoom-size'] . '' : 'maxZoom: 2,';
+        $zoom = ( array_key_exists( 'oxi_image_magnifier_magnifi_zoom-size', $style ) && is_numeric( $style['oxi_image_magnifier_magnifi_zoom-size'] ) ) ? 'maxZoom: ' . $this->js_number( $style['oxi_image_magnifier_magnifi_zoom-size'] ) : 'maxZoom: 2,';
 
         foreach ( $child as $key => $val ) {
             $data = json_decode( stripslashes( $val['rawdata'] ), true );
             $position = '';
             if ( array_key_exists( 'oxi_image_magnifier_magnifi_position', $data ) && $data['oxi_image_magnifier_magnifi_position'] == 'top' ) {
-                $position = '' . ( $data['oxi_image_magnifier_magnifi_position_top-size'] != '' ) ? 'top: ' . $data['oxi_image_magnifier_magnifi_position_top-size'] . ',' : 'top:10,' . '';
+                $position = is_numeric( $data['oxi_image_magnifier_magnifi_position_top-size'] ) ? 'top: ' . $this->js_number( $data['oxi_image_magnifier_magnifi_position_top-size'] ) . ',' : 'top:10,';
             } elseif ( array_key_exists( 'oxi_image_magnifier_magnifi_position', $data ) && $data['oxi_image_magnifier_magnifi_position'] == 'right' ) {
-                $position = '' . ( $data['oxi_image_magnifier_magnifi_position_right-size'] != '' ) ? 'right: ' . $data['oxi_image_magnifier_magnifi_position_right-size'] . ',' : 'right:10,' . '';
+                $position = is_numeric( $data['oxi_image_magnifier_magnifi_position_right-size'] ) ? 'right: ' . $this->js_number( $data['oxi_image_magnifier_magnifi_position_right-size'] ) . ',' : 'right:10,';
             } elseif ( array_key_exists( 'oxi_image_magnifier_magnifi_position', $data ) && $data['oxi_image_magnifier_magnifi_position'] == 'bottom' ) {
-                $position = '' . ( $data['oxi_image_magnifier_magnifi_position_bottom-size'] != '' ) ? 'bottom: ' . $data['oxi_image_magnifier_magnifi_position_bottom-size'] . ',' : 'bottom:10,' . '';
+                $position = is_numeric( $data['oxi_image_magnifier_magnifi_position_bottom-size'] ) ? 'bottom: ' . $this->js_number( $data['oxi_image_magnifier_magnifi_position_bottom-size'] ) . ',' : 'bottom:10,';
             } elseif ( array_key_exists( 'oxi_image_magnifier_magnifi_position', $data ) && $data['oxi_image_magnifier_magnifi_position'] == 'left' ) {
-                $position = '' . ( $data['oxi_image_magnifier_magnifi_position_left-size'] != '' ) ? 'left: ' . $data['oxi_image_magnifier_magnifi_position_left-size'] . ',' : 'left:10,' . '';
+                $position = is_numeric( $data['oxi_image_magnifier_magnifi_position_left-size'] ) ? 'left: ' . $this->js_number( $data['oxi_image_magnifier_magnifi_position_left-size'] ) . ',' : 'left:10,';
             }
             $jquery .= '    new ImageZoom(".oxi__image_' . $this->oxiid . '_' . $key . '", {
                 deadarea: 0.25,

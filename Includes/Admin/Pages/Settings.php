@@ -34,8 +34,12 @@ class Settings {
 
     public function admin() {
         global $wp_roles;
-        $this->roles      = $wp_roles->get_names();
+        $this->roles      = array_intersect_key( $wp_roles->get_names(), array_flip( \OXI_IMAGE_HOVER_PLUGINS\Classes\ImageApi::allowed_edit_roles() ) );
         $this->saved_role = get_option( 'oxi_image_user_permission' );
+        // A lower role saved by an older version now works as Editor (ImageApi::plugin_capability()), so show Editor.
+        if ( $this->saved_role && ! isset( $this->roles[ $this->saved_role ] ) && get_role( $this->saved_role ) && isset( $this->roles['editor'] ) ) {
+            $this->saved_role = 'editor';
+        }
     }
 
     public function css_loader() {
@@ -405,12 +409,16 @@ class Settings {
                                     <label class="oxi-iheu-set-label" for="oxi_image_user_permission"><?php esc_html_e( 'Who can edit', 'image-hover-effects-ultimate' ); ?></label>
                                     <p class="oxi-iheu-set-desc">
                                         <?php esc_html_e( 'Select the role who can manage this plugin.', 'image-hover-effects-ultimate' ); ?>
+                                        <?php esc_html_e( 'Only Editors and Administrators can be chosen, because this role can change every hover effect on the site.', 'image-hover-effects-ultimate' ); ?>
+                                        <?php if ( ! current_user_can( 'manage_options' ) ) : ?>
+                                            <?php esc_html_e( 'Only an administrator can change this.', 'image-hover-effects-ultimate' ); ?>
+                                        <?php endif; ?>
                                         <a target="_blank" rel="noopener" href="https://wordpress.org/documentation/article/roles-and-capabilities/"><?php esc_html_e( 'About roles', 'image-hover-effects-ultimate' ); ?></a>
                                     </p>
                                 </div>
                                 <div class="oxi-iheu-set-row-control">
                                     <span class="oxi-iheu-set-status" data-status-for="oxi_image_user_permission" aria-live="polite"></span>
-                                    <select class="oxi-iheu-set-select" name="oxi_image_user_permission" id="oxi_image_user_permission">
+                                    <select class="oxi-iheu-set-select" name="oxi_image_user_permission" id="oxi_image_user_permission" <?php disabled( ! current_user_can( 'manage_options' ) ); ?>>
                                         <?php foreach ( $this->roles as $key => $role ) : ?>
                                             <option value="<?php echo esc_attr( $key ); ?>" <?php selected( $this->saved_role, $key ); ?>><?php echo esc_html( translate_user_role( $role ) ); ?></option>
                                         <?php endforeach; ?>

@@ -68,9 +68,9 @@ class Effects1 extends Public_Render {
             $data = json_decode( stripslashes( $val['rawdata'] ), true );
             $jquery .= ' 
             $(".oxi-addons-comparison-' . $this->oxiid . '_' . $key . '").twentytwenty({
-               default_offset_pct: ' . ( $data['oxi_image_comparison_body_offset-size'] ? $data['oxi_image_comparison_body_offset-size'] : 0.5 ) . ', 
-                before_label: "' . $this->return_text( $styledata['oxi_image_comparison_before_text'] ) . '",
-                after_label: "' . $this->return_text( $styledata['oxi_image_comparison_after_text'] ) . '",
+               default_offset_pct: ' . $this->js_number( $data['oxi_image_comparison_body_offset-size'] ? $data['oxi_image_comparison_body_offset-size'] : '', 0.5 ) . ', 
+                before_label: ' . $this->js_string( $this->return_text( $styledata['oxi_image_comparison_before_text'] ) ) . ',
+                after_label: ' . $this->js_string( $this->return_text( $styledata['oxi_image_comparison_after_text'] ) ) . ',
                ';
             if ( $styledata['oxi_image_compersion_overlay_controler'] == 'true' ) {
                 $jquery .= 'no_overlay: false,';

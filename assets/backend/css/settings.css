@@ -816,33 +816,467 @@ body.oxi-iheu-set-dialog-open {
 }
 
 /*
- * Freemius licence dialog. It is printed in this page's footer, outside
- * .oxi-iheu-settings, where Bootstrap's reboot (16px text, no link
- * underline) and admin.css (.notice { display: block !important }) reach it.
- * These rules restore how it looks on the Plugins screen. Freemius shows its
- * error box with jQuery .show(), which writes display: block inline.
+ * Freemius licence dialogs in the plugin's own look: "Activate License" /
+ * "Update License" and the "Can't find your license key?" dialog it opens.
+ * Freemius prints them in this page's footer, outside .oxi-iheu-settings,
+ * where Bootstrap's reboot and admin.css (.notice { display: block
+ * !important }) also reach them. Only the look changes: Freemius' markup and
+ * JavaScript stay as they are. This file loads only on the plugin's pages.
  */
-.fs-modal-license-activation .notice:not([style*="block"]) {
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) {
+    --iheu-brand: #ee326e;
+    --iheu-brand-strong: #c41d55;
+    --iheu-brand-soft: #fdecf2;
+    --iheu-brand-tint: #fff6f9;
+    --iheu-brand-ring: rgba(238, 50, 110, 0.28);
+    --iheu-ink: #101828;
+    --iheu-ink-2: #475467;
+    --iheu-ink-3: #667085;
+    --iheu-line: #eaecf0;
+    --iheu-line-2: #d0d5dd;
+    --iheu-danger: #b42318;
+    --iheu-danger-soft: #fef3f2;
+
+    background: rgba(16, 24, 40, 0.55);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+}
+
+/* Freemius shows its error box with jQuery .show(), which writes display: block inline. */
+.fs-modal:is(.fs-modal-license-activation, .fs-modal-license-key-resend) .notice:not([style*="block"]) {
     display: none !important;
 }
 
-.fs-modal-license-activation .fs-modal-dialog {
-    font-size: 13px;
-    line-height: 1.4;
-}
-
-.fs-modal-license-activation .fs-modal-dialog p {
-    font-size: 13px;
-}
-
-.fs-modal-license-activation input.fs-license-key,
-.fs-modal-license-activation select {
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-dialog {
+    left: 0;
+    right: 0;
+    width: min(520px, calc(100% - 32px));
+    margin: 0 auto 40px;
+    padding: 0;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 24px 48px -12px rgba(16, 24, 40, 0.3), 0 0 0 1px rgba(16, 24, 40, 0.06);
+    color: var(--iheu-ink);
     font-size: 14px;
-    line-height: normal;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
 }
 
-.fs-modal-license-activation .fs-modal-body a {
+.fs-modal.active:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-dialog {
+    top: max(40px, 9vh);
+    animation: oxi-iheu-set-pop 0.18s ease-out;
+}
+
+/* Header: icon tile, title, round close button. */
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0;
+    padding: 22px 60px 4px 24px;
+    background: #fff;
+    border: 0;
+}
+
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-header::before {
+    content: "\f112";
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--iheu-brand-soft);
+    color: var(--iheu-brand);
+    font: normal 22px/1 dashicons;
+}
+
+.fs-modal.fs-modal-license-key-resend .fs-modal-header::before {
+    content: "\f466";
+}
+
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-header h4 {
+    margin: 0;
+    color: var(--iheu-ink);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: 0;
+    text-shadow: none;
+    text-transform: none;
+}
+
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-header .fs-close {
+    display: grid;
+    place-items: center;
+    top: 18px;
+    right: 16px;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border-radius: 10px;
+    color: var(--iheu-ink-3);
+    text-decoration: none;
+}
+
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-header .fs-close:hover {
+    background: #f2f4f7;
+    color: var(--iheu-ink);
+}
+
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-header .fs-close:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--iheu-brand-ring);
+}
+
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-header .fs-close .dashicons {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+}
+
+/* Body. */
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-body {
+    padding: 14px 24px 22px;
+    background: #fff;
+}
+
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-body p {
+    margin: 0 0 16px;
+    color: var(--iheu-ink-2);
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-body p:empty {
+    display: none;
+}
+
+/* The license choices as two selectable cards. */
+.fs-modal.fs-modal-license-activation-oxi-image-hover-ultimate .fs-license-options-container {
+    margin: 0;
+}
+
+.fs-modal.fs-modal-license-activation-oxi-image-hover-ultimate .fs-license-options-container :is(table, tbody) {
+    display: block;
+    width: 100%;
+    margin: 0;
+    border: 0;
+}
+
+.fs-modal.fs-modal-license-activation-oxi-image-hover-ultimate .fs-license-options-container tr {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 10px;
+    padding: 12px 14px;
+    background: #fff;
+    border: 1px solid var(--iheu-line-2);
+    border-radius: 12px;
+    transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.fs-modal.fs-modal-license-activation-oxi-image-hover-ultimate .fs-license-options-container tr:has(input[type="radio"]:checked) {
+    background: var(--iheu-brand-tint);
+    border-color: var(--iheu-brand);
+    box-shadow: 0 0 0 1px var(--iheu-brand);
+}
+
+.fs-modal.fs-modal-license-activation-oxi-image-hover-ultimate .fs-license-options-container td {
+    display: block;
+    width: auto;
+    padding: 0;
+    border: 0;
+}
+
+.fs-modal.fs-modal-license-activation-oxi-image-hover-ultimate .fs-license-options-container td:first-child {
+    flex: none;
+    width: auto;
+    line-height: 0;
+}
+
+.fs-modal.fs-modal-license-activation-oxi-image-hover-ultimate .fs-license-options-container td:last-child {
+    flex: 1;
+    min-width: 0;
+}
+
+.fs-modal.fs-modal-license-activation-oxi-image-hover-ultimate .fs-license-options-container .fs-other-license-key-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.fs-modal.fs-modal-license-activation-oxi-image-hover-ultimate .fs-license-options-container .fs-other-license-key-container label {
+    float: none;
+    top: 0;
+    margin: 0;
+    color: var(--iheu-ink-2);
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Freemius gives this wrapper a fixed 30px height, which cut the key field off. */
+.fs-modal.fs-modal-license-activation-oxi-image-hover-ultimate .fs-license-options-container .fs-other-license-key-container div {
+    flex: 1;
+    min-width: 0;
+    height: auto;
+    overflow: visible;
+    top: 0;
+}
+
+/* Radios and checkboxes in the brand color. */
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) input[type="radio"],
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) input[type="checkbox"] {
+    box-sizing: border-box;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    margin: 0;
+    border: 1.5px solid #98a2b3;
+    box-shadow: none;
+}
+
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) input[type="checkbox"] {
+    border-radius: 5px;
+}
+
+/* WordPress fills a checked radio with the admin color; keep it white with a brand dot. */
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) :is(input[type="radio"], input[type="checkbox"]):checked {
+    background: #fff;
+    border-color: var(--iheu-brand);
+}
+
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) input[type="radio"]:checked::before {
+    width: 8px;
+    height: 8px;
+    margin: 3.5px;
+    background-color: var(--iheu-brand);
+}
+
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) :is(input[type="radio"], input[type="checkbox"]):focus {
+    border-color: var(--iheu-brand);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--iheu-brand-ring);
+}
+
+/* Fields. */
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) :is(select, input[type="text"]) {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: none;
+    height: 42px;
+    min-height: 42px;
+    margin: 0;
+    padding: 0 12px;
+    background-color: #fff;
+    border: 1px solid var(--iheu-line-2);
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+    color: var(--iheu-ink);
+    font-size: 14px;
+    line-height: 40px;
+}
+
+.fs-modal.fs-modal-license-activation-oxi-image-hover-ultimate select.fs-licenses {
+    padding-right: 34px;
+    background-position: right 12px top 55%;
+    text-overflow: ellipsis;
+}
+
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) input[readonly] {
+    background: #f9fafb;
+}
+
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) :is(select, input[type="text"])::placeholder {
+    color: #98a2b3;
+}
+
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) :is(select, input[type="text"]):focus {
+    border-color: var(--iheu-brand);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--iheu-brand-ring);
+}
+
+/* "Can't find your license key?" */
+.fs-modal.fs-modal-license-activation-oxi-image-hover-ultimate .show-license-resend-modal {
+    display: inline-block;
+    margin-top: 4px;
+    color: var(--iheu-brand);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.fs-modal.fs-modal-license-activation-oxi-image-hover-ultimate .show-license-resend-modal:hover {
+    color: var(--iheu-brand-strong);
     text-decoration: underline;
+}
+
+.fs-modal.fs-modal-license-activation-oxi-image-hover-ultimate .show-license-resend-modal:focus-visible {
+    border-radius: 4px;
+    outline: none;
+    box-shadow: 0 0 0 3px var(--iheu-brand-ring);
+}
+
+/* "Associate with the license owner's account." */
+.fs-modal.fs-modal-license-activation-oxi-image-hover-ultimate .ownership-change-option-container {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: #f9fafb;
+    border-radius: 12px;
+}
+
+.fs-modal.fs-modal-license-activation-oxi-image-hover-ultimate .ownership-change-option-container label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--iheu-ink-2);
+    font-size: 13px;
+}
+
+.fs-modal.fs-modal-license-activation-oxi-image-hover-ultimate .ownership-change-option-container strong {
+    font-weight: 500;
+}
+
+/* Error box. */
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-panel > .notice.inline {
+    margin: 0 0 16px;
+    padding: 10px 14px;
+    background: var(--iheu-danger-soft);
+    border: 1px solid #fecdca;
+    border-radius: 10px;
+    box-shadow: none;
+}
+
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-panel > .notice.inline p {
+    margin: 0;
+    color: var(--iheu-danger);
+    font-size: 13px;
+}
+
+/* Footer and buttons. */
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 24px;
+    background: #f9fafb;
+    border-top: 1px solid var(--iheu-line);
+}
+
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) :is(.fs-modal-footer .button, .button-send-license-key) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    min-height: 40px;
+    margin: 0;
+    padding: 0 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    text-shadow: none;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-footer .button-secondary {
+    background: #fff;
+    border: 1px solid var(--iheu-line-2);
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+    color: var(--iheu-ink);
+}
+
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-footer .button-secondary:hover {
+    background: #f9fafb;
+    border-color: #98a2b3;
+    color: var(--iheu-ink);
+}
+
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) :is(.fs-modal-footer .button-primary, .button-send-license-key) {
+    background: var(--iheu-brand);
+    border: 1px solid var(--iheu-brand);
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.08);
+    color: #fff;
+}
+
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) :is(.fs-modal-footer .button-primary, .button-send-license-key):hover {
+    background: var(--iheu-brand-strong);
+    border-color: var(--iheu-brand-strong);
+    color: #fff;
+}
+
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) :is(.fs-modal-footer .button, .button-send-license-key):focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--iheu-brand-ring);
+}
+
+/* WordPress greys disabled buttons with !important. */
+.fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) :is(.fs-modal-footer .button-primary, .button-send-license-key):is(.disabled, [disabled]) {
+    background: var(--iheu-brand) !important;
+    border-color: var(--iheu-brand) !important;
+    color: #fff !important;
+    opacity: 0.5;
+}
+
+/* "Can't find your license key?" dialog: email choice and send button. */
+.fs-modal.fs-modal-license-key-resend .input-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.fs-modal.fs-modal-license-key-resend .email-address-container {
+    flex: 1 1 240px;
+    min-width: 0;
+    padding: 0;
+}
+
+/* Freemius sets these labels to display: block after this file loads, so one more class is needed. */
+.fs-modal.fs-modal-license-key-resend .input-container .email-address-container label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 42px;
+    margin: 0 0 8px;
+    color: var(--iheu-ink-2);
+    font-size: 14px;
+}
+
+.fs-modal.fs-modal-license-key-resend.fs-freemium .input-container input.email-address {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+}
+
+.fs-modal.fs-modal-license-key-resend .button-container {
+    float: none;
+    margin: 0;
+}
+
+@media (max-width: 480px) {
+    .fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-header {
+        padding: 18px 56px 2px 18px;
+    }
+
+    .fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-body {
+        padding: 12px 18px 18px;
+    }
+
+    .fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-footer {
+        padding: 12px 18px;
+    }
+
+    .fs-modal:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-footer .button {
+        flex: 1;
+    }
+
+    .fs-modal.active:is(.fs-modal-license-activation-oxi-image-hover-ultimate, .fs-modal-license-key-resend) .fs-modal-dialog {
+        top: 16px;
+    }
 }
 
 /* Help card */

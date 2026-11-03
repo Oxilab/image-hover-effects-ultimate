@@ -927,7 +927,7 @@ abstract class Admin_Render
 										<iframe
 											id="oxi-preview-iframe"
 											class="oxi-preview-iframe"
-											src="<?php echo esc_url(admin_url('admin-ajax.php?action=oxi_image_hover_preview_frame&styleid=' . $this->oxiid . '&t=' . time())); ?>"
+											src="<?php echo esc_url( admin_url( 'admin-ajax.php?action=oxi_image_hover_preview_frame&styleid=' . (int) $this->oxiid . '&_wpnonce=' . wp_create_nonce( 'image_hover_ultimate' ) . '&t=' . time() ) ); ?>"
 											frameborder="0"
 											title="<?php esc_attr_e('Preview', 'image-hover-effects-ultimate'); ?>">
 										</iframe>

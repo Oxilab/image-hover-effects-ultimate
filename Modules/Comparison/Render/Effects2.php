@@ -87,7 +87,7 @@ class Effects2 extends Public_Render {
                         });
                     };
                    $("#oxi-addons-comparison-' . $this->oxiid . '_' . $key . '").BeerSlider({
-                       start: ' . ( $data['oxi_image_comparison_body_offset-size'] ? $data['oxi_image_comparison_body_offset-size'] : 50 ) . '
+                       start: ' . $this->js_number( $data['oxi_image_comparison_body_offset-size'] ? $data['oxi_image_comparison_body_offset-size'] : '', 50 ) . '
                     });';
         }
         return $jquery;

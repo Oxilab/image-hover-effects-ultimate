@@ -205,9 +205,10 @@ class Effects3 extends Public_Render
 		$tab = $style['carousel_item-tab-size'];
 		$mobile = $style['carousel_item-mob-size'];
 
+		// Saved values reach the script only as numbers or as escaped strings (CVE-2026-118056).
 		$effects = $style['carousel_effect'];
-		$autoplay = ($style['carousel_autoplay'] == 'yes') ? $style['carousel_autoplay_speed'] : '99999';
-		$speed = ! empty($style['carousel_speed']) ? $style['carousel_speed'] : 500;
+		$autoplay = ( 'yes' === $style['carousel_autoplay'] ) ? $this->js_number( $style['carousel_autoplay_speed'], 3000 ) : '99999';
+		$speed = $this->js_number( ! empty( $style['carousel_speed'] ) ? $style['carousel_speed'] : '', 500 );
 		$pause_on_hover = ($style['carousel_pause_on_hover'] == 'yes') ? 'true' : 'false';
 		$infinite = ($style['carousel_infinite'] == 'yes') ? 'true' : 'false';
 		$adaptiveheight = ($style['carousel_adaptive_height'] == 'yes') ? 'true' : 'false';
@@ -232,13 +233,13 @@ class Effects3 extends Public_Render
 		$jquery = '(function ($) {
             var oxi_swiper_slider = $("#' . $this->WRAPPER . ' .oxi-addons-row");
             oxi_swiper_slider.find(".oxi-image-hover-style").removeClass().addClass("oxi-image-hover-style swiper-slide");
-                if("' . $rtl . '" == "rtl"){
+                if(' . $this->js_string( $rtl ) . ' == "rtl"){
                     $(oxi_swiper_slider).prop("dir", "rtl");
                 }
                 var oxiSwiperSlider = new Swiper(oxi_swiper_slider, {
                     direction: "horizontal",
                     speed: ' . $speed . ',
-                    effect: "' . $effects . '",
+                    effect: ' . $this->js_string( $effects ) . ',
                     centeredSlides: ' . $centeredSlides . ',
                     grabCursor: ' . $grab_cursor . ',
                     autoHeight: ' . $adaptiveheight . ',
@@ -264,13 +265,13 @@ class Effects3 extends Public_Render
                     },
                     breakpoints: {
                         960: {
-                            slidesPerView: "' . $lap . '",
+                            slidesPerView: ' . $this->js_string( $lap ) . ',
                         },
                         600 : {
-                            slidesPerView: "' . $tab . '",
+                            slidesPerView: ' . $this->js_string( $tab ) . ',
                         },
                         480: {
-                            slidesPerView: "' . $mobile . '",
+                            slidesPerView: ' . $this->js_string( $mobile ) . ',
                         }
                     }
                 });

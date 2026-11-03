@@ -82,11 +82,12 @@ class Effects2 extends Public_Render {
         $rounded = '';
         $jquery = '';
         if ( array_key_exists( 'oxi_image_magnifier_magnifi_switcher', $style ) && $style['oxi_image_magnifier_magnifi_switcher'] == 'yes' ) {
-            $width = '' . ( $style['oxi_image_magnifier_magnifi_width-size'] != '' ) ? 'zoomWidth: ' . $style['oxi_image_magnifier_magnifi_width-size'] . ',' : 'zoomWidth:200 ' . ',';
-            $height = '' . ( $style['oxi_image_magnifier_magnifi_height-size'] != '' ) ? 'zoomHeight: ' . $style['oxi_image_magnifier_magnifi_height-size'] . ',' : 'zoomHeight:200 ' . ',';
+            // Saved sizes reach the script only as numbers (CVE-2026-118056).
+            $width  = is_numeric( $style['oxi_image_magnifier_magnifi_width-size'] ) ? 'zoomWidth: ' . $this->js_number( $style['oxi_image_magnifier_magnifi_width-size'] ) . ',' : 'zoomWidth:200 ,';
+            $height = is_numeric( $style['oxi_image_magnifier_magnifi_height-size'] ) ? 'zoomHeight: ' . $this->js_number( $style['oxi_image_magnifier_magnifi_height-size'] ) . ',' : 'zoomHeight:200 ,';
         }
         if ( array_key_exists( 'oxi_image_magnifier_magnifi_offset_switcher', $style ) && $style['oxi_image_magnifier_magnifi_offset_switcher'] == 'yes' ) {
-            $offset = 'offset : {x: ' . ( $style['oxi_image_magnifier_offset_x-size'] != '' ? $style['oxi_image_magnifier_offset_x-size'] : '-100' ) . ',y: ' . ( $style['oxi_image_magnifier_offset_y-size'] != '' ? $style['oxi_image_magnifier_offset_y-size'] : '-100' ) . '},';
+            $offset = 'offset : {x: ' . $this->js_number( $style['oxi_image_magnifier_offset_x-size'], -100 ) . ',y: ' . $this->js_number( $style['oxi_image_magnifier_offset_y-size'], -100 ) . '},';
         }
         if ( array_key_exists( 'oxi_image_magnifier_magnifi_router_switcher', $style ) && $style['oxi_image_magnifier_magnifi_router_switcher'] == 'yes' ) {
             $rounded = 'roundedCorners :true,';

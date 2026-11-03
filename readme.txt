@@ -4,7 +4,7 @@ Tags: image hover effects, css3 effects, image hover animation, image gallery, p
 Requires at least: 6.2
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 9.12.2
+Stable tag: 9.12.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -194,6 +194,13 @@ The free version gives you access to all 10 modules and hundreds of layouts. Pro
 ---
 
 == Changelog ==
+
+= 9.12.3 =
+* 🔒 Security: Fixed a stored XSS in Comparison, Lightbox, Magnifier and Carousel settings (CVE-2026-118056).
+* 🔒 Security: "Who can edit" now allows only Editors and Administrators, and only an administrator can change it.
+* 🔒 Security: The editor preview now checks the user's permission.
+* ✨ Improvement: Image Hover pages now show only Image Hover notices, not notices from other plugins.
+* ✨ Improvement: A cleaner license dialog, and the license key field is no longer cut off.
 
 = 9.12.2 =
 * 🐛 Fix: On PHP 8, an empty or text value in a number setting no longer stops the page right after the gallery (Lightbox 2 Z-index, Comparison 4 strips, Filter 2 columns, and styles saved before version 9.3)

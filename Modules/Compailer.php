@@ -140,16 +140,17 @@ class Compailer extends Public_Render {
             $tab = $this->public_column_render( $style['oxi-image-hover-col-tab'] );
             $mobile = $this->public_column_render( $style['oxi-image-hover-col-mob'] );
 
-            $lap_item = $style['carousel_item_slide-lap-size'];
-            $tab_item = $style['carousel_item_slide-tab-size'];
-            $mobile_item = $style['carousel_item_slide-mob-size'];
+            // Saved numbers reach the script only as numbers (CVE-2026-118056).
+            $lap_item = $this->js_number( $style['carousel_item_slide-lap-size'], 1 );
+            $tab_item = $this->js_number( $style['carousel_item_slide-tab-size'], 1 );
+            $mobile_item = $this->js_number( $style['carousel_item_slide-mob-size'], 1 );
 
             $prev = $this->custom_font_awesome_render( $style['carousel_left_arrow'] );
             $next = $this->custom_font_awesome_render( $style['carousel_right_arrow'] );
 
             $autoplay = ( $style['carousel_autoplay'] == 'yes' ) ? 'true' : 'false';
-            $autoplayspeed = $style['carousel_autoplay_speed'];
-            $speed = $style['carousel_speed'];
+            $autoplayspeed = $this->js_number( $style['carousel_autoplay_speed'], 3000 );
+            $speed = $this->js_number( $style['carousel_speed'], 300 );
             $pause_on_hover = ( $style['carousel_pause_on_hover'] == 'yes' ) ? 'true' : 'false';
             $infinite = ( $style['carousel_infinite'] == 'yes' ) ? 'true' : 'false';
             $adaptiveheight = ( $style['carousel_adaptive_height'] == 'yes' ) ? 'true' : 'false';
